@@ -3,41 +3,99 @@ package main
 import (
 	//"encoding/base64"
 	"database/sql"
-	"flag"
 	"fmt"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"os"
+        "github.com/codegangsta/cli"
 )
 
-func main() {
 
-	var (
-		dbFile = flag.String("db", "rafiki.db", "Location of Your Rafiki DB File")
-	)
+var CSRCommand = cli.Command{
+        Name:        "csr",
+        Usage:       "csr",
+        Description: "example CSR blah",
+        Subcommands: []cli.Command{
+                 {
+                 Name: "export",
+                 Usage: "Export a CSR from the DB",
+                 Flags: []cli.Flag{
+                     FileLoc,
+                     },
+                 Action: doMain,
+                  },
+                 {
+                 Name: "import",
+                 Usage: "Import a CSR into the DB",
+                 Flags: []cli.Flag{
+                     FileLoc,
+                     },
+                 Action: doMain,
+                  },
+                 {
+                 Name: "delete",
+                 Usage: "Delete a CSR from the DB",
+                 Flags: []cli.Flag{
+                     FileLoc,
+                     },
+                 Action: doMain,
+                  },
+                 {
+                 Name: "list",
+                 Usage: "List all CSRs in the DB",
+                 Action: doMain,
+                 },
+        },
+}
+
+
+
+var FileLoc = cli.StringFlag{
+    Name: "f, file",
+    Usage: "Location of the file",
+}
+
+
+var DBLoc = cli.StringFlag{
+    Name: "db, database",
+    Value: "rafiki.db",
+    Usage: "Location of the DB file",
+}
+
+
+
+func main() {
+    app := cli.NewApp()
+    app.Name = "Rafiki"
+    app.Version = "0.0.1"
+    app.Usage = "Store SSL Certs securely-ish"
+    app.Action = doMain
+    app.Flags = []cli.Flag{
+         DBLoc,
+    }
+    app.Commands = []cli.Command{
+          CSRCommand,
+    }
+    app.Run(os.Args)
+}
+
+
+
+
+func doMain(c *cli.Context) {
+
+        log.Print(c.String("db"))
 
 	// Check for SQLite Database, if unfound prompt to create
-	//
-	flag.Parse()
-	log.Print(dbFile)
-	if flag.NFlag() == 0 {
-		var i string
-		fmt.Println("No DB specified, y/n to create a new one")
-		fmt.Scan(&i)
-		if i == "y" {
-			CreateDB()
-		} else {
-			os.Exit(0)
-		}
-	}
+	//CreateDB()
 
 	// Open DB Conn
 	//
-	db, err := sql.Open("sqlite3", *dbFile)
-	errHandler(err)
-	defer db.Close()
+	//db, err := sql.Open("sqlite3", *dbFile)
+	//errHandler(err)
+	//defer db.Close()
 
-	listKeys(db)
+	//listKeys(db)
 }
 
 func insertKeys(db *sql.DB) {
