@@ -2,10 +2,10 @@ package main
 
 import (
         //"encoding/base64"
-	"flag"
+	    "flag"
         "log"
         "database/sql"
-	_ "github.com/mattn/go-sqlite3"
+	    _ "github.com/mattn/go-sqlite3"
         "fmt"
         "os"
 )
@@ -43,7 +43,7 @@ func main() {
 
 func insertKeys(db *sql.DB) {
 
-        _, err = db.Exec("INSERT INTO csrs (cn, csr) VALUES ('foo', 'asxasxas')")
+        _, err := db.Exec("INSERT INTO csrs (cn, csr) VALUES ('foo', 'asxasxas')")
         errHandler(err)
 
 }
