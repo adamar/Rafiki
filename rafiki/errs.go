@@ -1,25 +1,19 @@
-
 package rafiki
 
 import (
-        "log"
-        "os"
-        )
+	"log"
+	"os"
+)
 
 func ErrHandler(err error) {
-    if err != nil {
-          log.Print(err)
-    }
+	if err != nil {
+		log.Print(err)
+	}
 }
-
 
 func noFileSet() {
 
-     log.Print("no file set")
-     os.Exit(1)
+	log.Print("no file set")
+	os.Exit(1)
 
 }
-
-
-
-
