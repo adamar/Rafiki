@@ -23,6 +23,10 @@ func ExportCSR(c *cli.Context) {
 
 func ImportCSR(c *cli.Context) {
 
+    if c.IsSet("db") == false {
+        CheckCreateDB()
+    }
+
 	err := CheckFileFlag(c)
     ErrHandler(err)
 
