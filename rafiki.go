@@ -7,6 +7,32 @@ import (
 )
 
 
+
+
+
+
+
+func main() {
+
+    // CLI parsing is done here
+    //
+    app := cli.NewApp()
+    app.Name = "Rafiki"
+    app.Version = "0.0.1"
+    app.Usage = "Store SSL Certs securely-ish"
+    app.Flags = []cli.Flag{
+         DBLoc,
+    }
+    app.Commands = []cli.Command{
+          CSRCommand,
+    }
+    app.Run(os.Args)
+}
+
+
+
+
+
 var CSRCommand = cli.Command{
         Name:        "csr",
         Usage:       "csr",
@@ -57,36 +83,6 @@ var DBLoc = cli.StringFlag{
     Value: "rafiki.db",
     Usage: "Location of the DB file",
 }
-
-
-
-
-
-func main() {
-
-    // CLI parsing is done here
-    //
-    app := cli.NewApp()
-    app.Name = "Rafiki"
-    app.Version = "0.0.1"
-    app.Usage = "Store SSL Certs securely-ish"
-    //app.Action = doMain
-    app.Flags = []cli.Flag{
-         DBLoc,
-    }
-    app.Commands = []cli.Command{
-          CSRCommand,
-    }
-    app.Run(os.Args)
-}
-
-
-
-
-
-
-
-
 
 
 
