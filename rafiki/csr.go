@@ -1,18 +1,23 @@
 package rafiki
 
 import (
-	"crypto/x509"
-	"encoding/hex"
+	//"crypto/x509"
+	//"encoding/hex"
 	"encoding/pem"
 	"github.com/codegangsta/cli"
 	"io/ioutil"
 	"log"
 	"os"
-)
+    )
 
 func ExportCSR(c *cli.Context) {
 
 	log.Print("csr export")
+
+    //cleartext, err := DecryptString(key, ciphertext)
+    //ErrHandler(err)
+
+
 
 }
 
@@ -25,16 +30,26 @@ func ImportCSR(c *cli.Context) {
 
 	block, _ := pem.Decode(buf)
 
-	CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
-	ErrHandler(err)
+	//CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
+	//ErrHandler(err)
 
-	CSRName := CertificateRequest.Subject
+	//CSRName := CertificateRequest.Subject
 
-	log.Print(CSRName.CommonName)
+	//log.Print(CSRName.CommonName)
 	//log.Print(CertificateRequest.SignatureAlgorithm)
 
-	log.Print(string(hex.Dump(CertificateRequest.Signature)))
-	log.Print(string(hex.EncodeToString(CertificateRequest.Signature)))
+	//log.Print(string(hex.Dump(CertificateRequest.Signature)))
+	//log.Print(string(hex.EncodeToString(CertificateRequest.Signature)))
+
+
+
+    key := []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+
+    ciphertext, err := EncryptString(key, block.Bytes)
+    ErrHandler(err)
+
+    log.Print(string(ciphertext))
+
 
 }
 

@@ -5,11 +5,13 @@ import (
 	"os"
 )
 
+
 func ErrHandler(err error) {
 	if err != nil {
 		log.Print(err)
 	}
 }
+
 
 func noFileSet() {
 
