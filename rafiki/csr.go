@@ -23,7 +23,8 @@ func ExportCSR(c *cli.Context) {
 
 func ImportCSR(c *cli.Context) {
 
-	checkCSRFileSet(c.IsSet("f"))
+	err := CheckFileFlag(c)
+    ErrHandler(err)
 
 	buf, err := ioutil.ReadFile(c.String("f"))
 	ErrHandler(err)
