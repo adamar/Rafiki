@@ -1,13 +1,9 @@
 package main
 
 import (
-	//"encoding/base64"
-	"database/sql"
-	"fmt"
-	_ "github.com/mattn/go-sqlite3"
-	"log"
 	"os"
-        "github.com/codegangsta/cli"
+    "github.com/codegangsta/cli"
+	"./rafiki"
 )
 
 
@@ -22,7 +18,7 @@ var CSRCommand = cli.Command{
                  Flags: []cli.Flag{
                      FileLoc,
                      },
-                 Action: doMain,
+                 Action: rafiki.ExportCSR,
                   },
                  {
                  Name: "import",
@@ -30,7 +26,7 @@ var CSRCommand = cli.Command{
                  Flags: []cli.Flag{
                      FileLoc,
                      },
-                 Action: doMain,
+                 Action: rafiki.ImportCSR,
                   },
                  {
                  Name: "delete",
@@ -38,12 +34,12 @@ var CSRCommand = cli.Command{
                  Flags: []cli.Flag{
                      FileLoc,
                      },
-                 Action: doMain,
+                 Action: rafiki.DeleteCSR,
                   },
                  {
                  Name: "list",
                  Usage: "List all CSRs in the DB",
-                 Action: doMain,
+                 Action: rafiki.ListCSR,
                  },
         },
 }
@@ -64,12 +60,17 @@ var DBLoc = cli.StringFlag{
 
 
 
+
+
 func main() {
+
+    // CLI parsing is done here
+    //
     app := cli.NewApp()
     app.Name = "Rafiki"
     app.Version = "0.0.1"
     app.Usage = "Store SSL Certs securely-ish"
-    app.Action = doMain
+    //app.Action = doMain
     app.Flags = []cli.Flag{
          DBLoc,
     }
@@ -82,67 +83,11 @@ func main() {
 
 
 
-func doMain(c *cli.Context) {
 
-        log.Print(c.String("db"))
 
-	// Check for SQLite Database, if unfound prompt to create
-	//CreateDB()
 
-	// Open DB Conn
-	//
-	//db, err := sql.Open("sqlite3", *dbFile)
-	//errHandler(err)
-	//defer db.Close()
 
-	//listKeys(db)
-}
 
-func insertKeys(db *sql.DB) {
 
-	_, err := db.Exec("INSERT INTO csrs (cn, csr) VALUES ('foo', 'asxasxas')")
-	errHandler(err)
 
-}
 
-func listKeys(db *sql.DB) {
-
-	rows, err := db.Query("select id, cn, csr from csrs")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var id int
-		var name string
-		rows.Scan(&id, &name)
-		fmt.Println(id, name)
-	}
-	rows.Close()
-}
-
-func errHandler(err error) {
-	if err != nil {
-		log.Print(err)
-	}
-}
-
-func CreateDB() {
-
-	// Create Database File
-	//
-	db, err := sql.Open("sqlite3", "./rafiki.db")
-	errHandler(err)
-	defer db.Close()
-
-	// Generate Schema for DB
-	//
-	sqlStmt := `
-        create table csrs (id integer not null primary key, 
-                          cn text,
-                          csr blob);
-        `
-	_, err = db.Exec(sqlStmt)
-	errHandler(err)
-
-}
