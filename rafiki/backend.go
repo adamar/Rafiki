@@ -86,7 +86,7 @@ func createDBConn(fname string) *sql.DB {
         ErrHandler(err)
         defer db.Close()
 
-        return *sql.DB
+        return db
 }
 
 
