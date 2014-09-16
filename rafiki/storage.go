@@ -5,7 +5,26 @@ import (
 	"fmt"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
+        "os"
 )
+
+
+func CheckCreateDB() {
+
+           msg := "No DB Specified, Y/N to create a new one"
+           var i string
+           fmt.Println(msg)
+           fmt.Scan(&i)
+           if i == "y" {
+              CreateDB()
+           } else {
+              os.Exit(0)
+           }
+
+
+}
+
+
 
 
 func CreateDB() {
@@ -44,18 +63,13 @@ func listKeys(db *sql.DB) {
 	rows.Close()
 }
 
-func checkDB() {
+func checkDB(fname string) {
 
-	// Check for SQLite Database, if unfound prompt to create
-	//CreateDB()
+    if _, err := os.Stat(fname); os.IsNotExist(err) {
+       log.Print("db doesnt exit")
+       CheckCreateDB()
+    }
 
-	// Open DB Conn
-	//
-	//db, err := sql.Open("sqlite3", *dbFile)
-	//errHandler(err)
-	//defer db.Close()
-
-	//listKeys(db)
 }
 
 func insertKeys(db *sql.DB) {

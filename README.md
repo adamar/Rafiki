@@ -8,7 +8,7 @@ Usage
 --------------
 
 ```sh
-./rafiki ???
+./rafiki csr import
 ```
 
 

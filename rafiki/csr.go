@@ -1,7 +1,7 @@
 package rafiki
 
 import (
-	//"crypto/x509"
+	"crypto/x509"
 	//"encoding/hex"
 	"encoding/pem"
 	"github.com/codegangsta/cli"
@@ -23,24 +23,29 @@ func ExportCSR(c *cli.Context) {
 
 func ImportCSR(c *cli.Context) {
 
-    if c.IsSet("db") == false {
-        CheckCreateDB()
-    }
+        //CheckCreateDB()
+        //log.Print(c.String("db"))
+        checkDB(c.String("db"))
+
+        //db, err := sql.Open("sqlite3", "./rafiki.db")
+        //ErrHandler(err)
+        //defer db.Close()
+
 
 	err := CheckFileFlag(c)
-    ErrHandler(err)
+        ErrHandler(err)
 
 	buf, err := ioutil.ReadFile(c.String("f"))
 	ErrHandler(err)
 
 	block, _ := pem.Decode(buf)
 
-	//CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
-	//ErrHandler(err)
+	CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
+	ErrHandler(err)
 
-	//CSRName := CertificateRequest.Subject
+	CSRName := CertificateRequest.Subject
 
-	//log.Print(CSRName.CommonName)
+	log.Print(CSRName.CommonName)
 	//log.Print(CertificateRequest.SignatureAlgorithm)
 
 	//log.Print(string(hex.Dump(CertificateRequest.Signature)))

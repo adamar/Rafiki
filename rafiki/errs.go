@@ -5,7 +5,6 @@ import (
 	"os"
     "github.com/codegangsta/cli"
     "errors"
-    "fmt"
 )
 
 
@@ -37,19 +36,5 @@ func CheckFileFlag(c *cli.Context) error {
 
 }
 
-
-func CheckCreateDB() {
-
-           msg := "No DB Specified, Y/N to create a new one"
-           var i string
-           fmt.Println(msg)
-           fmt.Scan(&i)
-           if i == "y" {
-              CreateDB()
-           } else {
-              os.Exit(0)
-           }
-
-}
 
 

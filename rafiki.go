@@ -14,9 +14,9 @@ func main() {
 	app.Name = "Rafiki"
 	app.Version = "0.0.1"
 	app.Usage = "Store SSL Certs securely-ish"
-	app.Flags = []cli.Flag{
-		DBLoc,
-	}
+	//app.Flags = []cli.Flag{
+	//	DBLoc,
+	//}
 	app.Commands = []cli.Command{
 		CSRCommand,
 	}
@@ -33,6 +33,7 @@ var CSRCommand = cli.Command{
 			Usage: "Export a CSR from the DB",
 			Flags: []cli.Flag{
 				FileLoc,
+                                DBLoc,
 			},
 			Action: rafiki.ExportCSR,
 		},
@@ -41,6 +42,7 @@ var CSRCommand = cli.Command{
 			Usage: "Import a CSR into the DB",
 			Flags: []cli.Flag{
 				FileLoc,
+                                DBLoc,
 			},
 			Action: rafiki.ImportCSR,
 		},
@@ -49,12 +51,16 @@ var CSRCommand = cli.Command{
 			Usage: "Delete a CSR from the DB",
 			Flags: []cli.Flag{
 				FileLoc,
+                                DBLoc,
 			},
 			Action: rafiki.DeleteCSR,
 		},
 		{
 			Name:   "list",
 			Usage:  "List all CSRs in the DB",
+                        Flags: []cli.Flag{
+                                 DBLoc,
+                        },
 			Action: rafiki.ListCSR,
 		},
 	},
