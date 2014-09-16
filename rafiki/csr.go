@@ -23,8 +23,6 @@ func ExportCSR(c *cli.Context) {
 
 func ImportCSR(c *cli.Context) {
 
-        //CheckCreateDB()
-        //log.Print(c.String("db"))
         checkDB(c.String("db"))
 
         //db, err := sql.Open("sqlite3", "./rafiki.db")
