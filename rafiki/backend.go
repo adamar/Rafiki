@@ -78,3 +78,15 @@ func insertKeys(db *sql.DB) {
 	ErrHandler(err)
 
 }
+
+
+func createDBConn(fname string) *sql.DB {
+
+        db, err := sql.Open("sqlite3", fname)
+        ErrHandler(err)
+        defer db.Close()
+
+        return *sql.DB
+}
+
+

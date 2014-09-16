@@ -24,11 +24,7 @@ func ExportCSR(c *cli.Context) {
 func ImportCSR(c *cli.Context) {
 
         checkDB(c.String("db"))
-
-        //db, err := sql.Open("sqlite3", "./rafiki.db")
-        //ErrHandler(err)
-        //defer db.Close()
-
+        conn := createDBConn(c.String("db"))
 
 	err := CheckFileFlag(c)
         ErrHandler(err)
