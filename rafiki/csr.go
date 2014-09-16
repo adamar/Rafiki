@@ -25,6 +25,7 @@ func ImportCSR(c *cli.Context) {
 
         checkDB(c.String("db"))
         conn := createDBConn(c.String("db"))
+        defer conn.Close()
 
 	err := CheckFileFlag(c)
         ErrHandler(err)
@@ -45,14 +46,17 @@ func ImportCSR(c *cli.Context) {
 	//log.Print(string(hex.Dump(CertificateRequest.Signature)))
 	//log.Print(string(hex.EncodeToString(CertificateRequest.Signature)))
 
+        fakecn := "fakcn"
+        fakecsr := "fakecsr"
 
+        InsertKeys(conn, fakecn, fakecsr)
 
-    key := []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        key := []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
-    ciphertext, err := EncryptString(key, block.Bytes)
-    ErrHandler(err)
+        ciphertext, err := EncryptString(key, block.Bytes)
+        ErrHandler(err)
 
-    log.Print(string(ciphertext))
+        log.Print(string(ciphertext))
 
 
 }
