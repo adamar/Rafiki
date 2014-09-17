@@ -26,18 +26,18 @@ func EncryptString(key, ClearText []byte) ([]byte, error) {
 }
 
 
-func DecryptString(key, ClearText []byte) ([]byte, error) {
+func DecryptString(key, CipherText []byte) ([]byte, error) {
 
     block, err := aes.NewCipher(key)
     ErrHandler(err)
 
-    iv := ClearText[:aes.BlockSize]
-    ClearText = ClearText[aes.BlockSize:]
+    iv := CipherText[:aes.BlockSize]
+    CipherText = CipherText[aes.BlockSize:]
 
     cfb := cipher.NewCFBDecrypter(block, iv)
-    cfb.XORKeyStream(ClearText, ClearText)
+    cfb.XORKeyStream(CipherText, CipherText)
 
-    data, err := base64.StdEncoding.DecodeString(string(ClearText))
+    data, err := base64.StdEncoding.DecodeString(string(CipherText))
     ErrHandler(err)
 
     return data, nil

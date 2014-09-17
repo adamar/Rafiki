@@ -25,6 +25,16 @@ func CheckCreateDB() {
 }
 
 
+func GetKeyName() string {
+
+           msg := "Which key?"
+           var i string
+           fmt.Println(msg)
+           fmt.Scan(&i)
+
+           return i
+
+}
 
 
 func CreateDB() {
@@ -71,12 +81,31 @@ func checkDB(fname string) {
 
 }
 
-func InsertKeys(db *sql.DB, cn string, csr string) {
+func InsertKey(db *sql.DB, cn string, csr string) {
 
     _, err := db.Exec("INSERT INTO csrs (cn, csr) VALUES (?, ?)", cn, csr)
 	ErrHandler(err)
 
 }
+
+func SelectKey(db *sql.DB, cn string) []byte {
+
+    rows, err := db.Query("SELECT csr from csrs WHERE cn = ? ", cn)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
+    for rows.Next() {
+        var cn string
+        rows.Scan(&cn)
+    }
+
+	ErrHandler(err)
+
+    return []byte(cn)
+
+}
+
 
 
 func createDBConn(fname string) *sql.DB {

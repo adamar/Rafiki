@@ -14,8 +14,19 @@ func ExportCSR(c *cli.Context) {
 
 	log.Print("csr export")
 
-	//cleartext, err := DecryptString(key, ciphertext)
-	//ErrHandler(err)
+    checkDB(c.String("db"))
+    conn := createDBConn(c.String("db"))
+    defer conn.Close()
+
+    key := []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+
+    keyname := GetKeyName()
+
+    ciphertext := SelectKey(conn, keyname)
+
+    cleartext, err := DecryptString(key, ciphertext)
+    log.Print(string(cleartext))
+	ErrHandler(err)
 
 }
 
@@ -49,7 +60,7 @@ func ImportCSR(c *cli.Context) {
 	ciphertext, err := EncryptString(key, block.Bytes)
 	ErrHandler(err)
 
-	InsertKeys(conn, string(CSRName.CommonName), string(ciphertext))
+	InsertKey(conn, string(CSRName.CommonName), string(ciphertext))
 
 }
 
