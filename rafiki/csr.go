@@ -46,10 +46,6 @@ func ImportCSR(c *cli.Context) {
 	//log.Print(string(hex.Dump(CertificateRequest.Signature)))
 	//log.Print(string(hex.EncodeToString(CertificateRequest.Signature)))
 
-        fakecn := "fakcn"
-        fakecsr := "fakecsr"
-
-        InsertKeys(conn, fakecn, fakecsr)
 
         key := []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
@@ -57,6 +53,7 @@ func ImportCSR(c *cli.Context) {
         ErrHandler(err)
 
         log.Print(string(ciphertext))
+        InsertKeys(conn, string(CSRName.CommonName), string(ciphertext)) 
 
 
 }

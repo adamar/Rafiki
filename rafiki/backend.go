@@ -73,7 +73,7 @@ func checkDB(fname string) {
 
 func InsertKeys(db *sql.DB, cn string, csr string) {
 
-	_, err := db.Exec("INSERT INTO csrs (cn, csr) VALUES ('foo', 'asxasxas')")
+    _, err := db.Exec("INSERT INTO csrs (cn, csr) VALUES (?, ?)", cn, csr)
 	ErrHandler(err)
 
 }
