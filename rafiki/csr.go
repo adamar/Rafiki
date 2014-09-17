@@ -70,6 +70,12 @@ func DeleteCSR(c *cli.Context) {
 func ListCSR(c *cli.Context) {
 
 	log.Print("csr list")
+    checkDB(c.String("db"))
+    conn := createDBConn(c.String("db"))
+    defer conn.Close()
+
+    ListKeys(conn)
+
 
 }
 

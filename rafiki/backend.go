@@ -47,18 +47,17 @@ func CreateDB() {
 
 }
 
-func listKeys(db *sql.DB) {
+func ListKeys(db *sql.DB) {
 
-	rows, err := db.Query("select id, cn, csr from csrs")
+	rows, err := db.Query("select cn from csrs")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var id int
-		var name string
-		rows.Scan(&id, &name)
-		fmt.Println(id, name)
+		var cn string
+		rows.Scan(&cn)
+		fmt.Println(cn)
 	}
 	rows.Close()
 }

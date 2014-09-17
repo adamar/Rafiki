@@ -14,14 +14,12 @@ func main() {
 	app.Name = "Rafiki"
 	app.Version = "0.0.1"
 	app.Usage = "Store SSL Certs securely-ish"
-	//app.Flags = []cli.Flag{
-	//	DBLoc,
-	//}
 	app.Commands = []cli.Command{
 		CSRCommand,
 	}
 	app.Run(os.Args)
 }
+
 
 var CSRCommand = cli.Command{
 	Name:        "csr",
