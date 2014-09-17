@@ -33,7 +33,7 @@ var CSRCommand = cli.Command{
 			Usage: "Export a CSR from the DB",
 			Flags: []cli.Flag{
 				FileLoc,
-                                DBLoc,
+				DBLoc,
 			},
 			Action: rafiki.ExportCSR,
 		},
@@ -42,7 +42,7 @@ var CSRCommand = cli.Command{
 			Usage: "Import a CSR into the DB",
 			Flags: []cli.Flag{
 				FileLoc,
-                                DBLoc,
+				DBLoc,
 			},
 			Action: rafiki.ImportCSR,
 		},
@@ -51,16 +51,16 @@ var CSRCommand = cli.Command{
 			Usage: "Delete a CSR from the DB",
 			Flags: []cli.Flag{
 				FileLoc,
-                                DBLoc,
+				DBLoc,
 			},
 			Action: rafiki.DeleteCSR,
 		},
 		{
-			Name:   "list",
-			Usage:  "List all CSRs in the DB",
-                        Flags: []cli.Flag{
-                                 DBLoc,
-                        },
+			Name:  "list",
+			Usage: "List all CSRs in the DB",
+			Flags: []cli.Flag{
+				DBLoc,
+			},
 			Action: rafiki.ListCSR,
 		},
 	},
