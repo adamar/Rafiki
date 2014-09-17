@@ -72,9 +72,21 @@ func checkDB(fname string) {
 
 }
 
-func insertKeys(db *sql.DB) {
+func InsertKeys(db *sql.DB, cn string, csr string) {
 
 	_, err := db.Exec("INSERT INTO csrs (cn, csr) VALUES ('foo', 'asxasxas')")
 	ErrHandler(err)
 
 }
+
+
+func createDBConn(fname string) *sql.DB {
+
+        db, err := sql.Open("sqlite3", fname)
+        ErrHandler(err)
+        //defer db.Close()
+
+        return db
+}
+
+
