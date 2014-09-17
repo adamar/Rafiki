@@ -8,27 +8,25 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-    )
+)
 
 func ExportCSR(c *cli.Context) {
 
 	log.Print("csr export")
 
-    //cleartext, err := DecryptString(key, ciphertext)
-    //ErrHandler(err)
-
-
+	//cleartext, err := DecryptString(key, ciphertext)
+	//ErrHandler(err)
 
 }
 
 func ImportCSR(c *cli.Context) {
 
-        checkDB(c.String("db"))
-        conn := createDBConn(c.String("db"))
-        defer conn.Close()
+	checkDB(c.String("db"))
+	conn := createDBConn(c.String("db"))
+	defer conn.Close()
 
 	err := CheckFileFlag(c)
-        ErrHandler(err)
+	ErrHandler(err)
 
 	buf, err := ioutil.ReadFile(c.String("f"))
 	ErrHandler(err)
@@ -46,14 +44,12 @@ func ImportCSR(c *cli.Context) {
 	//log.Print(string(hex.Dump(CertificateRequest.Signature)))
 	//log.Print(string(hex.EncodeToString(CertificateRequest.Signature)))
 
+	key := []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
-        key := []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	ciphertext, err := EncryptString(key, block.Bytes)
+	ErrHandler(err)
 
-        ciphertext, err := EncryptString(key, block.Bytes)
-        ErrHandler(err)
-
-        InsertKeys(conn, string(CSRName.CommonName), string(ciphertext)) 
-
+	InsertKeys(conn, string(CSRName.CommonName), string(ciphertext))
 
 }
 
@@ -66,12 +62,11 @@ func DeleteCSR(c *cli.Context) {
 func ListCSR(c *cli.Context) {
 
 	log.Print("csr list")
-    checkDB(c.String("db"))
-    conn := createDBConn(c.String("db"))
-    defer conn.Close()
+	checkDB(c.String("db"))
+	conn := createDBConn(c.String("db"))
+	defer conn.Close()
 
-    ListKeys(conn)
-
+	ListKeys(conn)
 
 }
 
