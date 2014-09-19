@@ -14,18 +14,18 @@ func ExportCSR(c *cli.Context) {
 
 	log.Print("csr export")
 
-    checkDB(c.String("db"))
-    conn := createDBConn(c.String("db"))
-    defer conn.Close()
+	checkDB(c.String("db"))
+	conn := createDBConn(c.String("db"))
+	defer conn.Close()
 
-    key := []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	key := []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
-    keyname := GetKeyName()
+	keyname := GetKeyName()
 
-    ciphertext := SelectKey(conn, keyname)
+	ciphertext := SelectKey(conn, keyname)
 
-    cleartext, err := DecryptString(key, ciphertext)
-    log.Print(string(cleartext))
+	cleartext, err := DecryptString(key, ciphertext)
+	log.Print(string(cleartext))
 	ErrHandler(err)
 
 }

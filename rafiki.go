@@ -20,7 +20,6 @@ func main() {
 	app.Run(os.Args)
 }
 
-
 var CSRCommand = cli.Command{
 	Name:        "csr",
 	Usage:       "csr",
