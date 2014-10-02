@@ -4,6 +4,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"encoding/base64"
+    "code.google.com/p/gopass"
 )
 
 func EncryptString(key, ClearText []byte) ([]byte, error) {
@@ -39,3 +40,16 @@ func DecryptString(key, CipherText []byte) ([]byte, error) {
 	return data, nil
 
 }
+
+
+func checkPassword() (passwd string, err error){
+
+    pass, err := gopass.GetPass("Please enter your Password:")
+    return pass, err
+
+}
+
+
+
+
+

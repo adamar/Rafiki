@@ -8,6 +8,9 @@ import (
 	"os"
 )
 
+var db *sql.DB
+
+
 func CheckCreateDB() {
 
 	msg := "No DB Specified, Y/N to create a new one"
@@ -39,7 +42,7 @@ func CreateDB() {
 	//
 	db, err := sql.Open("sqlite3", "./rafiki.db")
 	ErrHandler(err)
-	defer db.Close()
+	//defer db.Close()
 
 	// Generate Schema for DB
 	//
@@ -59,7 +62,7 @@ func ListKeys(db *sql.DB) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer rows.Close()
+	//defer rows.Close()
 	for rows.Next() {
 		var cn string
 		rows.Scan(&cn)

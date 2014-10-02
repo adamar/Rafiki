@@ -18,7 +18,12 @@ func ExportCSR(c *cli.Context) {
 	conn := createDBConn(c.String("db"))
 	defer conn.Close()
 
-	key := []byte("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    password, err:= checkPassword()
+    if err != nil {
+        log.Print("Password entry failed")
+    }
+
+	key := []byte(password)
 
 	keyname := GetKeyName()
 
