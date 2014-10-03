@@ -43,12 +43,6 @@ func DecryptString(key, CipherText []byte) ([]byte, error) {
 }
 
 
-func checkPassword() (passwd string, err error){
-
-    pass, err := gopass.GetPass("Please enter your Password:")
-    return pass, err
-
-}
 
 
 func setPassword() (passwd string, err error){
