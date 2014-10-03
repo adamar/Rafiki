@@ -4,8 +4,6 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"encoding/base64"
-    "code.google.com/p/gopass"
-    "fmt"
 )
 
 func EncryptString(key, ClearText []byte) ([]byte, error) {
@@ -40,33 +38,6 @@ func DecryptString(key, CipherText []byte) ([]byte, error) {
 
 	return data, nil
 
-}
-
-
-
-
-func setPassword() (passwd string, err error){
-
-    pass_attempt_one, err := gopass.GetPass("Please enter your new Password:")
-    if err != nil {
-        return "", err
-    }
-
-    pass_attempt_two, err := gopass.GetPass("Please re-enter your new Password:")
-    if err != nil {
-        return "", err
-    } 
-
-    if pass_attempt_one != pass_attempt_two {
-
-        passwd := ""
-        err = fmt.Errorf("Passwords dont match")
-        return passwd, err 
-
-    } else {
-
-        return pass_attempt_one, err
-    }
 }
 
 

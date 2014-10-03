@@ -1,7 +1,10 @@
 
 package rafiki
 
-
+import (
+    "code.google.com/p/gopass"
+    "fmt"
+    )
 
 
 func checkPassword() (passwd string, err error){
