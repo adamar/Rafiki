@@ -49,6 +49,7 @@ func shaString(originalString string) (string, error) {
    shastring.Write([]byte(originalString))
    outputString := shastring.Sum(nil)
    outputStringHex := hex.EncodeToString(outputString)
+   // make proper error return
    return outputStringHex, nil
 
 }

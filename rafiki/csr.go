@@ -62,7 +62,8 @@ func ImportCSR(c *cli.Context) {
 	//log.Print(string(hex.Dump(CertificateRequest.Signature)))
 	//log.Print(string(hex.EncodeToString(CertificateRequest.Signature)))
 
-	key := []byte(password)
+    hashedPassword, _ := shaString(password)
+	key := []byte(hashedPassword)
 
 	ciphertext, err := EncryptString(key, block.Bytes)
 	ErrHandler(err)
