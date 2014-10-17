@@ -36,12 +36,14 @@ func GetKeyName() string {
 
 }
 
-func CreateDB() {
+func CreateDB() error {
 
 	// Create Database File
 	//
 	db, err := sql.Open("sqlite3", "./rafiki.db")
-	ErrHandler(err)
+	if err != nil {
+        return err
+    }
 	//defer db.Close()
 
 	// Generate Schema for DB
@@ -52,15 +54,19 @@ func CreateDB() {
                           csr blob);
         `
 	_, err = db.Exec(sqlStmt)
-	ErrHandler(err)
+	if err != nil {
+        return err
+    }
+
+    return nil
 
 }
 
-func ListKeys(db *sql.DB) {
+func ListKeys(db *sql.DB) error {
 
 	rows, err := db.Query("select cn from csrs")
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	//defer rows.Close()
 	for rows.Next() {
@@ -69,6 +75,8 @@ func ListKeys(db *sql.DB) {
 		fmt.Println(cn)
 	}
 	rows.Close()
+
+    return nil
 }
 
 func checkDB(fname string) {
@@ -80,10 +88,14 @@ func checkDB(fname string) {
 
 }
 
-func InsertKey(db *sql.DB, cn string, csr string) {
+func InsertKey(db *sql.DB, cn string, csr string) error {
 
 	_, err := db.Exec("INSERT INTO csrs (cn, csr) VALUES (?, ?)", cn, csr)
-	ErrHandler(err)
+	if err != nil {
+        return err
+    }
+
+    return nil
 
 }
 
