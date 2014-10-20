@@ -45,12 +45,12 @@ func DecryptString(key, CipherText []byte) ([]byte, error) {
 
 func shaString(originalString string) (string, error) {
 
-   shastring := sha256.New()
-   shastring.Write([]byte(originalString))
-   outputString := shastring.Sum(nil)
-   outputStringHex := hex.EncodeToString(outputString)
-   // make proper error return
-   return outputStringHex, nil
+       shastring := sha256.New()
+       shastring.Write([]byte(originalString))
+       outputString := shastring.Sum(nil)
+       outputStringHex := hex.EncodeToString(outputString)
+       // make proper error return
+       return outputStringHex, nil
 
 }
 
