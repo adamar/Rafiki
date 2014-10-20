@@ -6,7 +6,6 @@ import (
 	"os"
 )
 
-
 func main() {
 
 	// CLI parsing is done here
