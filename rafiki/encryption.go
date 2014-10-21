@@ -33,23 +33,23 @@ func EncryptString(key []byte, clearText string, blockType string) (string, erro
 }
 
 
+func DecryptString(encryptionKey []byte, cypherText string) (string, error) {
 
+    decbuf := bytes.NewBuffer([]byte(cypherText))
+    result, err := armor.Decode(decbuf)
+    if err != nil {
+        return "", err
+    }
 
-func DecryptString(key, CipherText []byte) ([]byte, error) {
+    md, err := openpgp.ReadMessage(result.Body, nil, func(keys []openpgp.Key, symmetric bool) ([]byte, error) {
+        return encryptionKey, nil
+    }, nil)
+    if err != nil {
+        return "", err
+    }
 
-	block, err := aes.NewCipher(key)
-	ErrHandler(err)
-
-	iv := CipherText[:aes.BlockSize]
-	CipherText = CipherText[aes.BlockSize:]
-
-	cfb := cipher.NewCFBDecrypter(block, iv)
-	cfb.XORKeyStream(CipherText, CipherText)
-
-	data, err := base64.StdEncoding.DecodeString(string(CipherText))
-	ErrHandler(err)
-
-	return data, nil
+    bytes, err := ioutil.ReadAll(md.UnverifiedBody)
+    return string(bytes), nil
 
 }
 
