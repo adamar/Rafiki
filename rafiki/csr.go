@@ -67,7 +67,7 @@ func ImportCSR(c *cli.Context) {
 	ciphertext, err := EncryptString(key, string(block.Bytes))
 	ErrHandler(err)
 
-	InsertKey(conn, string(CSRName.CommonName), string(ciphertext))
+	InsertKey(conn, string(CSRName.CommonName), ciphertext)
 
 }
 
