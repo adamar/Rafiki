@@ -1,57 +1,50 @@
 package rafiki
 
 import (
-    "bytes"
-    "code.google.com/p/go.crypto/openpgp"
-    "code.google.com/p/go.crypto/openpgp/armor"
-    "io/ioutil"
+	"bytes"
+	"code.google.com/p/go.crypto/openpgp"
+	"code.google.com/p/go.crypto/openpgp/armor"
+	"io/ioutil"
 )
-
-
 
 func EncryptString(key []byte, clearText string, blockType string) (string, error) {
 
-    encBuf := bytes.NewBuffer(nil)
-    w, err := armor.Encode(encBuf, blockType, nil)
-    if err != nil {
-        return "", err
-    }
+	encBuf := bytes.NewBuffer(nil)
+	w, err := armor.Encode(encBuf, blockType, nil)
+	if err != nil {
+		return "", err
+	}
 
-    plaintext, err := openpgp.SymmetricallyEncrypt(w, key, nil, nil)
-    if err != nil {
-        return "", err
-    }
-    message := []byte(clearText)
-    _, err = plaintext.Write(message)
+	plaintext, err := openpgp.SymmetricallyEncrypt(w, key, nil, nil)
+	if err != nil {
+		return "", err
+	}
+	message := []byte(clearText)
+	_, err = plaintext.Write(message)
 
-    plaintext.Close()
-    w.Close()
+	plaintext.Close()
+	w.Close()
 
-    return encBuf.String(), nil
+	return encBuf.String(), nil
 
 }
-
 
 func DecryptString(encryptionKey []byte, cypherText string) (string, error) {
 
-    decbuf := bytes.NewBuffer([]byte(cypherText))
-    result, err := armor.Decode(decbuf)
-    if err != nil {
-        return "", err
-    }
+	decbuf := bytes.NewBuffer([]byte(cypherText))
+	result, err := armor.Decode(decbuf)
+	if err != nil {
+		return "", err
+	}
 
-    md, err := openpgp.ReadMessage(result.Body, nil, func(keys []openpgp.Key, symmetric bool) ([]byte, error) {
-        return encryptionKey, nil
-    }, nil)
-    if err != nil {
-        return "", err
-    }
+	md, err := openpgp.ReadMessage(result.Body, nil, func(keys []openpgp.Key, symmetric bool) ([]byte, error) {
+		return encryptionKey, nil
+	}, nil)
+	if err != nil {
+		return "", err
+	}
 
-    bytes, err := ioutil.ReadAll(md.UnverifiedBody)
-    return string(bytes), nil
+	bytes, err := ioutil.ReadAll(md.UnverifiedBody)
+	return string(bytes), nil
 
 }
-
-
-
-
