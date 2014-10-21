@@ -1,11 +1,10 @@
 package rafiki
 
 import (
-	"crypto/aes"
-	"crypto/cipher"
-	"encoding/base64"
-    "encoding/hex"
-    "crypto/sha256"
+    "bytes"
+    "code.google.com/p/go.crypto/openpgp"
+    "code.google.com/p/go.crypto/openpgp/armor"
+    "io/ioutil"
 )
 
 
@@ -15,7 +14,7 @@ func EncryptString(key []byte, clearText string, blockType string) (string, erro
     encBuf := bytes.NewBuffer(nil)
     w, err := armor.Encode(encBuf, blockType, nil)
     if err != nil {
-        log.Fatal(err)
+        return "", err
     }
 
     plaintext, err := openpgp.SymmetricallyEncrypt(w, key, nil, nil)
