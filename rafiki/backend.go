@@ -99,7 +99,7 @@ func InsertKey(db *sql.DB, cn string, csr string) error {
 
 }
 
-func SelectKey(db *sql.DB, cn string) []byte {
+func SelectKey(db *sql.DB, cn string) string {
 
 	rows, err := db.Query("SELECT csr from csrs WHERE cn = ? ", cn)
 	if err != nil {
@@ -113,7 +113,7 @@ func SelectKey(db *sql.DB, cn string) []byte {
 
 	ErrHandler(err)
 
-	return []byte(cn)
+	return cn
 
 }
 

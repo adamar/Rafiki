@@ -41,7 +41,7 @@ func ImportCSR(c *cli.Context) {
 	conn := createDBConn(c.String("db"))
 	defer conn.Close()
 
-        password, _ := setPassword()
+    password, _ := setPassword()
 
 	err := CheckFileFlag(c)
 	ErrHandler(err)
@@ -62,10 +62,9 @@ func ImportCSR(c *cli.Context) {
 	//log.Print(string(hex.Dump(CertificateRequest.Signature)))
 	//log.Print(string(hex.EncodeToString(CertificateRequest.Signature)))
 
-        hashedPassword, _ := shaString(password)
-	key := []byte(hashedPassword)
+	key := []byte(password)
 
-	ciphertext, err := EncryptString(key, block.Bytes)
+	ciphertext, err := EncryptString(key, string(block.Bytes))
 	ErrHandler(err)
 
 	InsertKey(conn, string(CSRName.CommonName), string(ciphertext))

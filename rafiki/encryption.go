@@ -7,7 +7,11 @@ import (
 	"io/ioutil"
 )
 
-func EncryptString(key []byte, clearText string, blockType string) (string, error) {
+
+const blockType = "PGP SIGNATURE"
+
+
+func EncryptString(key []byte, clearText string) (string, error) {
 
 	encBuf := bytes.NewBuffer(nil)
 	w, err := armor.Encode(encBuf, blockType, nil)
