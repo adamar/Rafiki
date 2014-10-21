@@ -8,21 +8,32 @@ import (
     "crypto/sha256"
 )
 
-func EncryptString(key, ClearText []byte) ([]byte, error) {
 
-	block, err := aes.NewCipher(key)
-	ErrHandler(err)
 
-	bse64 := base64.StdEncoding.EncodeToString(ClearText)
-	CipherText := make([]byte, aes.BlockSize+len(bse64))
-	iv := CipherText[:aes.BlockSize]
+func EncryptString(key []byte, clearText string, blockType string) (string, error) {
 
-	cfb := cipher.NewCFBEncrypter(block, iv)
-	cfb.XORKeyStream(CipherText[aes.BlockSize:], []byte(bse64))
+    encBuf := bytes.NewBuffer(nil)
+    w, err := armor.Encode(encBuf, blockType, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
 
-	return CipherText, nil
+    plaintext, err := openpgp.SymmetricallyEncrypt(w, key, nil, nil)
+    if err != nil {
+        return "", err
+    }
+    message := []byte(clearText)
+    _, err = plaintext.Write(message)
+
+    plaintext.Close()
+    w.Close()
+
+    return encBuf.String(), nil
 
 }
+
+
+
 
 func DecryptString(key, CipherText []byte) ([]byte, error) {
 
