@@ -141,7 +141,24 @@ func InsertPassword(db *sql.DB, password string) error {
 
 
 
+func SelectPassword(db *sql.DB) (string, error) {
 
+    rows, err := db.Query("SELECT hashed_password from password LIMIT 1")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
+
+    var pass string
+    for rows.Next() {
+        rows.Scan(&pass)
+    }
+
+    ErrHandler(err)
+
+    return pass, nil
+
+}
 
 
 
