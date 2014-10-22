@@ -117,6 +117,17 @@ func SelectKey(db *sql.DB, cn string) string {
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
 func createDBConn(fname string) *sql.DB {
 
 	db, err := sql.Open("sqlite3", fname)

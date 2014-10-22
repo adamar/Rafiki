@@ -14,16 +14,12 @@ func ExportCSR(c *cli.Context) {
 
 	log.Print("csr export")
 
-	checkDB(c.String("db"))
-	conn := createDBConn(c.String("db"))
-	defer conn.Close()
+    checkDB(c.String("db"))
+    conn := createDBConn(c.String("db"))
+    defer conn.Close()
 
-        password, err:= checkPassword()
-        if err != nil {
-            log.Print("Password entry failed")
-        }
-
-	key := []byte(password)
+    key, err := startUp()
+    log.Print(err)
 
 	keyname := GetKeyName()
 
@@ -41,9 +37,10 @@ func ImportCSR(c *cli.Context) {
 	conn := createDBConn(c.String("db"))
 	defer conn.Close()
 
-    password, _ := setPassword()
+    password, err := startUp()
+    log.Print(err)
 
-	err := CheckFileFlag(c)
+	err = CheckFileFlag(c)
 	ErrHandler(err)
 
 	buf, err := ioutil.ReadFile(c.String("f"))
