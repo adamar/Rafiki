@@ -60,7 +60,7 @@ func CreateDB() error {
 
 
     // Create password table
-    sqlStmt := `CREATE TABLE password (
+    sqlStmt = `CREATE TABLE password (
                 hashed_password UNSIGNED BIG INT NOT NULL);`
     _, err = db.Exec(sqlStmt)
     if err != nil {
@@ -128,7 +128,16 @@ func SelectKey(db *sql.DB, cn string) string {
 
 
 
+func InsertPassword(db *sql.DB, password string) error {
 
+    _, err := db.Exec("INSERT INTO password (hashed_password) VALUES (?)", password)
+    if err != nil {
+        return err
+    }
+
+    return nil
+
+}
 
 
 
