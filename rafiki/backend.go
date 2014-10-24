@@ -6,6 +6,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"os"
+    "crypto/sha256"
+    "encoding/hex"
 )
 
 var db *sql.DB
