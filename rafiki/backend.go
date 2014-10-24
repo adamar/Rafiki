@@ -88,12 +88,18 @@ func ListKeys(db *sql.DB) error {
     return nil
 }
 
-func checkDB(fname string) {
-
+func checkDB(fname string) (password string, err error){
+    
 	if _, err := os.Stat(fname); os.IsNotExist(err) {
 		log.Print("db doesnt exit")
 		CheckCreateDB()
-	}
+        password, err := setPassword()
+        return password, err
+	} else {
+        password, err := checkPassword()
+        return password, err
+    }
+    return password, nil
 
 }
 

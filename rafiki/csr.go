@@ -12,9 +12,8 @@ import (
 
 func ExportCSR(c *cli.Context) {
 
-	log.Print("csr export")
+    _, err := checkDB(c.String("db"))
 
-    checkDB(c.String("db"))
     conn := createDBConn(c.String("db"))
     defer conn.Close()
 
@@ -33,14 +32,15 @@ func ExportCSR(c *cli.Context) {
 
 func ImportCSR(c *cli.Context) {
 
-	checkDB(c.String("db"))
+	password, _ := checkDB(c.String("db"))
 	conn := createDBConn(c.String("db"))
+
 	defer conn.Close()
 
-    password, err := startUp()
-    log.Print(err)
+    //password, err := startUp()
+    //log.Print(err)
 
-	err = CheckFileFlag(c)
+	err := CheckFileFlag(c)
 	ErrHandler(err)
 
 	buf, err := ioutil.ReadFile(c.String("f"))
