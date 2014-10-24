@@ -172,3 +172,15 @@ func createDBConn(fname string) *sql.DB {
 
 	return db
 }
+
+
+
+func hashStringToSHA256(input string) string {
+
+    hash := sha256.New()
+    hash.Write([]byte(input))
+    chkSum := hash.Sum(nil)
+    return hex.EncodeToString(chkSum)
+
+}
+
