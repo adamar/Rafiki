@@ -29,10 +29,11 @@ func ExportCSR(c *cli.Context) {
 	ciphertext := SelectKey(conn, keyname)
 
 	//cleartext, err := DecryptString(key, ciphertext)
-
-	log.Print(string(ciphertext))
-    log.Print(c.String("file"))
-
+    
+    err = ioutil.WriteFile(c.String("file"), []byte(ciphertext), 0644)
+    if err != nil {
+        panic(err)
+    }
 
 }
 
