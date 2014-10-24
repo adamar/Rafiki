@@ -1,19 +1,25 @@
 Rafiki
 =========
 
-Rafiki is a SSL cert storage system written in Golang.
+Rafiki is a simple SSL cert storage system written in Golang.
 
 
 Usage
 --------------
 
+Import a CSR file
 ```sh
-./rafiki csr import
+./rafiki csr import --file=/loc/of/file.csr
+```
+
+List CSRs
+```sh
+./rafiki csr list
 ```
 
 
 
-Misc
+Dev-Misc
 -------------
 
 Useful Testing Tools
