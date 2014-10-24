@@ -12,13 +12,13 @@ import (
 
 func ExportCSR(c *cli.Context) {
 
-    _, err := checkDB(c.String("db"))
+	_, err := checkDB(c.String("db"))
 
-    conn := createDBConn(c.String("db"))
-    defer conn.Close()
+	conn := createDBConn(c.String("db"))
+	defer conn.Close()
 
-    key, err := startUp()
-    log.Print(err)
+	key, err := startUp()
+	log.Print(err)
 
 	keyname := GetKeyName()
 
@@ -37,8 +37,8 @@ func ImportCSR(c *cli.Context) {
 
 	defer conn.Close()
 
-    //password, err := startUp()
-    //log.Print(err)
+	//password, err := startUp()
+	//log.Print(err)
 
 	err := CheckFileFlag(c)
 	ErrHandler(err)

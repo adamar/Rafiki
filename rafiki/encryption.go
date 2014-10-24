@@ -7,9 +7,7 @@ import (
 	"io/ioutil"
 )
 
-
 const blockType = "PGP SIGNATURE"
-
 
 func EncryptString(key []byte, clearText string) (string, error) {
 

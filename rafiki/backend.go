@@ -10,7 +10,6 @@ import (
 
 var db *sql.DB
 
-
 func CheckCreateDB() {
 
 	msg := "No DB Specified, Y/N to create a new one"
@@ -42,8 +41,8 @@ func CreateDB() error {
 	//
 	db, err := sql.Open("sqlite3", "./rafiki.db")
 	if err != nil {
-        return err
-    }
+		return err
+	}
 	//defer db.Close()
 
 	// Generate Schema for DB
@@ -55,19 +54,18 @@ func CreateDB() error {
         `
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
-        return err
-    }
+		return err
+	}
 
-
-    // Create password table
-    sqlStmt = `CREATE TABLE password (
+	// Create password table
+	sqlStmt = `CREATE TABLE password (
                 hashed_password UNSIGNED BIG INT NOT NULL);`
-    _, err = db.Exec(sqlStmt)
-    if err != nil {
-        return err
-    }
+	_, err = db.Exec(sqlStmt)
+	if err != nil {
+		return err
+	}
 
-    return nil
+	return nil
 
 }
 
@@ -85,21 +83,21 @@ func ListKeys(db *sql.DB) error {
 	}
 	rows.Close()
 
-    return nil
+	return nil
 }
 
-func checkDB(fname string) (password string, err error){
-    
+func checkDB(fname string) (password string, err error) {
+
 	if _, err := os.Stat(fname); os.IsNotExist(err) {
 		log.Print("db doesnt exit")
 		CheckCreateDB()
-        password, err := setPassword()
-        return password, err
+		password, err := setPassword()
+		return password, err
 	} else {
-        password, err := checkPassword()
-        return password, err
-    }
-    return password, nil
+		password, err := checkPassword()
+		return password, err
+	}
+	return password, nil
 
 }
 
@@ -107,10 +105,10 @@ func InsertKey(db *sql.DB, cn string, csr string) error {
 
 	_, err := db.Exec("INSERT INTO csrs (cn, csr) VALUES (?, ?)", cn, csr)
 	if err != nil {
-        return err
-    }
+		return err
+	}
 
-    return nil
+	return nil
 
 }
 
@@ -132,42 +130,35 @@ func SelectKey(db *sql.DB, cn string) string {
 
 }
 
-
-
 func InsertPassword(db *sql.DB, password string) error {
 
-    _, err := db.Exec("INSERT INTO password (hashed_password) VALUES (?)", password)
-    if err != nil {
-        return err
-    }
+	_, err := db.Exec("INSERT INTO password (hashed_password) VALUES (?)", password)
+	if err != nil {
+		return err
+	}
 
-    return nil
+	return nil
 
 }
-
-
 
 func SelectPassword(db *sql.DB) (string, error) {
 
-    rows, err := db.Query("SELECT hashed_password from password LIMIT 1")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer rows.Close()
+	rows, err := db.Query("SELECT hashed_password from password LIMIT 1")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
 
-    var pass string
-    for rows.Next() {
-        rows.Scan(&pass)
-    }
+	var pass string
+	for rows.Next() {
+		rows.Scan(&pass)
+	}
 
-    ErrHandler(err)
+	ErrHandler(err)
 
-    return pass, nil
+	return pass, nil
 
 }
-
-
-
 
 func createDBConn(fname string) *sql.DB {
 

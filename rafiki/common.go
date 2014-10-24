@@ -1,26 +1,21 @@
-
 package rafiki
 
-
 import (
-        "log"
-        "errors"
-        )
-        
-
+	"errors"
+	"log"
+)
 
 func startUp() ([]byte, error) {
 
-    log.Print("Starting")
+	log.Print("Starting")
 
-    password, err:= checkPassword()
-    if err != nil {
-        return nil, errors.New("Wrong Password")
-    }
+	password, err := checkPassword()
+	if err != nil {
+		return nil, errors.New("Wrong Password")
+	}
 
-    key := []byte(password)
+	key := []byte(password)
 
-    return key, nil
+	return key, nil
 
 }
-
