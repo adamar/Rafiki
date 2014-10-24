@@ -61,7 +61,7 @@ func CreateDB() error {
 
 	// Create password table
 	sqlStmt = `CREATE TABLE password (
-                hashed_password UNSIGNED BIG INT NOT NULL);`
+                hashed_password text NOT NULL);`
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
 		return err
