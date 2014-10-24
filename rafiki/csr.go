@@ -13,26 +13,33 @@ import (
 func ExportCSR(c *cli.Context) {
 
 	_, err := checkDB(c.String("db"))
+    if err != nil {
+        log.Print(err)
+    }
 
 	conn := createDBConn(c.String("db"))
 	defer conn.Close()
 
-	key, err := startUp()
-	log.Print(err)
+	//key, err := startUp()
+	//log.Print(err)
 
 	keyname := GetKeyName()
+    log.Print(keyname)
 
 	ciphertext := SelectKey(conn, keyname)
 
-	cleartext, err := DecryptString(key, ciphertext)
-	log.Print(string(cleartext))
-	ErrHandler(err)
+	//cleartext, err := DecryptString(key, ciphertext)
+
+	log.Print(string(ciphertext))
+    log.Print(c.String("file"))
+
 
 }
 
 func ImportCSR(c *cli.Context) {
 
 	password, _ := checkDB(c.String("db"))
+    log.Print(password)
 	conn := createDBConn(c.String("db"))
 
 	defer conn.Close()
@@ -59,11 +66,12 @@ func ImportCSR(c *cli.Context) {
 	//log.Print(string(hex.Dump(CertificateRequest.Signature)))
 	//log.Print(string(hex.EncodeToString(CertificateRequest.Signature)))
 
-	key := []byte(password)
+	//key := []byte(password)
 
-	ciphertext, err := EncryptString(key, string(block.Bytes))
-	ErrHandler(err)
+	ciphertext, err := EncryptString([]byte(password), string(block.Bytes))
+	//ErrHandler(err)
 
+    log.Print(ciphertext)
 	InsertKey(conn, string(CSRName.CommonName), ciphertext)
 
 }

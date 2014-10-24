@@ -112,21 +112,22 @@ func InsertKey(db *sql.DB, cn string, csr string) error {
 
 }
 
-func SelectKey(db *sql.DB, cn string) string {
+func SelectKey(db *sql.DB, id string) string {
 
-	rows, err := db.Query("SELECT csr from csrs WHERE cn = ? ", cn)
+	rows, err := db.Query("SELECT csr from csrs WHERE id = ? ", id)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
+
+    var csr string = ""
 	for rows.Next() {
-		var cn string
-		rows.Scan(&cn)
+		rows.Scan(&csr)
 	}
 
 	ErrHandler(err)
 
-	return cn
+	return csr
 
 }
 
