@@ -12,7 +12,7 @@ import (
 
 func ExportCSR(c *cli.Context) {
 
-	_, err := checkDB(c.String("db"))
+	password, err := checkDB(c.String("db"))
     if err != nil {
         log.Print(err)
     }
@@ -28,9 +28,9 @@ func ExportCSR(c *cli.Context) {
 
 	ciphertext := SelectKey(conn, keyname)
 
-	//cleartext, err := DecryptString(key, ciphertext)
+	cleartext, err := DecryptString([]byte(password), ciphertext)
     
-    err = ioutil.WriteFile(c.String("file"), []byte(ciphertext), 0644)
+    err = ioutil.WriteFile(c.String("file"), []byte(cleartext), 0644)
     if err != nil {
         panic(err)
     }
@@ -69,7 +69,7 @@ func ImportCSR(c *cli.Context) {
 
 	//key := []byte(password)
 
-	ciphertext, err := EncryptString([]byte(password), string(block.Bytes))
+	ciphertext, err := EncryptString([]byte(password), string(buf))
 	//ErrHandler(err)
 
     log.Print(ciphertext)
