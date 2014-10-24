@@ -71,15 +71,18 @@ func CreateDB() error {
 
 func ListKeys(db *sql.DB) error {
 
-	rows, err := db.Query("select cn from csrs")
+	rows, err := db.Query("select id, cn from csrs")
 	if err != nil {
 		return err
 	}
-	//defer rows.Close()
+
+    fmt.Printf("| id | Common Name |\n")
+    fmt.Printf("--------------------\n")
 	for rows.Next() {
 		var cn string
-		rows.Scan(&cn)
-		fmt.Println(cn)
+        var id string
+		rows.Scan(&cn, &id)
+		fmt.Printf("| %s | %s |\n", cn, id)
 	}
 	rows.Close()
 
