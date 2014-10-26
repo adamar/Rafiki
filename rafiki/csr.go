@@ -20,16 +20,12 @@ func ExportCSR(c *cli.Context) {
 	conn := createDBConn(c.String("db"))
 	defer conn.Close()
 
-	//key, err := startUp()
-	//log.Print(err)
-
 	keyname := GetKeyName()
     log.Print(keyname)
 
 	ciphertext := SelectKey(conn, keyname)
 
 	cleartext, err := DecryptString([]byte(password), ciphertext)
-    
     err = ioutil.WriteFile(c.String("file"), []byte(cleartext), 0644)
     if err != nil {
         panic(err)
@@ -44,9 +40,6 @@ func ImportCSR(c *cli.Context) {
 	conn := createDBConn(c.String("db"))
 
 	defer conn.Close()
-
-	//password, err := startUp()
-	//log.Print(err)
 
 	err := CheckFileFlag(c)
 	ErrHandler(err)
