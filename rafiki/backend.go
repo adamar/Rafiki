@@ -6,8 +6,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"os"
-    "crypto/sha256"
-    "encoding/hex"
+        "crypto/sha256"
+        "encoding/hex"
 )
 
 var db *sql.DB
@@ -125,12 +125,10 @@ func SelectKey(db *sql.DB, id string) string {
 	}
 	defer rows.Close()
 
-    var csr string = ""
+        var csr string = ""
 	for rows.Next() {
 		rows.Scan(&csr)
 	}
-
-	ErrHandler(err)
 
 	return csr
 
@@ -160,8 +158,6 @@ func SelectPassword(db *sql.DB) (string, error) {
 		rows.Scan(&pass)
 	}
 
-	ErrHandler(err)
-
 	return pass, nil
 
 }
@@ -169,8 +165,9 @@ func SelectPassword(db *sql.DB) (string, error) {
 func createDBConn(fname string) *sql.DB {
 
 	db, err := sql.Open("sqlite3", fname)
-	ErrHandler(err)
-	//defer db.Close()
+        if err !=  nil {
+            log.Print(err)
+        }
 
 	return db
 }
