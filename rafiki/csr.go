@@ -13,44 +13,50 @@ import (
 func ExportCSR(c *cli.Context) {
 
 	password, err := checkDB(c.String("db"))
-    if err != nil {
-        log.Print(err)
-    }
+        if err != nil {
+            log.Print(err)
+        }
 
 	conn := createDBConn(c.String("db"))
 	defer conn.Close()
 
 	keyname := GetKeyName()
-    log.Print(keyname)
+        log.Print(keyname)
 
 	ciphertext := SelectKey(conn, keyname)
 
 	cleartext, err := DecryptString([]byte(password), ciphertext)
-    err = ioutil.WriteFile(c.String("file"), []byte(cleartext), 0644)
-    if err != nil {
-        panic(err)
-    }
+        err = ioutil.WriteFile(c.String("file"), []byte(cleartext), 0644)
+        if err != nil {
+            panic(err)
+        }
 
 }
 
 func ImportCSR(c *cli.Context) {
 
 	password, _ := checkDB(c.String("db"))
-    log.Print(password)
+        log.Print(password)
 	conn := createDBConn(c.String("db"))
 
 	defer conn.Close()
 
 	err := CheckFileFlag(c)
-	ErrHandler(err)
+        if err != nil {
+            log.Print(err)
+        }
 
 	buf, err := ioutil.ReadFile(c.String("f"))
-	ErrHandler(err)
+        if err != nil {
+	    log.Print(err)
+        }
 
 	block, _ := pem.Decode(buf)
 
 	CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
-	ErrHandler(err)
+        if err != nil {
+	    log.Print(err)
+        }
 
 	CSRName := CertificateRequest.Subject
 
@@ -63,9 +69,8 @@ func ImportCSR(c *cli.Context) {
 	//key := []byte(password)
 
 	ciphertext, err := EncryptString([]byte(password), string(buf))
-	//ErrHandler(err)
 
-    log.Print(ciphertext)
+        log.Print(ciphertext)
 	InsertKey(conn, string(CSRName.CommonName), ciphertext)
 
 }
