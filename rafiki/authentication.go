@@ -14,7 +14,7 @@ func checkPassword() (passwd string, err error) {
 
 func setPassword() (passwd string, err error) {
 
-	pass_attempt_one, err := gopass.GetPass("Please enter your new Password:")
+	pass_attempt_one, err := gopass.GetPass("Please create a New Password:")
 	if err != nil {
 		return "", err
 	}
