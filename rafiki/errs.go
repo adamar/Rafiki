@@ -7,12 +7,6 @@ import (
 	"os"
 )
 
-func ErrHandler(err error) {
-	if err != nil {
-		log.Print(err)
-		os.Exit(1)
-	}
-}
 
 func CheckFileFlag(c *cli.Context) error {
 
