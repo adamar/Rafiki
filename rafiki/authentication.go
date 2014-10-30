@@ -27,7 +27,7 @@ func setPassword() (passwd string, err error) {
 	if pass_attempt_one != pass_attempt_two {
 
 		passwd := ""
-		err = fmt.Errorf("Passwords dont match")
+		err = fmt.Errorf("Sorry, the Passwords you entered dont match")
 		return passwd, err
 
 	} else {
