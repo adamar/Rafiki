@@ -45,7 +45,6 @@ func CreateDB() error {
 	if err != nil {
 		return err
 	}
-	//defer db.Close()
 
 	// Generate Schema for DB
 	//
