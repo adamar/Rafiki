@@ -20,6 +20,11 @@ func ExportCSR(c *cli.Context) {
 	conn := createDBConn(c.String("db"))
 	defer conn.Close()
 
+        err := CheckFileFlag(c)
+        if err != nil {
+            log.Print(err)
+        }
+
 	keyname := GetKeyName()
         log.Print(keyname)
 
@@ -38,7 +43,6 @@ func ImportCSR(c *cli.Context) {
 	password, _ := checkDB(c.String("db"))
         log.Print(password)
 	conn := createDBConn(c.String("db"))
-
 	defer conn.Close()
 
 	err := CheckFileFlag(c)
