@@ -60,6 +60,7 @@ func CreateDB() error {
 	}
 
 	// Create password table
+        //
 	sqlStmt = `CREATE TABLE password (
                 hashed_password text NOT NULL);`
 	_, err = db.Exec(sqlStmt)
@@ -78,8 +79,8 @@ func ListKeys(db *sql.DB) error {
 		return err
 	}
 
-    fmt.Printf("| id | Common Name |\n")
-    fmt.Printf("--------------------\n")
+        fmt.Printf("| id | Common Name |\n")
+        fmt.Printf("--------------------\n")
 	for rows.Next() {
 		var cn string
         var id string
@@ -176,10 +177,10 @@ func createDBConn(fname string) *sql.DB {
 
 func hashStringToSHA256(input string) string {
 
-    hash := sha256.New()
-    hash.Write([]byte(input))
-    chkSum := hash.Sum(nil)
-    return hex.EncodeToString(chkSum)
+       hash := sha256.New()
+       hash.Write([]byte(input))
+       chkSum := hash.Sum(nil)
+       return hex.EncodeToString(chkSum)
 
 }
 
