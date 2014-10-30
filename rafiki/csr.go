@@ -61,12 +61,6 @@ func ImportCSR(c *cli.Context) {
 	CSRName := CertificateRequest.Subject
 
 	log.Print(CSRName.CommonName)
-	//log.Print(CertificateRequest.SignatureAlgorithm)
-
-	//log.Print(string(hex.Dump(CertificateRequest.Signature)))
-	//log.Print(string(hex.EncodeToString(CertificateRequest.Signature)))
-
-	//key := []byte(password)
 
 	ciphertext, err := EncryptString([]byte(password), string(buf))
 
@@ -93,14 +87,10 @@ func ListCSR(c *cli.Context) {
 }
 
 func checkCSRFileSet(value bool) {
+
 	if value == false {
 		log.Print("No CSR file specified")
 		os.Exit(1)
 	}
-
-	//if _, err := os.Stat(filename); os.IsNotExist(err) {
-	//     log.Print("File not found")
-	//     os.Exit(1)
-	// }
 
 }
