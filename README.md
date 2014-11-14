@@ -3,6 +3,8 @@ Rafiki
 
 Rafiki is a simple SSL cert storage system written in Golang.
 
+![rafiki](https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki.gif)
+
 
 Usage
 --------------
