@@ -3,7 +3,6 @@ package rafiki
 import (
 	"errors"
 	"github.com/codegangsta/cli"
-	"log"
 	"os"
 )
 

@@ -20,7 +20,7 @@ func ExportCSR(c *cli.Context) {
 	conn := createDBConn(c.String("db"))
 	defer conn.Close()
 
-        err := CheckFileFlag(c)
+        err = CheckFileFlag(c)
         if err != nil {
             log.Print(err)
         }
