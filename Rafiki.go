@@ -58,7 +58,11 @@ var CSRCommand = cli.Command{
 			Flags: []cli.Flag{
 				DBLoc,
 			},
-			Action: rafiki.ListCSR,
+            Action: func(c *cli.Context) {
+
+               rafiki.ListCSR(c)
+
+            },
 		},
 	},
 }
