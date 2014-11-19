@@ -3,12 +3,24 @@ package rafiki
 import (
 	"code.google.com/p/gopass"
 	"fmt"
+    "errors"
 )
 
-func checkPassword() (passwd string, err error) {
+func checkPassword() (pass string, err error) {
 
-	pass, err := gopass.GetPass("Please enter your Password:")
-	return pass, err
+	pass, err = gopass.GetPass("Please enter your Password:")
+
+    hashedPassword, err := SelectPassword(db)
+
+    hashedPassAttempt := hashStringToSHA256(pass) 
+
+
+    if hashedPassword != hashedPassAttempt {
+
+        return "", errors.New("Wrong Password")
+
+    }
+	return pass, nil
 
 }
 
@@ -32,6 +44,10 @@ func setPassword() (passwd string, err error) {
 
 	} else {
 
+        err = InsertPassword(db , pass_attempt_one)
+        if err != nil {
+            panic(err)
+        }
 		return pass_attempt_one, err
 	}
 }

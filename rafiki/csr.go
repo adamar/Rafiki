@@ -41,7 +41,7 @@ func ExportCSR(c *cli.Context) {
 func ImportCSR(c *cli.Context) {
 
 	password, _ := checkDB(c.String("db"))
-        log.Print(password)
+    log.Print(password)
 	conn := createDBConn(c.String("db"))
 	defer conn.Close()
 
