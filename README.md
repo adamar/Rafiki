@@ -20,8 +20,15 @@ List CSRs
 ```
 
 
+Dependencies
+-------------
 
-Dev-Misc
+- SQLite v3+
+- Go 1.3+
+
+
+
+Development Misc
 -------------
 
 Useful Testing Tools
