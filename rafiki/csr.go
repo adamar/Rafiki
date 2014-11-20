@@ -40,12 +40,12 @@ func ExportCSR(c *cli.Context) {
 
 }
 
-func ImportCSR(c *cli.Context) {
+func ImportCSR(c *cli.Context, db *sql.DB, password string){
 
-	password, _ := checkDB(c.String("db"))
-    log.Print(password)
-	conn := createDBConn(c.String("db"))
-	defer conn.Close()
+	//password, _ := checkDB(c.String("db"))
+    //log.Print(password)
+	//conn := createDBConn(c.String("db"))
+	//defer conn.Close()
 
 	err := CheckFileFlag(c)
         if err != nil {
@@ -71,7 +71,7 @@ func ImportCSR(c *cli.Context) {
 	ciphertext, err := EncryptString([]byte(password), string(buf))
 
         log.Print(ciphertext)
-	InsertKey(conn, string(CSRName.CommonName), ciphertext)
+	InsertKey(db, string(CSRName.CommonName), ciphertext)
 
 }
 
@@ -81,7 +81,7 @@ func DeleteCSR(c *cli.Context) {
 
 }
 
-func ListCSR(c *cli.Context, db *sql.DB) {
+func ListCSR(c *cli.Context, db *sql.DB, password string) {
 
 	log.Print("csr list")
 	//checkDB(c.String("db"))

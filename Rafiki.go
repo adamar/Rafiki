@@ -41,7 +41,13 @@ var CSRCommand = cli.Command{
 				FileLoc,
 				DBLoc,
 			},
-			Action: rafiki.ImportCSR,
+            Action: func(c *cli.Context) {
+
+               db := rafiki.InitDB(c)
+               password, _ := rafiki.InitPassword(db)
+               rafiki.ImportCSR(c, db, password)
+
+            }, 
 		},
 		{
 			Name:  "delete",
@@ -61,10 +67,9 @@ var CSRCommand = cli.Command{
             Action: func(c *cli.Context) {
 
                db := rafiki.InitDB(c)
-               rafiki.InitPassword(db)
-               rafiki.ListCSR(c, db)
+               password, _ := rafiki.InitPassword(db)
+               rafiki.ListCSR(c, db, password)
                
-
             },
 		},
 	},
