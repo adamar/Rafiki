@@ -182,6 +182,26 @@ func SelectPassword(db *sql.DB) (string, error) {
 
 }
 
+func checkIsPasswordSet(db *sql.DB) (string, error) {
+
+    var count string
+
+    err := db.QueryRow("SELECT COUNT(hashed_password) from password").Scan(&count)
+    if err != nil {
+        log.Fatal(err)
+    }
+    //defer rows.Close()
+
+    //var pass string
+    //for rows.Next() {
+    //    rows.Scan(&pass)
+    //}
+
+    return count, nil
+
+}
+
+
 func createDBConn(fname string) *sql.DB {
 
 	db, err := sql.Open("sqlite3", fname)

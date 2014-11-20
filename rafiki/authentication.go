@@ -35,9 +35,7 @@ func InitPassword(db *sql.DB) (string, error) {
 //
 func CheckStoredPassword(db *sql.DB) bool {
 
-
     return false
-
 
 }
 
