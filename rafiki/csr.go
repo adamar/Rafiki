@@ -4,6 +4,8 @@ import (
 	"crypto/x509"
 	//"encoding/hex"
 	"encoding/pem"
+    "database/sql"
+    _ "github.com/mattn/go-sqlite3"
 	"github.com/codegangsta/cli"
 	"io/ioutil"
 	"log"
@@ -79,14 +81,14 @@ func DeleteCSR(c *cli.Context) {
 
 }
 
-func ListCSR(c *cli.Context) {
+func ListCSR(c *cli.Context, db *sql.DB) {
 
 	log.Print("csr list")
-	checkDB(c.String("db"))
-	conn := createDBConn(c.String("db"))
-	defer conn.Close()
+	//checkDB(c.String("db"))
+	//conn := createDBConn(c.String("db"))
+	//defer conn.Close()
 
-	ListKeys(conn)
+	ListKeys(db)
 
 }
 
