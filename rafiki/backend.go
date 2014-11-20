@@ -14,15 +14,25 @@ import (
 var db *sql.DB
 
 
-func InitDB(c *cli.Context) {
+func InitDB(c *cli.Context) *sql.DB {
 
     log.Print("initdb")
-    checkDB(c.String("db"))
+
+    fname := c.String("db")
+
+    if _, err := os.Stat(fname); os.IsNotExist(err) {
+        log.Print("db doesnt exit")
+        PromptToCreateDB()
+    }
+    
+    db := createDBConn(fname)
+
+    return db
 
 }
 
 
-func CheckCreateDB() {
+func PromptToCreateDB() {
 
 	msg := "No DB Specified, Y/N to create a new one"
 	var i string
@@ -105,7 +115,7 @@ func checkDB(fname string) (password string, err error) {
 
 	if _, err := os.Stat(fname); os.IsNotExist(err) {
 		log.Print("db doesnt exit")
-		CheckCreateDB()
+		PromptToCreateDB()
 		password, err := setPassword()
 		return password, err
 	} else {
