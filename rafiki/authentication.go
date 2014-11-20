@@ -4,7 +4,16 @@ import (
 	"code.google.com/p/gopass"
 	"fmt"
     "errors"
+    "log"
 )
+
+
+func InitPassword() {
+
+        log.Print("initdb")
+
+}
+
 
 func checkPassword() (pass string, err error) {
 

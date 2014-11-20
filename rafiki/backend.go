@@ -6,11 +6,21 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"os"
-        "crypto/sha256"
-        "encoding/hex"
+    "crypto/sha256"
+    "encoding/hex"
+    "github.com/codegangsta/cli"
 )
 
 var db *sql.DB
+
+
+func InitDB(c *cli.Context) {
+
+    log.Print("initdb")
+    checkDB(c.String("db"))
+
+}
+
 
 func CheckCreateDB() {
 

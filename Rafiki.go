@@ -60,7 +60,10 @@ var CSRCommand = cli.Command{
 			},
             Action: func(c *cli.Context) {
 
+               rafiki.InitDB(c)
+               rafiki.InitPassword()
                rafiki.ListCSR(c)
+               
 
             },
 		},
