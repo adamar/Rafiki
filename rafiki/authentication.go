@@ -5,17 +5,37 @@ import (
 	"fmt"
     "errors"
     "log"
+    "database/sql"
+    _ "github.com/mattn/go-sqlite3"
+
 )
 
+func InitPassword(db *sql.DB) {
 
-func InitPassword() {
+        log.Print("initpassword")
 
-        log.Print("initdb")
+        passSet := CheckStoredPassword(db)
+
+        if passSet == false {
+            setPassword(db)
+        } else {
+            checkPassword(db)
+        }
 
 }
 
 
-func checkPassword() (pass string, err error) {
+func CheckStoredPassword(db *sql.DB) bool {
+
+
+    return false
+
+
+}
+
+
+
+func checkPassword(db *sql.DB) (pass string, err error) {
 
 	pass, err = gopass.GetPass("Please enter your Password:")
 
@@ -33,7 +53,7 @@ func checkPassword() (pass string, err error) {
 
 }
 
-func setPassword() (passwd string, err error) {
+func setPassword(db *sql.DB) (passwd string, err error) {
 
 	pass_attempt_one, err := gopass.GetPass("Please Enter the Password For your New Database:")
 	if err != nil {
