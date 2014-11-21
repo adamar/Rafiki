@@ -12,25 +12,25 @@ import (
 	"os"
 )
 
-func ExportCSR(c *cli.Context) {
+func ExportCSR(c *cli.Context, db *sql.DB, password string) {
 
-	password, err := checkDB(c.String("db"))
-        if err != nil {
-            log.Print(err)
-        }
+	//password, err := checkDB(c.String("db"))
+    //    if err != nil {
+    //        log.Print(err)
+    //    }
 
-	conn := createDBConn(c.String("db"))
-	defer conn.Close()
+	//conn := createDBConn(c.String("db"))
+	//defer conn.Close()
 
-        err = CheckFileFlag(c)
-        if err != nil {
-            log.Print(err)
-        }
+    err := CheckFileFlag(c)
+    if err != nil {
+        log.Print(err)
+    }
 
 	keyname := GetKeyName()
-        log.Print(keyname)
+    log.Print(keyname)
 
-	ciphertext := SelectKey(conn, keyname)
+	ciphertext := SelectKey(db, keyname)
 
 	cleartext, err := DecryptString([]byte(password), ciphertext)
         err = ioutil.WriteFile(c.String("file"), []byte(cleartext), 0644)
