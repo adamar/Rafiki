@@ -35,6 +35,16 @@ func InitPassword(db *sql.DB) (string, error) {
 //
 func CheckStoredPassword(db *sql.DB) bool {
 
+    res, _ := CheckIsPasswordSet(db)
+
+    
+    // Should attempt change to int before checking
+    if res == "0" {
+        return false
+    } else {
+        return true
+    }
+
     return false
 
 }

@@ -182,7 +182,7 @@ func SelectPassword(db *sql.DB) (string, error) {
 
 }
 
-func checkIsPasswordSet(db *sql.DB) (string, error) {
+func CheckIsPasswordSet(db *sql.DB) (string, error) {
 
     var count string
 
