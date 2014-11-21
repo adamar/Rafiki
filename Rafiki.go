@@ -32,7 +32,13 @@ var CSRCommand = cli.Command{
 				FileLoc,
 				DBLoc,
 			},
-			Action: rafiki.ExportCSR,
+            Action: func(c *cli.Context) {
+
+               db := rafiki.InitDB(c)
+               password, _ := rafiki.InitPassword(db)
+               rafiki.ExportCSR(c, db, password)
+
+            },
 		},
 		{
 			Name:  "import",
