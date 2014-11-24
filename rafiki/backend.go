@@ -17,8 +17,6 @@ var db *sql.DB
 
 func InitDB(c *cli.Context) *sql.DB {
 
-    log.Print("initdb")
-
     fname := c.String("db")
 
     if _, err := os.Stat(fname); os.IsNotExist(err) {

@@ -4,15 +4,12 @@ import (
 	"code.google.com/p/gopass"
 	"fmt"
     "errors"
-    "log"
     "database/sql"
     _ "github.com/mattn/go-sqlite3"
 )
 
 
 func InitPassword(db *sql.DB) (string, error) {
-
-        log.Print("initpassword")
 
         passIsSet := CheckStoredPassword(db)
 

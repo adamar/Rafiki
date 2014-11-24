@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+    "fmt"
 )
 
 func ExportCSR(c *cli.Context, db *sql.DB, password string) {
@@ -53,11 +54,9 @@ func ImportCSR(c *cli.Context, db *sql.DB, password string){
 
 	CSRName := CertificateRequest.Subject
 
-	log.Print(CSRName.CommonName)
 
 	ciphertext, err := EncryptString([]byte(password), string(buf))
 
-        log.Print(ciphertext)
 	InsertKey(db, string(CSRName.CommonName), ciphertext)
 
 }
@@ -70,10 +69,7 @@ func DeleteCSR(c *cli.Context) {
 
 func ListCSR(c *cli.Context, db *sql.DB, password string) {
 
-	log.Print("csr list")
-	//checkDB(c.String("db"))
-	//conn := createDBConn(c.String("db"))
-	//defer conn.Close()
+    fmt.Println("\x1b[31;1mList of CSRs\x1b[0m")
 
 	ListKeys(db)
 
