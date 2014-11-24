@@ -11,6 +11,8 @@ import (
 
 func InitPassword(db *sql.DB) (string, error) {
 
+        ClearScreen()
+
         passIsSet := CheckStoredPassword(db)
 
         var password = ""

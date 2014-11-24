@@ -68,8 +68,6 @@ func DeleteCSR(c *cli.Context) {
 
 func ListCSR(c *cli.Context, db *sql.DB, password string) {
 
-    //fmt.Println("\x1b[31;1mList of CSRs\x1b[0m")
-
     PrintOrange("List of CSRs")
 
 	ListKeys(db)
