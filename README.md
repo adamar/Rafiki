@@ -11,12 +11,17 @@ Usage
 
 Import a CSR file
 ```sh
-./rafiki csr import --file=/loc/of/file.csr
+./Rafiki csr import --file=/loc/of/file.csr
 ```
 
 List CSRs
 ```sh
-./rafiki csr list
+./Rafiki csr list
+```
+
+Export CSR to a file
+```sh
+./Rafiki csr export --file=/loc/of/newfile.csr
 ```
 
 
@@ -45,6 +50,11 @@ Show CSR Public Key
 openssl req -in domain.com.csr -noout -pubkey
 
 
+ToDo
+-----------
+- Write Tests
+- Add more error checking
+- Add key delete function
 
 
 Useful Resources
