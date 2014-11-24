@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/mattn/go-sqlite3"
+    "github.com/bndr/gotabulate"
 	"log"
 	"os"
     "crypto/sha256"
@@ -91,25 +92,36 @@ func CreateDB() error {
 
 }
 
+
 func ListKeys(db *sql.DB) error {
 
-	rows, err := db.Query("select id, cn from csrs")
-	if err != nil {
-		return err
-	}
+    new := [][]string{}
 
-        fmt.Printf("| id | Common Name |\n")
-        fmt.Printf("--------------------\n")
-	for rows.Next() {
-		var cn string
+    rows, err := db.Query("select id, cn from csrs")
+
+    if err != nil {
+        return err
+    }
+
+    for rows.Next() {
+        var cn string
         var id string
-		rows.Scan(&cn, &id)
-		fmt.Printf("| %s | %s |\n", cn, id)
-	}
-	rows.Close()
+        rows.Scan(&cn, &id)
 
-	return nil
+        new = append(new, []string{cn,id})
+    }
+    rows.Close()
+
+    tabulate := gotabulate.Create(new)
+    tabulate.SetHeaders([]string{"ID", "CommonName"})
+
+    fmt.Println(tabulate.Render("grid"))
+
+
+
+    return nil
 }
+
 
 func checkDB(fname string) (password string, err error) {
 
