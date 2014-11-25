@@ -147,6 +147,19 @@ func InsertKey(db *sql.DB, cn string, csr string) error {
 
 }
 
+
+func DeleteKey(db *sql.DB, kId string) error {
+
+    _, err := db.Exec("DELETE FROM csrs WHERE id = ?", kId)
+    if err != nil {
+        return err
+    }
+
+    return nil
+
+}
+
+
 func SelectKey(db *sql.DB, id string) string {
 
 	rows, err := db.Query("SELECT csr from csrs WHERE id = ? ", id)
