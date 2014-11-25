@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+    "bufio"
 )
 
 func ExportCSR(c *cli.Context, db *sql.DB, password string) {
@@ -62,14 +63,16 @@ func ImportCSR(c *cli.Context, db *sql.DB, password string){
 
 func DeleteCSR(c *cli.Context, db *sql.DB, password string) {
 
-	log.Print("csr delete")
+    newReader := bufio.NewReader(os.Stdin)
+    log.Print("Please enter the Key ID to Delete:")
+    kId, _ := newReader.ReadString('\n')
+    log.Print(kId)
 
 }
 
 func ListCSR(c *cli.Context, db *sql.DB, password string) {
 
     PrintOrange("List of CSRs")
-
 	ListKeys(db)
 
 }
