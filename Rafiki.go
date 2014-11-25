@@ -64,8 +64,9 @@ var CSRCommand = cli.Command{
 			},
             Action: func(c *cli.Context) {
 
-
-
+               db := rafiki.InitDB(c)
+               password, _ := rafiki.InitPassword(db)
+               rafiki.DeleteCSR(c, db, password)
             },
 		},
 		{
