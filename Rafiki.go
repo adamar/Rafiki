@@ -62,7 +62,11 @@ var CSRCommand = cli.Command{
 				FileLoc,
 				DBLoc,
 			},
-			Action: rafiki.DeleteCSR,
+            Action: func(c *cli.Context) {
+
+
+
+            },
 		},
 		{
 			Name:  "list",
