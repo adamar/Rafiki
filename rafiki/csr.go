@@ -60,7 +60,7 @@ func ImportCSR(c *cli.Context, db *sql.DB, password string){
 
 }
 
-func DeleteCSR(c *cli.Context) {
+func DeleteCSR(c *cli.Context, db *sql.DB, password string) {
 
 	log.Print("csr delete")
 
