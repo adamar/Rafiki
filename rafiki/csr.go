@@ -66,6 +66,7 @@ func DeleteCSR(c *cli.Context, db *sql.DB, password string) {
     newReader := bufio.NewReader(os.Stdin)
     log.Print("Please enter the Key ID to Delete:")
     kId, _ := newReader.ReadString('\n')
+    DeleteKey(db, kId)
     log.Print(kId)
 
 }
