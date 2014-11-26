@@ -40,7 +40,7 @@ func PromptToCreateDB() {
 	if i == "y" {
 		CreateDB()
 	} else {
-		os.Exit(0)
+		os.Exit(1)
 	}
 
 }

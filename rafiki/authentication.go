@@ -4,6 +4,7 @@ import (
 	"code.google.com/p/gopass"
 	"fmt"
     "errors"
+    "os"
     "database/sql"
     _ "github.com/mattn/go-sqlite3"
 )
@@ -21,7 +22,11 @@ func InitPassword(db *sql.DB) (string, error) {
             password, _ := setPassword(db)
             return password, nil
         } else {
-            password, _ := checkPassword(db)
+            password, err := checkPassword(db)
+            if err != nil {
+                PrintOrange("Sorry, your password appears to be incorrect!") 
+                os.Exit(1)
+            }
             return password, nil
         }
 
@@ -92,7 +97,8 @@ func setPassword(db *sql.DB) (passwd string, err error) {
 
 	} else {
 
-        err = InsertPassword(db , pass_attempt_one)
+        hashedPassword := hashStringToSHA256(pass_attempt_one)
+        err = InsertPassword(db , hashedPassword)
         if err != nil {
             panic(err)
         }
