@@ -105,7 +105,6 @@ func ListKeys(db *sql.DB) error {
         var cn string
         var id string
         rows.Scan(&cn, &id)
-
         new = append(new, []string{cn,id})
     }
     rows.Close()
@@ -113,8 +112,11 @@ func ListKeys(db *sql.DB) error {
     tabulate := gotabulate.Create(new)
     tabulate.SetHeaders([]string{"ID", "CommonName"})
 
-    fmt.Println(tabulate.Render("grid"))
-
+    if len(new) > 0 {
+        fmt.Println(tabulate.Render("grid"))
+    } else {
+        fmt.Println("No Keys to Print\n")
+    }
 
 
     return nil

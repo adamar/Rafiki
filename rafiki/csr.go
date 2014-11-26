@@ -74,7 +74,10 @@ func DeleteCSR(c *cli.Context, db *sql.DB, password string) {
 func ListCSR(c *cli.Context, db *sql.DB, password string) {
 
     PrintOrange("List of CSRs")
-	ListKeys(db)
+	err := ListKeys(db)
+    if err != nil {
+        log.Print(err)
+    }
 
 }
 
