@@ -6,6 +6,12 @@ Rafiki is a simple SSL cert storage system written in Golang.
 ![rafiki](https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki.gif)
 
 
+Rafiki is a CLI tool for securely storing SSL cert files in a local SQLite3 Database. Imported files are first encrypted using GPG and then stored
+in the database along with an identifying key (ie. CommonName from CSRs). 
+
+The database will be created when Rafiki is run for the first time and can be re-located and referenced by Rafiki using the --db flag. 
+
+
 Usage
 --------------
 
