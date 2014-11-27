@@ -16,87 +16,10 @@ func main() {
 	app.Usage = "Store SSL Certs and CSRs securely"
 	app.Commands = []cli.Command{
 		rafiki.CSRCommand,
-        SSLCommand,
+        rafiki.SSLCommand,
 	}
 	app.Run(os.Args)
 }
 
 
-var SSLCommand = cli.Command{
-	Name:        "ssl",
-	Usage:       "ssl",
-	Description: "example SSL blah",
-	Subcommands: []cli.Command{
-		{
-			Name:  "export",
-			Usage: "Export a CSR Cert from the DB",
-			Flags: []cli.Flag{
-				FileLoc,
-				DBLoc,
-			},
-            Action: func(c *cli.Context) {
 
-               db := rafiki.InitDB(c)
-               password, _ := rafiki.InitPassword(db)
-               rafiki.Export(c, db, password)
-
-            },
-		},
-		{
-			Name:  "import",
-			Usage: "Import an SSL Cert into the DB",
-			Flags: []cli.Flag{
-				FileLoc,
-				DBLoc,
-			},
-            Action: func(c *cli.Context) {
-
-               db := rafiki.InitDB(c)
-               password, _ := rafiki.InitPassword(db)
-               rafiki.Import(c, db, password, "sslkey")
-
-            }, 
-		},
-		{
-			Name:  "delete",
-			Usage: "Delete an SSL Cert from the DB",
-			Flags: []cli.Flag{
-				FileLoc,
-				DBLoc,
-			},
-            Action: func(c *cli.Context) {
-
-               db := rafiki.InitDB(c)
-               password, _ := rafiki.InitPassword(db)
-               rafiki.Delete(c, db, password)
-
-            },
-		},
-		{
-			Name:  "list",
-			Usage: "List all SSL Certs in the DB",
-			Flags: []cli.Flag{
-				DBLoc,
-			},
-            Action: func(c *cli.Context) {
-
-               db := rafiki.InitDB(c)
-               password, _ := rafiki.InitPassword(db)
-               rafiki.List(c, db, password, "sslkey")
-               
-            },
-		},
-	},
-}
-
-
-var FileLoc = cli.StringFlag{
-	Name:  "f, file",
-	Usage: "Location of the file",
-}
-
-var DBLoc = cli.StringFlag{
-	Name:  "db, database",
-	Value: "rafiki.db",
-	Usage: "Location of the DB file",
-}
