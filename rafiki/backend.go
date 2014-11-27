@@ -96,7 +96,9 @@ func ListKeys(db *sql.DB) error {
 
     new := [][]string{}
 
-    rows, err := db.Query("select id, identity from files")
+    fileType := "csr"
+
+    rows, err := db.Query("select id, identity from files WHERE type = ?", fileType)
 
     if err != nil {
         return err
