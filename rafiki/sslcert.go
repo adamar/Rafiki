@@ -1,21 +1,21 @@
 
-
 package rafiki
 
-/*import (
+import (
     "crypto/x509"
+    "log"
+    "encoding/pem"
     "io/ioutil"
     "database/sql"
     _ "github.com/mattn/go-sqlite3"
     "github.com/codegangsta/cli"
-
-)*/
-
+    )
 
 
-/*func ImportSSLKey(c *cli.Context, db *sql.DB, password string){
 
-    err := rafiki.CheckFileFlag(c)
+func ImportSSLKey(c *cli.Context, db *sql.DB, password string){
+
+    err := CheckFileFlag(c)
         if err != nil {
             log.Print(err)
         }
@@ -27,17 +27,18 @@ package rafiki
 
     block, _ := pem.Decode(buf)
 
-    CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
+    Certificate, err := x509.ParseCertificate(block.Bytes) //Requires Go 1.3+
         if err != nil {
         log.Print(err)
         }
 
-    CSRName := CertificateRequest.Subject
+    CSRName := Certificate.RawSubject
+   
+    log.Print("rawsubject", CSRName)
 
+    //ciphertext, err := EncryptString([]byte(password), string(buf))
 
-    ciphertext, err := EncryptString([]byte(password), string(buf))
+    //InsertKey(db, string(CSRName.CommonName), "csr",ciphertext)
 
-    InsertKey(db, string(CSRName.CommonName), "csr",ciphertext)
-
-}*/
+}
 
