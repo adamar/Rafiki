@@ -15,6 +15,19 @@ import (
 
 
 
+
+var FileLoc = cli.StringFlag{
+    Name:  "f, file",
+    Usage: "Location of the file",
+}
+
+var DBLoc = cli.StringFlag{
+    Name:  "db, database",
+    Value: "rafiki.db",
+    Usage: "Location of the DB file",
+}
+
+
 func Import(c *cli.Context, db *sql.DB, password string, rtype string){
 
     buf, err := ReadFile(c)

@@ -1,21 +1,74 @@
 package rafiki
 
 import (
-    "database/sql"
     _ "github.com/mattn/go-sqlite3"
 	"github.com/codegangsta/cli"
-	"io/ioutil"
-	"log"
-	"os"
 )
 
 
+var CSRCommand = cli.Command{
+    Name:        "csr",
+    Usage:       "csr",
+    Description: "example CSR blah",
+    Subcommands: []cli.Command{
+        {
+            Name:  "export",
+            Usage: "Export a CSR from the DB",
+            Flags: []cli.Flag{
+                FileLoc,
+                DBLoc,
+            },
+            Action: func(c *cli.Context) {
 
-func checkCSRFileSet(value bool) {
+               db := InitDB(c)
+               password, _ := InitPassword(db)
+               Export(c, db, password)
 
-	if value == false {
-		log.Print("No CSR file specified")
-		os.Exit(1)
-	}
+            },
+        },
+        {
+            Name:  "import",
+            Usage: "Import a CSR into the DB",
+            Flags: []cli.Flag{
+                FileLoc,
+                DBLoc,
+            },
+            Action: func(c *cli.Context) {
 
+               db := InitDB(c)
+               password, _ := InitPassword(db)
+               Import(c, db, password, "csr")
+
+            }, 
+        },
+        {
+            Name:  "delete",
+            Usage: "Delete a CSR from the DB",
+            Flags: []cli.Flag{
+                FileLoc,
+                DBLoc,
+            },
+            Action: func(c *cli.Context) {
+
+               db := InitDB(c)
+               password, _ := InitPassword(db)
+               Delete(c, db, password)
+            },
+        },
+        {
+            Name:  "list",
+            Usage: "List all CSRs in the DB",
+            Flags: []cli.Flag{
+                DBLoc,
+            },
+            Action: func(c *cli.Context) {
+
+               db := InitDB(c)
+               password, _ := InitPassword(db)
+               List(c, db, password, "csr")
+               
+            },
+        },
+    },
 }
+
