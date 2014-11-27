@@ -20,9 +20,8 @@ var SSLCommand = cli.Command{
             },
             Action: func(c *cli.Context) {
 
-               db := InitDB(c)
-               password, _ := InitPassword(db)
-               Export(c, db, password)
+               raf := NewRafikiInit(c)
+               raf.Export()
 
             },
         },
@@ -35,9 +34,8 @@ var SSLCommand = cli.Command{
             },
             Action: func(c *cli.Context) {
 
-               db := InitDB(c)
-               password, _ := InitPassword(db)
-               Import(c, db, password, "sslkey")
+               raf := NewRafikiInit(c)
+               raf.Import("csr")
 
             }, 
         },
@@ -50,9 +48,8 @@ var SSLCommand = cli.Command{
             },
             Action: func(c *cli.Context) {
 
-               db := InitDB(c)
-               password, _ := InitPassword(db)
-               Delete(c, db, password)
+               raf := NewRafikiInit(c)
+               raf.Delete()
 
             },
         },
@@ -64,9 +61,8 @@ var SSLCommand = cli.Command{
             },
             Action: func(c *cli.Context) {
 
-               db := InitDB(c)
-               password, _ := InitPassword(db)
-               List(c, db, password, "sslkey")
+               raf := NewRafikiInit(c)
+               raf.List("sslkey")
                
             },
         },

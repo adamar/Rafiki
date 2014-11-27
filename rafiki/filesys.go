@@ -8,23 +8,23 @@ import (
 )
 
 
-func ReadFile(c *cli.Context) ([]byte, error) {
+func ReadFile(fileLoc string) ([]byte, error) {
 
 	// Check File Flag set
 	//
-	if c.IsSet("f") == false {
-		return nil, errors.New("File Flag not set")
-	}
+	//if c.IsSet("f") == false {
+	//	return nil, errors.New("File Flag not set")
+	//}
 
 	// Check File exists
 	//
-	if _, err := os.Stat(c.String("f")); os.IsNotExist(err) {
+	if _, err := os.Stat(fileLoc); os.IsNotExist(err) {
 		return nil, err
 	}
 
     // Open file and Read Contents
     //
-    buf, err := ioutil.ReadFile(c.String("f"))
+    buf, err := ioutil.ReadFile(fileLoc)
     if err != nil {
         return nil, err   
     }

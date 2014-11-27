@@ -13,6 +13,29 @@ import (
     "io/ioutil"
     )
 
+type Rafiki struct {
+    FileLoc         string
+    Password        string
+    DB              *sql.DB
+}
+
+
+func NewRafikiInit(c *cli.Context) (raf *Rafiki) {
+
+    db := TestInitDB(c)
+    password, _ := TestInitPassword(db)
+
+    raf = &Rafiki{
+        FileLoc:         c.String("f"),
+        Password:        password,
+        DB:              db,
+    }
+
+    return
+
+}
+
+
 
 // Generic File Flag
 //
@@ -33,9 +56,9 @@ var DBLoc = cli.StringFlag{
 
 // Generic Import function
 //
-func Import(c *cli.Context, db *sql.DB, password string, rtype string){
+func (raf *Rafiki) Import(rtype string){
 
-    buf, err := ReadFile(c)
+    buf, err := ReadFile(raf.FileLoc)
     if err != nil {
          log.Print(err)
     }
@@ -63,30 +86,29 @@ func Import(c *cli.Context, db *sql.DB, password string, rtype string){
 
         }
 
-    ciphertext, err := EncryptString([]byte(password), string(buf))
+    ciphertext, err := EncryptString([]byte(raf.Password), string(buf))
 
-    InsertKey(db, commonName, rtype, ciphertext)
+    InsertKey(raf.DB, commonName, rtype, ciphertext)
 
 }
 
 
 
 
-func Delete(c *cli.Context, db *sql.DB, password string) {
+func (raf *Rafiki) Delete() {
     
     newReader := bufio.NewReader(os.Stdin)
     log.Print("Please enter the Key ID to Delete:")
     kId, _ := newReader.ReadString('\n')
-    DeleteKey(db, kId)
+    DeleteKey(raf.DB, kId)
     log.Print(kId)
                         
 }
 
-
-func List(c *cli.Context, db *sql.DB, password string, rtype string) {
+func (raf *Rafiki) List(rtype string) {
 
     PrintOrange(rtype + " List")
-    err := ListKeys(db, rtype)
+    err := ListKeys(raf.DB, rtype)
     if err != nil {
         log.Print(err)
     }
@@ -95,19 +117,19 @@ func List(c *cli.Context, db *sql.DB, password string, rtype string) {
 
 
 
-func Export(c *cli.Context, db *sql.DB, password string) {
+func (raf *Rafiki) Export() {
 
-    err := CheckFileFlag(c)
-    if err != nil {
-        log.Print(err)
-    }
+    //err := CheckFileFlag(c)
+    //if err != nil {
+    //    log.Print(err)
+    //}
 
     keyname := GetKeyName()
 
-    ciphertext := SelectKey(db, keyname)
+    ciphertext := SelectKey(raf.DB, keyname)
 
-    cleartext, err := DecryptString([]byte(password), ciphertext)
-    err = ioutil.WriteFile(c.String("file"), []byte(cleartext), 0644)
+    cleartext, err := DecryptString([]byte(raf.Password), ciphertext)
+    err = ioutil.WriteFile(raf.FileLoc, []byte(cleartext), 0644)
     if err != nil {
         panic(err)
     }

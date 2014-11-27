@@ -20,9 +20,8 @@ var CSRCommand = cli.Command{
             },
             Action: func(c *cli.Context) {
 
-               db := InitDB(c)
-               password, _ := InitPassword(db)
-               Export(c, db, password)
+               raf := NewRafikiInit(c)
+               raf.Export()
 
             },
         },
@@ -35,9 +34,8 @@ var CSRCommand = cli.Command{
             },
             Action: func(c *cli.Context) {
 
-               db := InitDB(c)
-               password, _ := InitPassword(db)
-               Import(c, db, password, "csr")
+               raf := NewRafikiInit(c)
+               raf.List("csr")
 
             }, 
         },
@@ -50,9 +48,9 @@ var CSRCommand = cli.Command{
             },
             Action: func(c *cli.Context) {
 
-               db := InitDB(c)
-               password, _ := InitPassword(db)
-               Delete(c, db, password)
+               raf := NewRafikiInit(c)
+               raf.Delete()
+
             },
         },
         {
@@ -63,9 +61,8 @@ var CSRCommand = cli.Command{
             },
             Action: func(c *cli.Context) {
 
-               db := InitDB(c)
-               password, _ := InitPassword(db)
-               List(c, db, password, "csr")
+               raf := NewRafikiInit(c)
+               raf.List("csr")
                
             },
         },
