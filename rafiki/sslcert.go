@@ -38,5 +38,7 @@ func ImportSSLKey(c *cli.Context, db *sql.DB, password string){
 
     InsertKey(db, commonName, "sslkey", ciphertext)
 
+    PrintOrange(commonName + " Inserted")
+
 }
 
