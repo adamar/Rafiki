@@ -34,16 +34,6 @@ func ExportCSR(c *cli.Context, db *sql.DB, password string) {
 }
 
 
-func DeleteCSR(c *cli.Context, db *sql.DB, password string) {
-
-    newReader := bufio.NewReader(os.Stdin)
-    log.Print("Please enter the Key ID to Delete:")
-    kId, _ := newReader.ReadString('\n')
-    DeleteKey(db, kId)
-    log.Print(kId)
-
-}
-
 func ListCSR(c *cli.Context, db *sql.DB, password string) {
 
     PrintOrange("List of CSRs")
@@ -53,6 +43,7 @@ func ListCSR(c *cli.Context, db *sql.DB, password string) {
     }
 
 }
+
 
 func checkCSRFileSet(value bool) {
 
