@@ -35,15 +35,10 @@ func ExportCSR(c *cli.Context, db *sql.DB, password string) {
 
 func ImportCSR(c *cli.Context, db *sql.DB, password string){
 
-	err := CheckFileFlag(c)
-        if err != nil {
-            log.Print(err)
-        }
-
-	buf, err := ioutil.ReadFile(c.String("f"))
-        if err != nil {
-	    log.Print(err)
-        }
+	buf, err := ReadFile(c)
+    if err != nil {
+        log.Print(err)
+    }
 
 	block, _ := pem.Decode(buf)
 
