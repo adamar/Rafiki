@@ -1,16 +1,12 @@
 package rafiki
 
 import (
-	//"crypto/x509"
-	//"encoding/hex"
-	//"encoding/pem"
     "database/sql"
     _ "github.com/mattn/go-sqlite3"
 	"github.com/codegangsta/cli"
 	"io/ioutil"
 	"log"
 	"os"
-    //"bufio"
 )
 
 func ExportCSR(c *cli.Context, db *sql.DB, password string) {
@@ -34,15 +30,6 @@ func ExportCSR(c *cli.Context, db *sql.DB, password string) {
 }
 
 
-func ListCSR(c *cli.Context, db *sql.DB, password string) {
-
-    PrintOrange("List of CSRs")
-	err := ListKeys(db, "csr")
-    if err != nil {
-        log.Print(err)
-    }
-
-}
 
 
 func checkCSRFileSet(value bool) {

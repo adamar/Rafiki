@@ -37,7 +37,7 @@ var CSRCommand = cli.Command{
 
                db := rafiki.InitDB(c)
                password, _ := rafiki.InitPassword(db)
-               rafiki.ExportCSR(c, db, password)
+               rafiki.Export(c, db, password)
 
             },
 		},
@@ -103,7 +103,7 @@ var SSLCommand = cli.Command{
 
                db := rafiki.InitDB(c)
                password, _ := rafiki.InitPassword(db)
-               rafiki.ExportCSR(c, db, password)
+               rafiki.Export(c, db, password)
 
             },
 		},

@@ -10,6 +10,7 @@ import (
     "github.com/codegangsta/cli"
     "bufio"
     "os"
+    "io/ioutil"
     )
 
 
@@ -73,6 +74,28 @@ func List(c *cli.Context, db *sql.DB, password string, rtype string) {
     }
 
 }
+
+
+
+func Export(c *cli.Context, db *sql.DB, password string) {
+
+    err := CheckFileFlag(c)
+    if err != nil {
+        log.Print(err)
+    }
+
+    keyname := GetKeyName()
+
+    ciphertext := SelectKey(db, keyname)
+
+    cleartext, err := DecryptString([]byte(password), ciphertext)
+    err = ioutil.WriteFile(c.String("file"), []byte(cleartext), 0644)
+    if err != nil {
+        panic(err)
+    }
+
+}
+
 
 
 
