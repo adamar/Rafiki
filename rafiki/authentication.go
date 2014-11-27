@@ -2,57 +2,53 @@ package rafiki
 
 import (
 	"code.google.com/p/gopass"
+	"database/sql"
+	"errors"
 	"fmt"
-    "errors"
-    "os"
-    "database/sql"
-    _ "github.com/mattn/go-sqlite3"
+	_ "github.com/mattn/go-sqlite3"
+	"os"
 )
-
 
 func InitPassword(db *sql.DB) (string, error) {
 
-        ClearScreen()
+	ClearScreen()
 
-        passIsSet := CheckStoredPassword(db)
+	passIsSet := CheckStoredPassword(db)
 
-        var password = ""
+	var password = ""
 
-        if passIsSet == false {
-            password, _ := setPassword(db)
-            return password, nil
-        } else {
-            password, err := checkPassword(db)
-            if err != nil {
-                PrintOrange("Sorry, your password appears to be incorrect!") 
-                os.Exit(1)
-            }
-            return password, nil
-        }
+	if passIsSet == false {
+		password, _ := setPassword(db)
+		return password, nil
+	} else {
+		password, err := checkPassword(db)
+		if err != nil {
+			PrintOrange("Sorry, your password appears to be incorrect!")
+			os.Exit(1)
+		}
+		return password, nil
+	}
 
-        return password, nil
+	return password, nil
 
 }
-
 
 // Check if a password is tored in the DB
 //
 func CheckStoredPassword(db *sql.DB) bool {
 
-    res, _ := CheckIsPasswordSet(db)
+	res, _ := CheckIsPasswordSet(db)
 
-    
-    // Should attempt change to int before checking
-    if res == "0" {
-        return false
-    } else {
-        return true
-    }
+	// Should attempt change to int before checking
+	if res == "0" {
+		return false
+	} else {
+		return true
+	}
 
-    return false
+	return false
 
 }
-
 
 // Compare the provided password against the hash in the DB
 //
@@ -60,20 +56,18 @@ func checkPassword(db *sql.DB) (pass string, err error) {
 
 	pass, err = gopass.GetPass("Please enter your Password:")
 
-    hashedPassword, err := SelectPassword(db)
+	hashedPassword, err := SelectPassword(db)
 
-    hashedPassAttempt := hashStringToSHA256(pass) 
+	hashedPassAttempt := hashStringToSHA256(pass)
 
+	if hashedPassword != hashedPassAttempt {
 
-    if hashedPassword != hashedPassAttempt {
+		return "", errors.New("Wrong Password")
 
-        return "", errors.New("Wrong Password")
-
-    }
+	}
 	return pass, nil
 
 }
-
 
 // Prompt the user to enter a new password (twice)
 //
@@ -97,11 +91,11 @@ func setPassword(db *sql.DB) (passwd string, err error) {
 
 	} else {
 
-        hashedPassword := hashStringToSHA256(pass_attempt_one)
-        err = InsertPassword(db , hashedPassword)
-        if err != nil {
-            panic(err)
-        }
+		hashedPassword := hashStringToSHA256(pass_attempt_one)
+		err = InsertPassword(db, hashedPassword)
+		if err != nil {
+			panic(err)
+		}
 		return pass_attempt_one, err
 	}
 }

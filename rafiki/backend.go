@@ -1,34 +1,31 @@
 package rafiki
 
 import (
+	"crypto/sha256"
 	"database/sql"
+	"encoding/hex"
 	"fmt"
+	"github.com/bndr/gotabulate"
+	"github.com/codegangsta/cli"
 	_ "github.com/mattn/go-sqlite3"
-    "github.com/bndr/gotabulate"
 	"log"
 	"os"
-    "crypto/sha256"
-    "encoding/hex"
-    "github.com/codegangsta/cli"
 )
-
-
 
 func InitDB(c *cli.Context) *sql.DB {
 
-    fname := c.String("db")
+	fname := c.String("db")
 
-    if _, err := os.Stat(fname); os.IsNotExist(err) {
-        log.Print("db doesnt exit")
-        PromptToCreateDB()
-    }
-    
-    db := createDBConn(fname)
+	if _, err := os.Stat(fname); os.IsNotExist(err) {
+		log.Print("db doesnt exit")
+		PromptToCreateDB()
+	}
 
-    return db
+	db := createDBConn(fname)
+
+	return db
 
 }
-
 
 func PromptToCreateDB() {
 
@@ -78,7 +75,7 @@ func CreateDB() error {
 	}
 
 	// Create password table
-        //
+	//
 	sqlStmt = `CREATE TABLE password (
                 hashed_password text NOT NULL);`
 	_, err = db.Exec(sqlStmt)
@@ -90,38 +87,35 @@ func CreateDB() error {
 
 }
 
-
 func ListKeys(db *sql.DB, fileType string) error {
 
-    new := [][]string{}
+	new := [][]string{}
 
-    rows, err := db.Query("select id, identity from files WHERE type = ?", fileType)
+	rows, err := db.Query("select id, identity from files WHERE type = ?", fileType)
 
-    if err != nil {
-        return err
-    }
+	if err != nil {
+		return err
+	}
 
-    for rows.Next() {
-        var cn string
-        var id string
-        rows.Scan(&cn, &id)
-        new = append(new, []string{cn,id})
-    }
-    rows.Close()
+	for rows.Next() {
+		var cn string
+		var id string
+		rows.Scan(&cn, &id)
+		new = append(new, []string{cn, id})
+	}
+	rows.Close()
 
-    tabulate := gotabulate.Create(new)
-    tabulate.SetHeaders([]string{"ID", "CommonName"})
+	tabulate := gotabulate.Create(new)
+	tabulate.SetHeaders([]string{"ID", "CommonName"})
 
-    if len(new) > 0 {
-        fmt.Println(tabulate.Render("grid"))
-    } else {
-        fmt.Println("No Keys to Print\n")
-    }
+	if len(new) > 0 {
+		fmt.Println(tabulate.Render("grid"))
+	} else {
+		fmt.Println("No Keys to Print\n")
+	}
 
-
-    return nil
+	return nil
 }
-
 
 func checkDB(fname string) (password string, err error) {
 
@@ -149,18 +143,16 @@ func InsertKey(db *sql.DB, identity string, fileType string, fileContents string
 
 }
 
-
 func DeleteKey(db *sql.DB, kId string) error {
 
-    _, err := db.Exec("DELETE FROM files WHERE id = ?", kId)
-    if err != nil {
-        return err
-    }
+	_, err := db.Exec("DELETE FROM files WHERE id = ?", kId)
+	if err != nil {
+		return err
+	}
 
-    return nil
+	return nil
 
 }
-
 
 func SelectKey(db *sql.DB, id string) string {
 
@@ -170,7 +162,7 @@ func SelectKey(db *sql.DB, id string) string {
 	}
 	defer rows.Close()
 
-    var csr string = ""
+	var csr string = ""
 	for rows.Next() {
 		rows.Scan(&csr)
 	}
@@ -209,42 +201,38 @@ func SelectPassword(db *sql.DB) (string, error) {
 
 func CheckIsPasswordSet(db *sql.DB) (string, error) {
 
-    var count string
+	var count string
 
-    err := db.QueryRow("SELECT COUNT(hashed_password) from password").Scan(&count)
-    if err != nil {
-        log.Fatal(err)
-    }
-    //defer rows.Close()
+	err := db.QueryRow("SELECT COUNT(hashed_password) from password").Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+	//defer rows.Close()
 
-    //var pass string
-    //for rows.Next() {
-    //    rows.Scan(&pass)
-    //}
+	//var pass string
+	//for rows.Next() {
+	//    rows.Scan(&pass)
+	//}
 
-    return count, nil
+	return count, nil
 
 }
-
 
 func createDBConn(fname string) *sql.DB {
 
 	db, err := sql.Open("sqlite3", fname)
-        if err !=  nil {
-            log.Print(err)
-        }
+	if err != nil {
+		log.Print(err)
+	}
 
 	return db
 }
 
-
-
 func hashStringToSHA256(input string) string {
 
-       hash := sha256.New()
-       hash.Write([]byte(input))
-       chkSum := hash.Sum(nil)
-       return hex.EncodeToString(chkSum)
+	hash := sha256.New()
+	hash.Write([]byte(input))
+	chkSum := hash.Sum(nil)
+	return hex.EncodeToString(chkSum)
 
 }
-

@@ -1,124 +1,111 @@
-
 package rafiki
 
 import (
-    "crypto/x509"
-    "log"
-    "encoding/pem"
-    "database/sql"
-    _ "github.com/mattn/go-sqlite3"
-    "github.com/codegangsta/cli"
-    "bufio"
-    "os"
-    "io/ioutil"
-    )
-
+	"bufio"
+	"crypto/x509"
+	"database/sql"
+	"encoding/pem"
+	"github.com/codegangsta/cli"
+	_ "github.com/mattn/go-sqlite3"
+	"io/ioutil"
+	"log"
+	"os"
+)
 
 type Rafiki struct {
-    FileLoc         string
-    Password        string
-    DB              *sql.DB
+	FileLoc  string
+	Password string
+	DB       *sql.DB
 }
-
 
 func NewRafikiInit(c *cli.Context) (raf *Rafiki) {
 
-    db := InitDB(c)
-    password, _ := InitPassword(db)
+	db := InitDB(c)
+	password, _ := InitPassword(db)
 
-    raf = &Rafiki{
-        FileLoc:         c.String("f"),
-        Password:        password,
-        DB:              db,
-    }
+	raf = &Rafiki{
+		FileLoc:  c.String("f"),
+		Password: password,
+		DB:       db,
+	}
 
-    return
+	return
 
 }
-
 
 // Generic Import function
 //
-func (raf *Rafiki) Import(rtype string){
+func (raf *Rafiki) Import(rtype string) {
 
-    buf, err := ReadFile(raf.FileLoc)
-    if err != nil {
-         log.Print(err)
-    }
+	buf, err := ReadFile(raf.FileLoc)
+	if err != nil {
+		log.Print(err)
+	}
 
-    var commonName string
+	var commonName string
 
-    switch rtype {
-        case "sslkey":
-            
-            block, _ := pem.Decode(buf)
-            Certificate, err := x509.ParseCertificate(block.Bytes) //Requires Go 1.3+
-            if err != nil {
-                log.Print(err)
-            }
-            commonName = string(Certificate.Subject.CommonName)
+	switch rtype {
+	case "sslkey":
 
-        case "csr":
+		block, _ := pem.Decode(buf)
+		Certificate, err := x509.ParseCertificate(block.Bytes) //Requires Go 1.3+
+		if err != nil {
+			log.Print(err)
+		}
+		commonName = string(Certificate.Subject.CommonName)
 
-            block, _ := pem.Decode(buf)
-            CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
-            if err != nil {
-                log.Print(err)
-            }
-            commonName = string(CertificateRequest.Subject.CommonName)
+	case "csr":
 
-        }
+		block, _ := pem.Decode(buf)
+		CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
+		if err != nil {
+			log.Print(err)
+		}
+		commonName = string(CertificateRequest.Subject.CommonName)
 
-    ciphertext, err := EncryptString([]byte(raf.Password), string(buf))
+	}
 
-    InsertKey(raf.DB, commonName, rtype, ciphertext)
+	ciphertext, err := EncryptString([]byte(raf.Password), string(buf))
+
+	InsertKey(raf.DB, commonName, rtype, ciphertext)
 
 }
 
-
-
-
 func (raf *Rafiki) Delete() {
-    
-    newReader := bufio.NewReader(os.Stdin)
-    log.Print("Please enter the Key ID to Delete:")
-    kId, _ := newReader.ReadString('\n')
-    DeleteKey(raf.DB, kId)
-    log.Print(kId)
-                        
+
+	newReader := bufio.NewReader(os.Stdin)
+	log.Print("Please enter the Key ID to Delete:")
+	kId, _ := newReader.ReadString('\n')
+	DeleteKey(raf.DB, kId)
+	log.Print(kId)
+
 }
 
 func (raf *Rafiki) List(rtype string) {
 
-    PrintOrange(rtype + " List")
-    err := ListKeys(raf.DB, rtype)
-    if err != nil {
-        log.Print(err)
-    }
+	PrintOrange(rtype + " List")
+	err := ListKeys(raf.DB, rtype)
+	if err != nil {
+		log.Print(err)
+	}
 
 }
-
-
 
 func (raf *Rafiki) Export() {
 
-    //err := CheckFileFlag(c)
-    //if err != nil {
-    //    log.Print(err)
-    //}
+	//err := CheckFileFlag(c)
+	//if err != nil {
+	//    log.Print(err)
+	//}
 
-    keyname := GetKeyName()
+	keyname := GetKeyName()
 
-    ciphertext := SelectKey(raf.DB, keyname)
+	ciphertext := SelectKey(raf.DB, keyname)
 
-    cleartext, err := DecryptString([]byte(raf.Password), ciphertext)
-    err = ioutil.WriteFile(raf.FileLoc, []byte(cleartext), 0644)
-    if err != nil {
-        panic(err)
-    }
+	cleartext, err := DecryptString([]byte(raf.Password), ciphertext)
+	err = ioutil.WriteFile(raf.FileLoc, []byte(cleartext), 0644)
+	if err != nil {
+		panic(err)
+	}
 
 }
-
-
-
-
