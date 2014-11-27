@@ -12,25 +12,39 @@ import (
 
 
 
-func ImportSSLKey(c *cli.Context, db *sql.DB, password string){
+func Import(c *cli.Context, db *sql.DB, password string, Rtype string){
 
     buf, err := ReadFile(c)
     if err != nil {
          log.Print(err)
     }
 
-    block, _ := pem.Decode(buf)
+    var commonName string
 
-    Certificate, err := x509.ParseCertificate(block.Bytes) //Requires Go 1.3+
-    if err != nil {
-        log.Print(err)
-    }
+    switch Rtype {
+        case "sslkey":
+            
+            block, _ := pem.Decode(buf)
+            Certificate, err := x509.ParseCertificate(block.Bytes) //Requires Go 1.3+
+            if err != nil {
+                log.Print(err)
+            }
+            commonName = string(Certificate.Subject.CommonName)
 
-    commonName := string(Certificate.Subject.CommonName)
+        case "csr":
+
+            block, _ := pem.Decode(buf)
+            CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
+            if err != nil {
+                log.Print(err)
+            }
+            commonName = string(CertificateRequest.Subject.CommonName)
+
+        }
 
     ciphertext, err := EncryptString([]byte(password), string(buf))
 
-    InsertKey(db, commonName, "sslkey", ciphertext)
+    InsertKey(db, commonName, Rtype, ciphertext)
 
 }
 
