@@ -57,7 +57,7 @@ func ImportCSR(c *cli.Context, db *sql.DB, password string){
 
 	ciphertext, err := EncryptString([]byte(password), string(buf))
 
-	InsertKey(db, string(CSRName.CommonName), ciphertext)
+	InsertKey(db, string(CSRName.CommonName), "csr",ciphertext)
 
 }
 
@@ -74,7 +74,7 @@ func DeleteCSR(c *cli.Context, db *sql.DB, password string) {
 func ListCSR(c *cli.Context, db *sql.DB, password string) {
 
     PrintOrange("List of CSRs")
-	err := ListKeys(db)
+	err := ListKeys(db, "csr")
     if err != nil {
         log.Print(err)
     }

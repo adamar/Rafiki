@@ -92,11 +92,9 @@ func CreateDB() error {
 }
 
 
-func ListKeys(db *sql.DB) error {
+func ListKeys(db *sql.DB, fileType string) error {
 
     new := [][]string{}
-
-    fileType := "csr"
 
     rows, err := db.Query("select id, identity from files WHERE type = ?", fileType)
 
@@ -141,9 +139,7 @@ func checkDB(fname string) (password string, err error) {
 
 }
 
-func InsertKey(db *sql.DB, identity string, fileContents string) error {
-
-    fileType := "csr"
+func InsertKey(db *sql.DB, identity string, fileType string, fileContents string) error {
 
 	_, err := db.Exec("INSERT INTO files (identity, type, file) VALUES (?, ?, ?)", identity, fileType, fileContents)
 	if err != nil {
