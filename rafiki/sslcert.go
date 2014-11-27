@@ -32,13 +32,11 @@ func ImportSSLKey(c *cli.Context, db *sql.DB, password string){
         log.Print(err)
         }
 
-    CSRName := Certificate.RawSubject
-   
-    log.Print("rawsubject", CSRName)
+    commonName := string(Certificate.Subject.CommonName)
 
-    //ciphertext, err := EncryptString([]byte(password), string(buf))
+    ciphertext, err := EncryptString([]byte(password), string(buf))
 
-    //InsertKey(db, string(CSRName.CommonName), "csr",ciphertext)
+    InsertKey(db, commonName, "sslkey", ciphertext)
 
 }
 

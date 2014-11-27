@@ -16,6 +16,7 @@ func main() {
 	app.Usage = "Store SSL Certs securely-ish"
 	app.Commands = []cli.Command{
 		CSRCommand,
+        SSLCommand,
 	}
 	app.Run(os.Args)
 }
@@ -94,7 +95,7 @@ var SSLCommand = cli.Command{
 		{
 			Name:  "export",
 			Usage: "Export a CSR Cert from the DB",
-			Flags: []ssl.Flag{
+			Flags: []cli.Flag{
 				FileLoc,
 				DBLoc,
 			},
@@ -102,7 +103,7 @@ var SSLCommand = cli.Command{
 
                db := rafiki.InitDB(c)
                password, _ := rafiki.InitPassword(db)
-               rafiki.ExportSSL(c, db, password)
+               rafiki.ExportCSR(c, db, password)
 
             },
 		},
@@ -117,7 +118,7 @@ var SSLCommand = cli.Command{
 
                db := rafiki.InitDB(c)
                password, _ := rafiki.InitPassword(db)
-               rafiki.ImportCSR(c, db, password)
+               rafiki.ImportSSLKey(c, db, password)
 
             }, 
 		},
