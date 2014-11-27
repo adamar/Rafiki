@@ -68,9 +68,10 @@ func CreateDB() error {
 	// Generate Schema for DB
 	//
 	sqlStmt := `
-        create table csrs (id integer not null primary key,
-                          cn text,
-                          csr blob);
+        create table files (id integer not null primary key,
+                          identity text,
+                          type text,
+                          file blob);
         `
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
@@ -95,7 +96,7 @@ func ListKeys(db *sql.DB) error {
 
     new := [][]string{}
 
-    rows, err := db.Query("select id, cn from csrs")
+    rows, err := db.Query("select id, identity from files")
 
     if err != nil {
         return err
@@ -138,9 +139,11 @@ func checkDB(fname string) (password string, err error) {
 
 }
 
-func InsertKey(db *sql.DB, cn string, csr string) error {
+func InsertKey(db *sql.DB, identity string, fileContents string) error {
 
-	_, err := db.Exec("INSERT INTO csrs (cn, csr) VALUES (?, ?)", cn, csr)
+    fileType := "csr"
+
+	_, err := db.Exec("INSERT INTO files (identity, type, file) VALUES (?, ?, ?)", identity, fileType, fileContents)
 	if err != nil {
 		return err
 	}
@@ -152,7 +155,7 @@ func InsertKey(db *sql.DB, cn string, csr string) error {
 
 func DeleteKey(db *sql.DB, kId string) error {
 
-    _, err := db.Exec("DELETE FROM csrs WHERE id = ?", kId)
+    _, err := db.Exec("DELETE FROM files WHERE id = ?", kId)
     if err != nil {
         return err
     }
@@ -164,13 +167,13 @@ func DeleteKey(db *sql.DB, kId string) error {
 
 func SelectKey(db *sql.DB, id string) string {
 
-	rows, err := db.Query("SELECT csr from csrs WHERE id = ? ", id)
+	rows, err := db.Query("SELECT file from files WHERE id = ? ", id)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
 
-        var csr string = ""
+    var csr string = ""
 	for rows.Next() {
 		rows.Scan(&csr)
 	}
