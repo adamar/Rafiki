@@ -13,6 +13,7 @@ import (
     "io/ioutil"
     )
 
+
 type Rafiki struct {
     FileLoc         string
     Password        string
@@ -22,8 +23,8 @@ type Rafiki struct {
 
 func NewRafikiInit(c *cli.Context) (raf *Rafiki) {
 
-    db := TestInitDB(c)
-    password, _ := TestInitPassword(db)
+    db := InitDB(c)
+    password, _ := InitPassword(db)
 
     raf = &Rafiki{
         FileLoc:         c.String("f"),
@@ -33,24 +34,6 @@ func NewRafikiInit(c *cli.Context) (raf *Rafiki) {
 
     return
 
-}
-
-
-
-// Generic File Flag
-//
-var FileLoc = cli.StringFlag{
-    Name:  "f, file",
-    Usage: "Location of the file",
-}
-
-
-// Generic DB location Flag
-//
-var DBLoc = cli.StringFlag{
-    Name:  "db, database",
-    Value: "rafiki.db",
-    Usage: "Location of the DB file",
 }
 
 
