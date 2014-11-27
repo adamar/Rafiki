@@ -5,7 +5,6 @@ import (
     "crypto/x509"
     "log"
     "encoding/pem"
-    "io/ioutil"
     "database/sql"
     _ "github.com/mattn/go-sqlite3"
     "github.com/codegangsta/cli"
@@ -13,9 +12,9 @@ import (
 
 
 
-func ParseSSLKey(c *cli.Context, db *sql.DB, password string){
+func ImportSSLKey(c *cli.Context, db *sql.DB, password string){
 
-    buf, _ := ReadFile(c)
+    buf, err := ReadFile(c)
     if err != nil {
          log.Print(err)
     }
@@ -23,9 +22,9 @@ func ParseSSLKey(c *cli.Context, db *sql.DB, password string){
     block, _ := pem.Decode(buf)
 
     Certificate, err := x509.ParseCertificate(block.Bytes) //Requires Go 1.3+
-        if err != nil {
+    if err != nil {
         log.Print(err)
-        }
+    }
 
     commonName := string(Certificate.Subject.CommonName)
 

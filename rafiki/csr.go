@@ -43,16 +43,15 @@ func ImportCSR(c *cli.Context, db *sql.DB, password string){
 	block, _ := pem.Decode(buf)
 
 	CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
-        if err != nil {
+    if err != nil {
 	    log.Print(err)
-        }
+    }
 
-	CSRName := CertificateRequest.Subject
-
+	commonName := string(CertificateRequest.Subject.CommonName)
 
 	ciphertext, err := EncryptString([]byte(password), string(buf))
 
-	InsertKey(db, string(CSRName.CommonName), "csr",ciphertext)
+	InsertKey(db, commonName, "csr",ciphertext)
 
 }
 
