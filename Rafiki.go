@@ -12,8 +12,8 @@ func main() {
 	//
 	app := cli.NewApp()
 	app.Name = "Rafiki"
-	app.Version = "0.0.1"
-	app.Usage = "Store SSL Certs securely-ish"
+	app.Version = "0.0.2"
+	app.Usage = "Store SSL Certs and CSRs securely"
 	app.Commands = []cli.Command{
 		CSRCommand,
         SSLCommand,
