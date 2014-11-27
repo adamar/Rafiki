@@ -13,17 +13,12 @@ import (
 
 
 
-func ImportSSLKey(c *cli.Context, db *sql.DB, password string){
+func ParseSSLKey(c *cli.Context, db *sql.DB, password string){
 
-    err := CheckFileFlag(c)
-        if err != nil {
-            log.Print(err)
-        }
-
-    buf, err := ioutil.ReadFile(c.String("f"))
-        if err != nil {
-        log.Print(err)
-        }
+    buf, _ := ReadFile(c)
+    if err != nil {
+         log.Print(err)
+    }
 
     block, _ := pem.Decode(buf)
 
@@ -37,8 +32,6 @@ func ImportSSLKey(c *cli.Context, db *sql.DB, password string){
     ciphertext, err := EncryptString([]byte(password), string(buf))
 
     InsertKey(db, commonName, "sslkey", ciphertext)
-
-    PrintOrange(commonName + " Inserted")
 
 }
 
