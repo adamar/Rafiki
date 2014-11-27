@@ -1,16 +1,16 @@
 package rafiki
 
 import (
-	"crypto/x509"
+	//"crypto/x509"
 	//"encoding/hex"
-	"encoding/pem"
+	//"encoding/pem"
     "database/sql"
     _ "github.com/mattn/go-sqlite3"
 	"github.com/codegangsta/cli"
 	"io/ioutil"
 	"log"
 	"os"
-    "bufio"
+    //"bufio"
 )
 
 func ExportCSR(c *cli.Context, db *sql.DB, password string) {

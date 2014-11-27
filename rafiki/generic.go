@@ -8,11 +8,13 @@ import (
     "database/sql"
     _ "github.com/mattn/go-sqlite3"
     "github.com/codegangsta/cli"
+    "bufio"
+    "os"
     )
 
 
 
-func Import(c *cli.Context, db *sql.DB, password string, Rtype string){
+func Import(c *cli.Context, db *sql.DB, password string, rtype string){
 
     buf, err := ReadFile(c)
     if err != nil {
@@ -21,7 +23,7 @@ func Import(c *cli.Context, db *sql.DB, password string, Rtype string){
 
     var commonName string
 
-    switch Rtype {
+    switch rtype {
         case "sslkey":
             
             block, _ := pem.Decode(buf)
@@ -44,7 +46,7 @@ func Import(c *cli.Context, db *sql.DB, password string, Rtype string){
 
     ciphertext, err := EncryptString([]byte(password), string(buf))
 
-    InsertKey(db, commonName, Rtype, ciphertext)
+    InsertKey(db, commonName, rtype, ciphertext)
 
 }
 
@@ -60,4 +62,17 @@ func Delete(c *cli.Context, db *sql.DB, password string) {
     log.Print(kId)
                         
 }
+
+
+func List(c *cli.Context, db *sql.DB, password string, rtype string) {
+
+    PrintOrange(rtype + " List")
+    err := ListKeys(db, rtype)
+    if err != nil {
+        log.Print(err)
+    }
+
+}
+
+
 
