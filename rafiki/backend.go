@@ -12,7 +12,6 @@ import (
     "github.com/codegangsta/cli"
 )
 
-var db *sql.DB
 
 
 func InitDB(c *cli.Context) *sql.DB {

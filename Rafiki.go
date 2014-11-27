@@ -18,6 +18,9 @@ func main() {
 		rafiki.CSRCommand,
         rafiki.SSLCommand,
 	}
+
+    // Start Application
+    //
 	app.Run(os.Args)
 }
 

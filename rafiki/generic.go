@@ -14,13 +14,16 @@ import (
     )
 
 
-
-
+// Generic File Flag
+//
 var FileLoc = cli.StringFlag{
     Name:  "f, file",
     Usage: "Location of the file",
 }
 
+
+// Generic DB location Flag
+//
 var DBLoc = cli.StringFlag{
     Name:  "db, database",
     Value: "rafiki.db",
@@ -28,6 +31,8 @@ var DBLoc = cli.StringFlag{
 }
 
 
+// Generic Import function
+//
 func Import(c *cli.Context, db *sql.DB, password string, rtype string){
 
     buf, err := ReadFile(c)
