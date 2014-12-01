@@ -45,7 +45,7 @@ func (raf *Rafiki) Import(rtype string) {
 	var commonName string
 
 	switch rtype {
-	case "sslkey":
+	case "sslcert":
 
 		block, _ := pem.Decode(buf)
 		Certificate, err := x509.ParseCertificate(block.Bytes) //Requires Go 1.3+
@@ -53,6 +53,25 @@ func (raf *Rafiki) Import(rtype string) {
 			log.Print(err)
 		}
 		commonName = string(Certificate.Subject.CommonName)
+
+
+	case "sslkey":
+
+		block, _ := pem.Decode(buf)
+
+        outt := hashStringToSha1Hex(block.Bytes)
+        log.Print(outt)
+ 
+        Key, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+        if err != nil {
+            log.Print(err)
+        }
+
+        //outt := hashStringToSha1Hex(block.Bytes)
+        log.Print(Key)
+
+        commonName = "asxaxsasx"
+
 
 	case "csr":
 

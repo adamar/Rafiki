@@ -10,6 +10,9 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"os"
+        "io"
+            "crypto/sha1"
+
 )
 
 func InitDB(c *cli.Context) *sql.DB {
@@ -234,5 +237,13 @@ func hashStringToSHA256(input string) string {
 	hash.Write([]byte(input))
 	chkSum := hash.Sum(nil)
 	return hex.EncodeToString(chkSum)
+
+}
+
+func hashStringToSha1Hex(input []byte) string {
+
+    h := sha1.New()
+    io.WriteString(h, string(input))
+    return hex.EncodeToString(h.Sum(nil))
 
 }
