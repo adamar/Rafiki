@@ -52,7 +52,7 @@ func CLI(fileType string) cli.Command {
 				Action: func(c *cli.Context) {
 
 					raf := NewRafikiInit(c)
-					raf.List(fileType)
+					raf.Import(fileType)
 
 				},
 			},
