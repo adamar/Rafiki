@@ -5,6 +5,7 @@ import (
 	"crypto/x509"
 	"database/sql"
 	"encoding/pem"
+    "encoding/base64"
 	"github.com/codegangsta/cli"
 	_ "github.com/mattn/go-sqlite3"
 	"io/ioutil"
@@ -59,18 +60,9 @@ func (raf *Rafiki) Import(rtype string) {
 
 		block, _ := pem.Decode(buf)
 
-        outt := hashStringToSha1Hex(block.Bytes)
-        log.Print(outt)
  
-        Key, err := x509.ParsePKCS1PrivateKey(block.Bytes)
-        if err != nil {
-            log.Print(err)
-        }
 
-        //outt := hashStringToSha1Hex(block.Bytes)
-        log.Print(Key)
 
-        commonName = "asxaxsasx"
 
 
 	case "csr":
