@@ -2,6 +2,7 @@ package rafiki
 
 import (
 	"crypto/sha256"
+    "crypto/md5"
 	"database/sql"
 	"encoding/hex"
 	"fmt"
@@ -240,4 +241,10 @@ func hashStringToSHA256(input string) string {
 
 }
 
+func md5String(input string) string {
 
+    hash := md5.New()
+    hash.Write([]byte(input))
+    return hex.EncodeToString(hash.Sum(nil))
+
+}
