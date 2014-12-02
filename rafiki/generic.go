@@ -72,8 +72,9 @@ func (raf *Rafiki) Import(rtype string) {
         prefix := "Modulus="
         suffix := "\n" 
         modulus := strings.ToUpper(hex.EncodeToString(rsakey.N.Bytes()))
-
-        commonName = md5String(prefix + modulus + suffix)
+        md5 := md5String(prefix + modulus + suffix)
+        
+        commonName = formatMd5(md5)
 
 
 

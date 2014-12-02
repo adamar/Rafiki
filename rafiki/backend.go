@@ -252,12 +252,12 @@ func formatMd5(input string) string {
     i := 0
     final := ""
 
-    for _, c := range x {
+    for _, c := range input {
            
         final = final + string(c)
         i ++
 
-        if i == len(x) {
+        if i == len(input) {
             break
         }
 
