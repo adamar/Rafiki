@@ -240,10 +240,4 @@ func hashStringToSHA256(input string) string {
 
 }
 
-func hashStringToSha1Hex(input []byte) string {
 
-    h := sha1.New()
-    io.WriteString(h, string(input))
-    return hex.EncodeToString(h.Sum(nil))
-
-}
