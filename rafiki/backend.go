@@ -11,9 +11,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"os"
-        "io"
-            "crypto/sha1"
-
 )
 
 func InitDB(c *cli.Context) *sql.DB {
@@ -248,3 +245,29 @@ func md5String(input string) string {
     return hex.EncodeToString(hash.Sum(nil))
 
 }
+
+
+func formatMd5(input string) string {
+
+    i := 0
+    final := ""
+
+    for _, c := range x {
+           
+        final = final + string(c)
+        i ++
+
+        if i == len(x) {
+            break
+        }
+
+        if i%2 == 0 {
+            final = final + ":"
+        }
+    }
+
+    return final
+}
+
+
+

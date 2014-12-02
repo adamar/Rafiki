@@ -3,9 +3,11 @@ package rafiki
 import (
 	"bufio"
 	"crypto/x509"
+    "crypto/rsa"
 	"database/sql"
+    "strings"
 	"encoding/pem"
-    "encoding/base64"
+    "encoding/hex"
 	"github.com/codegangsta/cli"
 	_ "github.com/mattn/go-sqlite3"
 	"io/ioutil"
@@ -60,7 +62,7 @@ func (raf *Rafiki) Import(rtype string) {
 
 		block, _ := pem.Decode(buf)
 
-        key, err := x509.ParsePKCS8PrivateKey(privateKeyBlock.Bytes)
+        key, err := x509.ParsePKCS8PrivateKey(block.Bytes)
         if err != nil {
             log.Print(err)
         }
@@ -71,7 +73,7 @@ func (raf *Rafiki) Import(rtype string) {
         suffix := "\n" 
         modulus := strings.ToUpper(hex.EncodeToString(rsakey.N.Bytes()))
 
-        commonName = shaString(prefix + modulus + suffix)
+        commonName = md5String(prefix + modulus + suffix)
 
 
 
