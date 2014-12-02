@@ -60,8 +60,18 @@ func (raf *Rafiki) Import(rtype string) {
 
 		block, _ := pem.Decode(buf)
 
- 
+        key, err := x509.ParsePKCS8PrivateKey(privateKeyBlock.Bytes)
+        if err != nil {
+            log.Print(err)
+        }
 
+        rsakey := key.(*rsa.PrivateKey)
+
+        prefix := "Modulus="
+        suffix := "\n" 
+        modulus := strings.ToUpper(hex.EncodeToString(rsakey.N.Bytes()))
+
+        commonName = shaString(prefix + modulus + suffix)
 
 
 
