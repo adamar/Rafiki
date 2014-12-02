@@ -55,8 +55,13 @@ openssl req -in domain.com.csr -text -noout
 Show CSR Public Key
 openssl req -in domain.com.csr -noout -pubkey
 
-Show an RSA Key's thumbprint
+Show an RSA Key's SHA1 thumbprint
 openssl rsa -noout -modulus -in your-private.key | openssl sha1
+
+Show an RSA Key's MD5 thumbprint
+openssl rsa -noout -modulus -in your-private.key | openssl md5
+
+
 
 
 ToDo
