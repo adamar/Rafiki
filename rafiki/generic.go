@@ -69,12 +69,13 @@ func (raf *Rafiki) Import(rtype string) {
 
         rsakey := key.(*rsa.PrivateKey)
 
-        prefix := "Modulus="
-        suffix := "\n" 
-        modulus := strings.ToUpper(hex.EncodeToString(rsakey.N.Bytes()))
-        md5 := md5String(prefix + modulus + suffix)
-        
-        commonName = formatMd5(md5)
+        //prefix := "Modulus="
+        //suffix := "\n" 
+        //modulus := strings.ToUpper(hex.EncodeToString(rsakey.N.Bytes()))
+        //md5 := md5String(prefix + modulus + suffix)
+        commonName = calcThumbprint(rsakey.N.Bytes())
+
+        //commonName = formatMd5(md5)
 
 
 
@@ -86,6 +87,27 @@ func (raf *Rafiki) Import(rtype string) {
 			log.Print(err)
 		}
 		commonName = string(CertificateRequest.Subject.CommonName)
+
+
+
+    case "sshkey":
+  
+        block, _ := pem.Decode(buf)
+
+        switch block.Type {
+        case "RSA PRIVATE KEY":
+                key, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
+                log.Print(key.PublicKey.N.Bytes())
+                commonName = calcThumbprint(key.PublicKey.N.Bytes())
+        case "EC PRIVATE KEY":
+                //key, _ := x509.ParseECPrivateKey(block.Bytes)
+                //log.Print(key.PublicKey.N.Bytes())
+                commonName = "ec"
+        //case "DSA PRIVATE KEY":
+                //return ParseDSAPrivateKey(block.Bytes)
+                
+        }
+
 
 	}
 
@@ -131,5 +153,14 @@ func (raf *Rafiki) Export() {
 	if err != nil {
 		panic(err)
 	}
+
+}
+
+func calcThumbprint(input []byte) string {
+
+    prefix := "Modulus="
+    suffix := "\n"
+    modulus := strings.ToUpper(hex.EncodeToString(input))
+    return md5String(prefix + modulus + suffix)
 
 }

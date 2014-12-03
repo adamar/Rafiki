@@ -11,6 +11,7 @@ func main() {
     csrCli := rafiki.CLI("csr")
     sslcertCli := rafiki.CLI("sslcert")
     sslkeyCli := rafiki.CLI("sslkey")
+    sshkeyCli := rafiki.CLI("sshkey")
 
     // CLI parsing is done here
     //
@@ -22,6 +23,7 @@ func main() {
         csrCli,
         sslcertCli,
         sslkeyCli,
+        sshkeyCli,
     }
 
     // Start Application
