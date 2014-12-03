@@ -42,7 +42,8 @@ func (raf *Rafiki) Import(rtype string) {
 
     err := CheckFileFlag(raf.FileLoc)
     if err != nil {
-        panic(err)
+        log.Print("No --file flag set")
+        os.Exit(1)
     }
 
 	buf, err := ReadFile(raf.FileLoc)
