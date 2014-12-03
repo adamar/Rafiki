@@ -2,7 +2,6 @@ package rafiki
 
 import (
 	"errors"
-	"github.com/codegangsta/cli"
 	"io/ioutil"
 	"os"
 )
@@ -32,17 +31,17 @@ func ReadFile(fileLoc string) ([]byte, error) {
 
 }
 
-func CheckFileFlag(c *cli.Context) error {
+func CheckFileFlag(fileLoc string) error {
 
 	// Check File Flag set
 	//
-	if c.IsSet("f") == false {
+	if fileLoc == "" {
 		return errors.New("File Flag not set")
 	}
 
 	// Check File exists
 	//
-	if _, err := os.Stat(c.String("f")); os.IsNotExist(err) {
+	if _, err := os.Stat(fileLoc); os.IsNotExist(err) {
 		return err
 	}
 

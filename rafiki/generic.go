@@ -40,6 +40,11 @@ func NewRafikiInit(c *cli.Context) (raf *Rafiki) {
 //
 func (raf *Rafiki) Import(rtype string) {
 
+    err := CheckFileFlag(raf.FileLoc)
+    if err != nil {
+        panic(err)
+    }
+
 	buf, err := ReadFile(raf.FileLoc)
 	if err != nil {
 		log.Print(err)
