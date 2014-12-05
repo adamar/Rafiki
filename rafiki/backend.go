@@ -6,11 +6,11 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"fmt"
+    "log"
+    "os"
 	"github.com/bndr/gotabulate"
 	"github.com/codegangsta/cli"
 	_ "github.com/mattn/go-sqlite3"
-	"log"
-	"os"
 )
 
 func InitDB(c *cli.Context) *sql.DB {

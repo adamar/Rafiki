@@ -2,17 +2,17 @@ package rafiki
 
 import (
 	"bufio"
-	"crypto/x509"
-    "crypto/rsa"
-	"database/sql"
     "strings"
-	"encoding/pem"
-    "encoding/hex"
-	"github.com/codegangsta/cli"
-	_ "github.com/mattn/go-sqlite3"
 	"io/ioutil"
 	"log"
 	"os"
+	"crypto/x509"
+    "crypto/rsa"
+	"encoding/pem"
+    "encoding/hex"
+	"github.com/codegangsta/cli"
+    "database/sql"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type Rafiki struct {

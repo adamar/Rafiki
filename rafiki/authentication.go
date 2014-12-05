@@ -1,13 +1,13 @@
 package rafiki
 
 import (
-	"code.google.com/p/gopass"
-	"database/sql"
-	"errors"
-	"fmt"
+    "os"
+    "fmt"
+    "errors"
+    "database/sql"
 	_ "github.com/mattn/go-sqlite3"
-	"os"
-)
+    "code.google.com/p/gopass"
+    )
 
 func InitPassword(db *sql.DB) (string, error) {
 
