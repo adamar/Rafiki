@@ -93,7 +93,7 @@ func ListKeys(db *sql.DB, fileType string) error {
 
 	new := [][]string{}
 
-	rows, err := db.Query("select id, identity from files WHERE type = ?", fileType)
+	rows, err := db.Query("select id, identity, filename from files WHERE type = ?", fileType)
 
 	if err != nil {
 		return err
@@ -102,13 +102,14 @@ func ListKeys(db *sql.DB, fileType string) error {
 	for rows.Next() {
 		var cn string
 		var id string
-		rows.Scan(&cn, &id)
-		new = append(new, []string{cn, id})
+        var filename string
+		rows.Scan(&cn, &id, &filename)
+		new = append(new, []string{cn, id, filename})
 	}
 	rows.Close()
 
 	tabulate := gotabulate.Create(new)
-	tabulate.SetHeaders([]string{"ID", "CommonName"})
+	tabulate.SetHeaders([]string{"ID", "CommonName", "Filename"})
 
 	if len(new) > 0 {
 		fmt.Println(tabulate.Render("grid"))
