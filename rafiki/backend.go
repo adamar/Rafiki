@@ -68,6 +68,7 @@ func CreateDB() error {
         create table files (id integer not null primary key,
                           identity text,
                           type text,
+                          filename text,
                           file blob);
         `
 	_, err = db.Exec(sqlStmt)
@@ -133,9 +134,9 @@ func checkDB(fname string) (password string, err error) {
 
 }
 
-func InsertKey(db *sql.DB, identity string, fileType string, fileContents string) error {
+func InsertKey(db *sql.DB, identity string, fileType string, fileContents string, fileName string) error {
 
-	_, err := db.Exec("INSERT INTO files (identity, type, file) VALUES (?, ?, ?)", identity, fileType, fileContents)
+	_, err := db.Exec("INSERT INTO files (identity, type, filename, file) VALUES (?, ?, ?, ?)", identity, fileType, fileName, fileContents)
 	if err != nil {
 		return err
 	}

@@ -111,7 +111,7 @@ func (raf *Rafiki) Import(rtype string) {
 
 	ciphertext, err := EncryptString([]byte(raf.Password), string(buf))
 
-	InsertKey(raf.DB, commonName, rtype, ciphertext)
+	InsertKey(raf.DB, commonName, rtype, ciphertext, raf.FileLoc)
 
 }
 
