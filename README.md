@@ -75,7 +75,10 @@ ToDo
 -----------
 - Write Tests
 - Add more error checking
-- Add key delete function
+- Create generic import function, use type checking
+  to figure out key type
+- Store original filename in DB for export
+- Better text layout
 
 
 Useful Resources
