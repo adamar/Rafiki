@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+    "path"   
 	"crypto/x509"
     "crypto/rsa"
 	"encoding/pem"
@@ -45,6 +46,8 @@ func (raf *Rafiki) Import(rtype string) {
         log.Print("No --file flag set")
         os.Exit(1)
     }
+
+    _, fileName := path.Split(raf.FileLoc)
 
 	buf, err := ReadFile(raf.FileLoc)
 	if err != nil {
@@ -111,7 +114,7 @@ func (raf *Rafiki) Import(rtype string) {
 
 	ciphertext, err := EncryptString([]byte(raf.Password), string(buf))
 
-	InsertKey(raf.DB, commonName, rtype, ciphertext, raf.FileLoc)
+	InsertKey(raf.DB, commonName, rtype, ciphertext, fileName)
 
 }
 
