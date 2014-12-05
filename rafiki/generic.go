@@ -75,15 +75,7 @@ func (raf *Rafiki) Import(rtype string) {
 
         rsakey := key.(*rsa.PrivateKey)
 
-        //prefix := "Modulus="
-        //suffix := "\n" 
-        //modulus := strings.ToUpper(hex.EncodeToString(rsakey.N.Bytes()))
-        //md5 := md5String(prefix + modulus + suffix)
         commonName = calcThumbprint(rsakey.N.Bytes())
-
-        //commonName = formatMd5(md5)
-
-
 
 	case "csr":
 

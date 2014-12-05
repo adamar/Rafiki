@@ -50,17 +50,24 @@ ssh-keygen -lf /path/to/key.pub
 ```
 
 Print CSR Info
+```sh
 openssl req -in domain.com.csr -text -noout
+```
 
 Show CSR Public Key
+```sh
 openssl req -in domain.com.csr -noout -pubkey
+```
 
 Show an RSA Key's SHA1 thumbprint
+```sh
 openssl rsa -noout -modulus -in your-private.key | openssl sha1
+```
 
 Show an RSA Key's MD5 thumbprint
+```sh
 openssl rsa -noout -modulus -in your-private.key | openssl md5
-
+```
 
 
 
