@@ -130,7 +130,8 @@ func (raf *Rafiki) Delete() {
 
 func (raf *Rafiki) List(rtype string) {
 
-	PrintOrange(strings.Title(rtype) + " List")
+    ClearScreen()
+	PrintOrange("\n" + strings.Title(rtype) + " List" + "\n")
 	err := ListKeys(raf.DB, rtype)
 	if err != nil {
 		log.Print(err)
