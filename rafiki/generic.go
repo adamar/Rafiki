@@ -123,8 +123,6 @@ func (raf *Rafiki) Import(rtype string) {
 
 	case SSLKEY:
 
-		block, _ := pem.Decode(buf)
-
         key, err := x509.ParsePKCS8PrivateKey(block.Bytes)
         if err != nil {
             log.Print(err)
@@ -134,36 +132,32 @@ func (raf *Rafiki) Import(rtype string) {
 
         commonName = calcThumbprint(rsakey.N.Bytes())
 
+
 	case SSLCSR:
 
-		block, _ := pem.Decode(buf)
 		CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
 		if err != nil {
 			log.Print(err)
 		}
-		commonName = string(CertificateRequest.Subject.CommonName)
 
+		commonName = string(CertificateRequest.Subject.CommonName)
 
 
     case SSHKEY:
   
-        block, _ := pem.Decode(buf)
+        key, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
+        log.Print(key.PublicKey.N.Bytes())
 
-        switch block.Type {
-        case "RSA PRIVATE KEY":
-                key, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
-                log.Print(key.PublicKey.N.Bytes())
-                commonName = calcThumbprint(key.PublicKey.N.Bytes())
-        case "EC PRIVATE KEY":
-                //key, _ := x509.ParseECPrivateKey(block.Bytes)
-                //log.Print(key.PublicKey.N.Bytes())
-                commonName = "ec"
-        //case "DSA PRIVATE KEY":
-                //return ParseDSAPrivateKey(block.Bytes)
+        commonName = calcThumbprint(key.PublicKey.N.Bytes())
+
+
+    case ECPKEY:
+
+        key, _ := x509.ParseECPrivateKey(block.Bytes)
+        log.Print(key.PublicKey.N.Bytes())
+
+        commonName = "ec"
                 
-        }
-
-
 	}
 
 	ciphertext, err := EncryptString([]byte(raf.Password), string(buf))
