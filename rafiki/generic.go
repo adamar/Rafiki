@@ -36,6 +36,7 @@ type Rafiki struct {
 type Key struct {
     Type                         int
     FileContents                 []byte
+    ParsedKey                    interface{}
 }
 
 
@@ -44,28 +45,28 @@ func NewRafikiKey(buf []byte) *Key {
     block, _ := pem.Decode(buf)
 
     // SSL Certificate
-    _, err := x509.ParseCertificate(block.Bytes); if err == nil {
-       return &Key{Type: SSLCERT, FileContents: block.Bytes}
+    res, err := x509.ParseCertificate(block.Bytes); if err == nil {
+       return &Key{Type: SSLCERT, FileContents: block.Bytes, ParsedKey: res}
     }
 
     // SSL Certificate Signing Request
-    _, err = x509.ParseCertificateRequest(block.Bytes); if err == nil {
-       return &Key{Type: SSLCSR, FileContents: block.Bytes}
+    res, err = x509.ParseCertificateRequest(block.Bytes); if err == nil {
+       return &Key{Type: SSLCSR, FileContents: block.Bytes, ParsedKey: res}
     }
 
     // SSL Private Key
-    _, err = x509.ParsePKCS8PrivateKey(block.Bytes); if err == nil {
-       return &Key{Type: SSLKEY, FileContents: block.Bytes}
+    res, err = x509.ParsePKCS8PrivateKey(block.Bytes); if err == nil {
+       return &Key{Type: SSLKEY, FileContents: block.Bytes, ParsedKey: res}
     }
 
     // RSA Private Key
-    _, err = x509.ParsePKCS1PrivateKey(block.Bytes); if err == nil {
-       return &Key{Type: SSHKEY, FileContents: block.Bytes}
+    res, err = x509.ParsePKCS1PrivateKey(block.Bytes); if err == nil {
+       return &Key{Type: SSHKEY, FileContents: block.Bytes, ParsedKey: res}
     }
 
     // EC Private Key
-    _, err = x509.ParseECPrivateKey(block.Bytes); if err == nil {
-       return &Key{Type: ECPKEY, FileContents: block.Bytes}
+    res, err = x509.ParseECPrivateKey(block.Bytes); if err == nil {
+       return &Key{Type: ECPKEY, FileContents: block.Bytes, ParsedKey: res}
     }
 
     return &Key{}
@@ -86,9 +87,10 @@ func NewRafikiInit(c *cli.Context) (raf *Rafiki) {
 		DB:       db,
 	}
 
-	return
+	return raf
 
 }
+
 
 // Generic Import function
 //
@@ -112,7 +114,7 @@ func (raf *Rafiki) Import(rtype string) {
     myKey := NewRafikiKey(buf)
 
 	switch myKey.Type {
-	case SSLCERT:
+	  case SSLCERT:
 
 		Certificate, err := x509.ParseCertificate(block.Bytes) //Requires Go 1.3+
 		if err != nil {
@@ -121,7 +123,7 @@ func (raf *Rafiki) Import(rtype string) {
 		commonName = string(Certificate.Subject.CommonName)
 
 
-	case SSLKEY:
+	  case SSLKEY:
 
         key, err := x509.ParsePKCS8PrivateKey(block.Bytes)
         if err != nil {
@@ -133,7 +135,7 @@ func (raf *Rafiki) Import(rtype string) {
         commonName = calcThumbprint(rsakey.N.Bytes())
 
 
-	case SSLCSR:
+	  case SSLCSR:
 
 		CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
 		if err != nil {
@@ -143,7 +145,7 @@ func (raf *Rafiki) Import(rtype string) {
 		commonName = string(CertificateRequest.Subject.CommonName)
 
 
-    case SSHKEY:
+      case SSHKEY:
   
         key, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
         log.Print(key.PublicKey.N.Bytes())
@@ -151,7 +153,7 @@ func (raf *Rafiki) Import(rtype string) {
         commonName = calcThumbprint(key.PublicKey.N.Bytes())
 
 
-    case ECPKEY:
+      case ECPKEY:
 
         key, _ := x509.ParseECPrivateKey(block.Bytes)
         log.Print(key.PublicKey.N.Bytes())
