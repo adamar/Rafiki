@@ -94,7 +94,7 @@ func NewRafikiInit(c *cli.Context) (raf *Rafiki) {
 
 // Generic Import function
 //
-func (raf *Rafiki) Import(rtype string) {
+func (raf *Rafiki) Import() {
 
     err := CheckFileFlag(raf.FileLoc)
     if err != nil {
@@ -109,7 +109,7 @@ func (raf *Rafiki) Import(rtype string) {
 		log.Print(err)
 	}
 
-	var commonName string
+	var commonName,keyType string
 
     myKey := NewRafikiKey(buf)
 
@@ -118,37 +118,43 @@ func (raf *Rafiki) Import(rtype string) {
 
         sslcert := myKey.ParsedKey.(*x509.Certificate)
 		commonName = string(sslcert.Subject.CommonName)
+        keyType = "sslcert"
 
 
 	  case SSLKEY:
 
         rsakey := myKey.ParsedKey.(*rsa.PrivateKey)
         commonName = calcThumbprint(rsakey.N.Bytes())
+        keyType = "sslkey"
 
 
 	  case SSLCSR:
 
         sslcsr := myKey.ParsedKey.(*x509.CertificateRequest)
 		commonName = string(sslcsr.Subject.CommonName)
+        keyType = "sslcsr"
 
 
       case SSHKEY:
 
         sshkey := myKey.ParsedKey.(*rsa.PrivateKey)
         commonName = calcThumbprint(sshkey.N.Bytes())
+        keyType = "sshkey"
 
 
       case ECPKEY:
 
         commonName = "ec"
+        keyType = "ecpkey"
                 
 	}
 
 	ciphertext, err := EncryptString([]byte(raf.Password), string(buf))
 
-	InsertKey(raf.DB, commonName, rtype, ciphertext, fileName)
+	InsertKey(raf.DB, commonName, keyType, ciphertext, fileName)
 
 }
+
 
 func (raf *Rafiki) Delete() {
 
@@ -160,16 +166,18 @@ func (raf *Rafiki) Delete() {
 
 }
 
-func (raf *Rafiki) List(rtype string) {
+
+func (raf *Rafiki) List() {
 
     ClearScreen()
-	PrintOrange("\n" + strings.Title(rtype) + " List" + "\n")
-	err := ListKeys(raf.DB, rtype)
+	PrintOrange("\n" + strings.Title("asxasx") + " list" + "\n")
+	err := ListKeys(raf.DB, "csr")
 	if err != nil {
 		log.Print(err)
 	}
 
 }
+
 
 func (raf *Rafiki) Export() {
 
@@ -189,6 +197,7 @@ func (raf *Rafiki) Export() {
 	}
 
 }
+
 
 func calcThumbprint(input []byte) string {
 

@@ -19,73 +19,61 @@ var DBLoc = cli.StringFlag{
 	Usage: "Location of the DB file",
 }
 
-// Generic function args
-//
-func CLI(fileType string) cli.Command {
 
-	Command := cli.Command{
-		Name:        fileType,
-		Usage:       fileType,
-		Description: "example blah",
-		Subcommands: []cli.Command{
-			{
-				Name:  "export",
-				Usage: "Export from the DB",
-				Flags: []cli.Flag{
-					FileLoc,
-					DBLoc,
-				},
-				Action: func(c *cli.Context) {
+var GenericCLI = []cli.Command{
+  {
+    Name:      "list",
+    ShortName: "l",
+    Usage:     "List all Keys stored in Rafiki",
+    Flags: []cli.Flag{
+                    FileLoc,
+                    DBLoc,
+                },
+    Action: func(c *cli.Context) {
+        raf := NewRafikiInit(c)
+        raf.List()
+     },
+  },
+  {
+    Name:      "delete",
+    ShortName: "d",
+    Usage:     "List all Keys stored in Rafiki",
+    Flags: []cli.Flag{
+                    FileLoc,
+                    DBLoc,
+                },
+    Action: func(c *cli.Context) {
+        raf := NewRafikiInit(c)
+        raf.Delete()
+     },
+  },
+  {
+    Name:      "import",
+    ShortName: "i",
+    Usage:     "Import a Key into Rafiki",
+    Flags: []cli.Flag{
+                    FileLoc,
+                    DBLoc,
+                },
+    Action: func(c *cli.Context) {
+        raf := NewRafikiInit(c)
+        raf.Import()
+     },
+  },
+  {
+    Name:      "export",
+    ShortName: "e",
+    Usage:     "Export a Key out of Rafiki",
+    Flags: []cli.Flag{
+                    FileLoc,
+                    DBLoc,
+                },
+    Action: func(c *cli.Context) {
 
-					raf := NewRafikiInit(c)
-					raf.Export()
-
-				},
-			},
-			{
-				Name:  "import",
-				Usage: "Import into the DB",
-				Flags: []cli.Flag{
-					FileLoc,
-					DBLoc,
-				},
-				Action: func(c *cli.Context) {
-
-					raf := NewRafikiInit(c)
-					raf.Import(fileType)
-
-				},
-			},
-			{
-				Name:  "delete",
-				Usage: "Delete from the DB",
-				Flags: []cli.Flag{
-					FileLoc,
-					DBLoc,
-				},
-				Action: func(c *cli.Context) {
-
-					raf := NewRafikiInit(c)
-					raf.Delete()
-
-				},
-			},
-			{
-				Name:  "list",
-				Usage: "List all in the DB",
-				Flags: []cli.Flag{
-					DBLoc,
-				},
-				Action: func(c *cli.Context) {
-
-					raf := NewRafikiInit(c)
-					raf.List(fileType)
-
-				},
-			},
-		},
-	}
-
-	return Command
-
+                    raf := NewRafikiInit(c)
+                    raf.Export()
+                    
+     },
+  },
 }
+

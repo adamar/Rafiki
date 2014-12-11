@@ -79,6 +79,8 @@ ToDo
   to figure out key type
 - Store original filename in DB for export
 - Better text layout
+- Print out file details on import & export
+- Add (unautheticated) option to profile a key
 
 
 Useful Resources

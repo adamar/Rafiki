@@ -8,23 +8,13 @@ import (
 
 func main() {
 
-    csrCli := rafiki.CLI("csr")
-    sslcertCli := rafiki.CLI("sslcert")
-    sslkeyCli := rafiki.CLI("sslkey")
-    sshkeyCli := rafiki.CLI("sshkey")
-
     // CLI parsing is done here
     //
     app := cli.NewApp()
     app.Name = "Rafiki"
     app.Version = "0.0.2"
     app.Usage = "Store SSL Certs and CSRs securely"
-    app.Commands = []cli.Command{
-        csrCli,
-        sslcertCli,
-        sslkeyCli,
-        sshkeyCli,
-    }
+    app.Commands = rafiki.GenericCLI
 
     // Start Application
     //
