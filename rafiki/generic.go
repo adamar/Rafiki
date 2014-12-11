@@ -18,8 +18,11 @@ import (
 
 
 const (
-    SSLCSR = iota
     SSLCERT = iota
+    SSLCSR  = iota
+    SSLKEY  = iota
+    SSHKEY  = iota
+    ECPKEY  = iota
 )
 
 
@@ -44,6 +47,21 @@ func NewRafikiKey(buf []byte) *Key {
        return &Key{Type: SSLCSR, FileContents: block.Bytes}
     }
 
+    // SSL Private Key
+    _, err = x509.ParsePKCS8PrivateKey(block.Bytes); if err == nil {
+       return &Key{Type: SSLKEY, FileContents: block.Bytes}
+    }
+
+    // RSA Private Key
+    _, err = x509.ParsePKCS1PrivateKey(block.Bytes); if err == nil {
+       return &Key{Type: SSHKEY, FileContents: block.Bytes}
+    }
+
+    // EC Private Key
+    _, err = x509.ParseECPrivateKey(block.Bytes); if err == nil {
+       return &Key{Type: ECPKEY, FileContents: block.Bytes}
+    }
+
     return &Key{}
 
 }
@@ -55,6 +73,7 @@ type Rafiki struct {
 	Password string
 	DB       *sql.DB
 }
+
 
 func NewRafikiInit(c *cli.Context) (raf *Rafiki) {
 
