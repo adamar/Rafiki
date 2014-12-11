@@ -45,28 +45,28 @@ func NewRafikiKey(buf []byte) *Key {
     block, _ := pem.Decode(buf)
 
     // SSL Certificate
-    res, err := x509.ParseCertificate(block.Bytes); if err == nil {
-       return &Key{Type: SSLCERT, FileContents: block.Bytes, ParsedKey: res}
+    sslcert, err := x509.ParseCertificate(block.Bytes); if err == nil {
+       return &Key{Type: SSLCERT, FileContents: block.Bytes, ParsedKey: sslcert}
     }
 
     // SSL Certificate Signing Request
-    res, err = x509.ParseCertificateRequest(block.Bytes); if err == nil {
-       return &Key{Type: SSLCSR, FileContents: block.Bytes, ParsedKey: res}
+    sslcsr, err := x509.ParseCertificateRequest(block.Bytes); if err == nil {
+       return &Key{Type: SSLCSR, FileContents: block.Bytes, ParsedKey: sslcsr}
     }
 
     // SSL Private Key
-    res, err = x509.ParsePKCS8PrivateKey(block.Bytes); if err == nil {
-       return &Key{Type: SSLKEY, FileContents: block.Bytes, ParsedKey: res}
+    sslkey, err := x509.ParsePKCS8PrivateKey(block.Bytes); if err == nil {
+       return &Key{Type: SSLKEY, FileContents: block.Bytes, ParsedKey: sslkey}
     }
 
     // RSA Private Key
-    res, err = x509.ParsePKCS1PrivateKey(block.Bytes); if err == nil {
-       return &Key{Type: SSHKEY, FileContents: block.Bytes, ParsedKey: res}
+    sshkey, err := x509.ParsePKCS1PrivateKey(block.Bytes); if err == nil {
+       return &Key{Type: SSHKEY, FileContents: block.Bytes, ParsedKey: sshkey}
     }
 
     // EC Private Key
-    res, err = x509.ParseECPrivateKey(block.Bytes); if err == nil {
-       return &Key{Type: ECPKEY, FileContents: block.Bytes, ParsedKey: res}
+    ecpkey, err := x509.ParseECPrivateKey(block.Bytes); if err == nil {
+       return &Key{Type: ECPKEY, FileContents: block.Bytes, ParsedKey: ecpkey}
     }
 
     return &Key{}
@@ -116,47 +116,54 @@ func (raf *Rafiki) Import(rtype string) {
 	switch myKey.Type {
 	  case SSLCERT:
 
-		Certificate, err := x509.ParseCertificate(block.Bytes) //Requires Go 1.3+
-		if err != nil {
-			log.Print(err)
-		}
-		commonName = string(Certificate.Subject.CommonName)
+		//Certificate, err := x509.ParseCertificate(block.Bytes) //Requires Go 1.3+
+		//if err != nil {
+		//	log.Print(err)
+		//}
+
+        sslcert := myKey.ParsedKey.(*x509.Certificate)
+
+		commonName = string(sslcert.Subject.CommonName)
 
 
 	  case SSLKEY:
 
-        key, err := x509.ParsePKCS8PrivateKey(block.Bytes)
-        if err != nil {
-            log.Print(err)
-        }
+        //key, err := x509.ParsePKCS8PrivateKey(block.Bytes)
+        //if err != nil {
+        //    log.Print(err)
+        //}
 
-        rsakey := key.(*rsa.PrivateKey)
+        rsakey := myKey.ParsedKey.(*rsa.PrivateKey)
 
         commonName = calcThumbprint(rsakey.N.Bytes())
 
 
 	  case SSLCSR:
 
-		CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
-		if err != nil {
-			log.Print(err)
-		}
-
-		commonName = string(CertificateRequest.Subject.CommonName)
+		//CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
+		//if err != nil {
+		//	log.Print(err)
+		//}
+        sslcsr := myKey.ParsedKey.(*x509.CertificateRequest)
+		commonName = string(sslcsr.Subject.CommonName)
 
 
       case SSHKEY:
   
-        key, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
-        log.Print(key.PublicKey.N.Bytes())
+        //key, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
+        //log.Print(key.PublicKey.N.Bytes())
 
-        commonName = calcThumbprint(key.PublicKey.N.Bytes())
+        sshkey := myKey.ParsedKey.(*rsa.PrivateKey)
+
+        commonName = calcThumbprint(sshkey.N.Bytes())
 
 
       case ECPKEY:
 
-        key, _ := x509.ParseECPrivateKey(block.Bytes)
-        log.Print(key.PublicKey.N.Bytes())
+        //key, _ := x509.ParseECPrivateKey(block.Bytes)
+        //log.Print(key.PublicKey.N.Bytes())
+
+        //myKey.ParsedKey.
 
         commonName = "ec"
                 
