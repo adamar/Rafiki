@@ -109,10 +109,11 @@ func (raf *Rafiki) Import(rtype string) {
 
 	var commonName string
 
-	switch rtype {
-	case "sslcert":
+    myKey := NewRafikiKey(buf)
 
-		block, _ := pem.Decode(buf)
+	switch myKey.Type {
+	case SSLCERT:
+
 		Certificate, err := x509.ParseCertificate(block.Bytes) //Requires Go 1.3+
 		if err != nil {
 			log.Print(err)
@@ -120,7 +121,7 @@ func (raf *Rafiki) Import(rtype string) {
 		commonName = string(Certificate.Subject.CommonName)
 
 
-	case "sslkey":
+	case SSLKEY:
 
 		block, _ := pem.Decode(buf)
 
@@ -133,7 +134,7 @@ func (raf *Rafiki) Import(rtype string) {
 
         commonName = calcThumbprint(rsakey.N.Bytes())
 
-	case "csr":
+	case SSLCSR:
 
 		block, _ := pem.Decode(buf)
 		CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
@@ -144,7 +145,7 @@ func (raf *Rafiki) Import(rtype string) {
 
 
 
-    case "sshkey":
+    case SSHKEY:
   
         block, _ := pem.Decode(buf)
 
