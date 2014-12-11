@@ -26,6 +26,12 @@ const (
 )
 
 
+type Rafiki struct {
+    FileLoc  string
+    Password string
+    DB       *sql.DB
+}
+
 
 type Key struct {
     Type                         int
@@ -67,12 +73,6 @@ func NewRafikiKey(buf []byte) *Key {
 }
 
 
-
-type Rafiki struct {
-	FileLoc  string
-	Password string
-	DB       *sql.DB
-}
 
 
 func NewRafikiInit(c *cli.Context) (raf *Rafiki) {
