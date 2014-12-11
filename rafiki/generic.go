@@ -16,6 +16,40 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+
+const (
+    SSLCSR = iota
+    SSLCERT = iota
+)
+
+
+
+type Key struct {
+    Type                         int
+    FileContents                 []byte
+}
+
+
+func NewRafikiKey(buf []byte) *Key {
+
+    block, _ := pem.Decode(buf)
+
+    // SSL Certificate
+    _, err := x509.ParseCertificate(block.Bytes); if err == nil {
+       return &Key{Type: SSLCERT, FileContents: block.Bytes}
+    }
+
+    // SSL Certificate Signing Request
+    _, err = x509.ParseCertificateRequest(block.Bytes); if err == nil {
+       return &Key{Type: SSLCSR, FileContents: block.Bytes}
+    }
+
+    return &Key{}
+
+}
+
+
+
 type Rafiki struct {
 	FileLoc  string
 	Password string
