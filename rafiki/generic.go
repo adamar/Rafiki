@@ -116,54 +116,29 @@ func (raf *Rafiki) Import(rtype string) {
 	switch myKey.Type {
 	  case SSLCERT:
 
-		//Certificate, err := x509.ParseCertificate(block.Bytes) //Requires Go 1.3+
-		//if err != nil {
-		//	log.Print(err)
-		//}
-
         sslcert := myKey.ParsedKey.(*x509.Certificate)
-
 		commonName = string(sslcert.Subject.CommonName)
 
 
 	  case SSLKEY:
 
-        //key, err := x509.ParsePKCS8PrivateKey(block.Bytes)
-        //if err != nil {
-        //    log.Print(err)
-        //}
-
         rsakey := myKey.ParsedKey.(*rsa.PrivateKey)
-
         commonName = calcThumbprint(rsakey.N.Bytes())
 
 
 	  case SSLCSR:
 
-		//CertificateRequest, err := x509.ParseCertificateRequest(block.Bytes) //Requires Go 1.3+
-		//if err != nil {
-		//	log.Print(err)
-		//}
         sslcsr := myKey.ParsedKey.(*x509.CertificateRequest)
 		commonName = string(sslcsr.Subject.CommonName)
 
 
       case SSHKEY:
-  
-        //key, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
-        //log.Print(key.PublicKey.N.Bytes())
 
         sshkey := myKey.ParsedKey.(*rsa.PrivateKey)
-
         commonName = calcThumbprint(sshkey.N.Bytes())
 
 
       case ECPKEY:
-
-        //key, _ := x509.ParseECPrivateKey(block.Bytes)
-        //log.Print(key.PublicKey.N.Bytes())
-
-        //myKey.ParsedKey.
 
         commonName = "ec"
                 
