@@ -81,6 +81,7 @@ ToDo
 - Better text layout
 - Print out file details on import & export
 - Add (unautheticated) option to profile a key
+- Add sub command to "List" option to filter on key type
 
 
 Useful Resources
