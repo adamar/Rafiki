@@ -170,7 +170,7 @@ func (raf *Rafiki) Delete() {
 func (raf *Rafiki) List() {
 
     ClearScreen()
-	PrintOrange("\n" + strings.Title("asxasx") + " list" + "\n")
+	PrintOrange("\n" + strings.Title("Key ") + " list" + "\n")
 	err := ListKeys(raf.DB, "csr")
 	if err != nil {
 		log.Print(err)
