@@ -171,7 +171,7 @@ func (raf *Rafiki) List() {
 
     ClearScreen()
 	PrintOrange("\n" + strings.Title("Key ") + " list" + "\n")
-	err := ListKeys(raf.DB, "csr")
+	err := ListKeys(raf.DB, "")
 	if err != nil {
 		log.Print(err)
 	}

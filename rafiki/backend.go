@@ -93,7 +93,15 @@ func ListKeys(db *sql.DB, fileType string) error {
 
 	new := [][]string{}
 
-	rows, err := db.Query("select id, identity, filename from files WHERE type = ?", fileType)
+
+    var query string
+    if fileType != "" {
+        query = fmt.Sprintf("select id, identity, filename from files WHERE type = %s", fileType)
+    } else {
+        query = "select id, identity, filename, filename from files"
+    }
+
+    rows, err := db.Query(query)
 
 	if err != nil {
 		return err
@@ -119,6 +127,9 @@ func ListKeys(db *sql.DB, fileType string) error {
 
 	return nil
 }
+
+
+
 
 func checkDB(fname string) (password string, err error) {
 
