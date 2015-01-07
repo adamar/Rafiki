@@ -169,20 +169,21 @@ func DeleteKey(db *sql.DB, kId string) error {
 
 }
 
-func SelectKey(db *sql.DB, id string) string {
+func SelectKey(db *sql.DB, id string) (string, string) {
 
-	rows, err := db.Query("SELECT file from files WHERE id = ? ", id)
+	rows, err := db.Query("SELECT file, filename from files WHERE id = ? ", id)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
 
-	var csr string = ""
+	var fid string
+    var filename string
 	for rows.Next() {
-		rows.Scan(&csr)
+		rows.Scan(&fid, &filename)
 	}
 
-	return csr
+	return fid, filename
 
 }
 

@@ -182,17 +182,13 @@ func (raf *Rafiki) List() {
 
 func (raf *Rafiki) Export() {
 
-	//err := CheckFileFlag(c)
-	//if err != nil {
-	//    log.Print(err)
-	//}
-
 	keyname := GetKeyName()
 
-	ciphertext := SelectKey(raf.DB, keyname)
+	ciphertext, filename := SelectKey(raf.DB, keyname)
 
 	cleartext, err := DecryptString([]byte(raf.Password), ciphertext)
-	err = ioutil.WriteFile(raf.FileLoc, []byte(cleartext), 0644)
+    err = ioutil.WriteFile(filename, []byte(cleartext), 0644)
+	
 	if err != nil {
 		panic(err)
 	}
