@@ -98,7 +98,7 @@ func ListKeys(db *sql.DB, fileType string) error {
     if fileType != "" {
         query = fmt.Sprintf("select id, identity, filename from files WHERE type = %s", fileType)
     } else {
-        query = "select id, identity, filename, filename from files"
+        query = fmt.Sprintf("select id, identity, filename from files")
     }
 
     rows, err := db.Query(query)
@@ -108,11 +108,11 @@ func ListKeys(db *sql.DB, fileType string) error {
 	}
 
 	for rows.Next() {
-		var cn string
 		var id string
+		var identity string
         var filename string
-		rows.Scan(&cn, &id, &filename)
-		new = append(new, []string{cn, id, filename})
+		rows.Scan(&id, &identity, &filename)
+		new = append(new, []string{id, identity, filename})
 	}
 	rows.Close()
 
