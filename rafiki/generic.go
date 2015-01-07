@@ -182,6 +182,8 @@ func (raf *Rafiki) List() {
 
 func (raf *Rafiki) Export() {
 
+    err := ListKeys(raf.DB, "")
+
 	keyname := GetKeyName()
 
 	ciphertext, filename := SelectKey(raf.DB, keyname)
