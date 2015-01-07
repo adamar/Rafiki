@@ -159,10 +159,11 @@ func (raf *Rafiki) Import() {
 func (raf *Rafiki) Delete() {
 
 	newReader := bufio.NewReader(os.Stdin)
-	log.Print("Please enter the Key ID to Delete:")
+	PrintOrange("Please enter the Key ID to Delete:")
 	kId, _ := newReader.ReadString('\n')
 	DeleteKey(raf.DB, kId)
-	log.Print(kId)
+    ClearScreen()
+	PrintOrange(" Deleted key " + kId)
 
 }
 
@@ -170,7 +171,7 @@ func (raf *Rafiki) Delete() {
 func (raf *Rafiki) List() {
 
     ClearScreen()
-	PrintOrange("\n" + strings.Title("Key ") + " list" + "\n")
+	PrintOrange("\n Key list \n")
 	err := ListKeys(raf.DB, "")
 	if err != nil {
 		log.Print(err)
