@@ -96,9 +96,9 @@ func ListKeys(db *sql.DB, fileType string) error {
 
     var query string
     if fileType != "" {
-        query = fmt.Sprintf("select id, identity, filename from files WHERE type = %s", fileType)
+        query = fmt.Sprintf("select id, identity, filename, type from files WHERE type = %s", fileType)
     } else {
-        query = fmt.Sprintf("select id, identity, filename from files")
+        query = fmt.Sprintf("select id, identity, filename, type from files order by type")
     }
 
     rows, err := db.Query(query)
@@ -111,13 +111,14 @@ func ListKeys(db *sql.DB, fileType string) error {
 		var id string
 		var identity string
         var filename string
-		rows.Scan(&id, &identity, &filename)
-		new = append(new, []string{id, identity, filename})
+        var ftype string
+		rows.Scan(&id, &identity, &filename, &ftype)
+		new = append(new, []string{id, identity, filename, ftype})
 	}
 	rows.Close()
 
 	tabulate := gotabulate.Create(new)
-	tabulate.SetHeaders([]string{"ID", "CommonName", "Filename"})
+	tabulate.SetHeaders([]string{"ID", "CommonName", "Filename", "File Type"})
 
 	if len(new) > 0 {
 		fmt.Println(tabulate.Render("grid"))
