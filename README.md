@@ -27,7 +27,7 @@ List CSRs
 
 Export CSR to a file
 ```sh
-./Rafiki csr export --file=/loc/of/newfile.csr
+./Rafiki csr export
 ```
 
 
@@ -75,9 +75,6 @@ ToDo
 -----------
 - Write Tests
 - Add more error checking
-- Create generic import function, use type checking
-  to figure out key type
-- Store original filename in DB for export
 - Better text layout
 - Print out file details on import & export
 - Add (unautheticated) option to profile a key
