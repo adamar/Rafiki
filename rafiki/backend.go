@@ -118,7 +118,7 @@ func ListKeys(db *sql.DB, fileType string) error {
 	rows.Close()
 
 	tabulate := gotabulate.Create(new)
-	tabulate.SetHeaders([]string{"ID", "CommonName", "Filename", "File Type"})
+	tabulate.SetHeaders([]string{"ID", "CommonName / Fingerprint", "Filename", "File Type"})
 
 	if len(new) > 0 {
 		fmt.Println(tabulate.Render("grid"))
