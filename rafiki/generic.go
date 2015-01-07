@@ -190,10 +190,12 @@ func (raf *Rafiki) Export() {
 
 	cleartext, err := DecryptString([]byte(raf.Password), ciphertext)
     err = ioutil.WriteFile(filename, []byte(cleartext), 0644)
-	
+
 	if err != nil {
 		panic(err)
 	}
+
+    PrintOrange("Exported " + filename)
 
 }
 
