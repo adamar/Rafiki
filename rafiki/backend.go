@@ -223,12 +223,6 @@ func CheckIsPasswordSet(db *sql.DB) (string, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	//defer rows.Close()
-
-	//var pass string
-	//for rows.Next() {
-	//    rows.Scan(&pass)
-	//}
 
 	return count, nil
 
