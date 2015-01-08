@@ -5,7 +5,6 @@ package rafiki
 import  (
         "testing"
         "strings"
-        "fmt"
         )
 
 func TestEncryptString(t *testing.T) {
@@ -18,8 +17,6 @@ func TestEncryptString(t *testing.T) {
         t.Error("Encrypt String Failed")
     }
 
-    fmt.Printf(output)
-
     expected_prefix := `-----BEGIN PGP SIGNATURE-----`
 
     if strings.HasPrefix(output, expected_prefix)  != true {
@@ -29,7 +26,7 @@ func TestEncryptString(t *testing.T) {
 }
 
 
-//func TestDecryptString(t *testing.T) {
+func TestDecryptString(t *testing.T) {
 
 
     encrypted_string := `-----BEGIN PGP SIGNATURE-----
@@ -40,12 +37,17 @@ jRrR4JTiMQpe2eCa5JakEfxBOb2pw1ud0q8g+gjiR+eWGuEfjwA=
 =W3OG
 -----END PGP SIGNATURE-----`
  
-
     key := []byte("My Encryption Key")
 
+    clearText := `My Important Data to Encrypt`
 
     output, err := DecryptString(key, encrypted_string)
+    if err != nil {
+        t.Error("Decrypt String Failed")
+    }
 
-
+    if output != clearText {
+        t.Error("Decrypted String doesnt match expected output")
+    }
 
 }
