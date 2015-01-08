@@ -153,6 +153,8 @@ func (raf *Rafiki) Import() {
 
 	InsertKey(raf.DB, commonName, keyType, ciphertext, fileName)
 
+    PrintOrange("Imported " + fileName)
+
 }
 
 

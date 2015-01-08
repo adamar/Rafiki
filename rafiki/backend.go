@@ -44,7 +44,7 @@ func PromptToCreateDB() {
 
 func GetKeyName() string {
 
-	msg := "Which key?"
+	msg := "Which key ID?"
 	var i string
 	fmt.Println(msg)
 	fmt.Scan(&i)
