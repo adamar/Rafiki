@@ -205,6 +205,6 @@ func calcThumbprint(input []byte) string {
     prefix := "Modulus="
     suffix := "\n"
     modulus := strings.ToUpper(hex.EncodeToString(input))
-    return md5String(prefix + modulus + suffix)
+    return formatMd5(md5String(prefix + modulus + suffix))
 
 }
