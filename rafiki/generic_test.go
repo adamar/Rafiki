@@ -4,11 +4,72 @@ package rafiki
 
 import  (
         "testing"
-        "strings"
         )
 
 func TestNewRafikiKey(t *testing.T) {
-    //NewRafikiKey(buf []byte) *Key
 
+    sshPrivKey := []byte(`-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEA5XDYwIy0qA/Nyb77pB/w2TljjFXAIe7o/YH88QPLSW3x0eQr
+DnHx7Ad6rBhcN7IdH+qvbKjCrU9yCXKBrDt1psvM1BbqbziQBHxV34/uGyCMiKqS
+FA9wjN8uuyCRoHnf4XAzdKsb1l9NQpqZGYnu6Yy55KYIar37QbSQLyTu8vz1q8HP
+wQe2cIiaNBSlLJhpRuVGxcu2aYcJy92gqt2qpS9GuDMUpz6181Dju2GF6DTsV7Oq
+DdBAgCOIBODcxbkSaZ1iuBm+AlS6EkXHY19faAAXWB6ZgCVBk0ankRhKjJ8jmp6o
+MSgOYCvXSMAcsir3CwMDcM+5n5ja4s+rG8rV+wIDAQABAoIBAHQxSsNwPkjiAABM
+RJmgR1NqmbxG7M8Cc2F2g8b2eeuMzyrRFvDwyWgTfY9Lot/dxpwUOJSZfkVQd1rL
+b1nunq1Chk9d74k1ptFuufpGpHl+aU0IvIOGMiRVHhBL9RPExJkhPh22TZmpl7HE
+IwZo8OG7j6R4ZMjRvz1OGLqXRJ8uf9RYfiXsPde0So+d+OhKVBp8SSOIK1a/7eCF
+k5zdnQ5dlqcEdyoElCFOVygmEsLuVstU99yo3k4BheM6AXTwbs8n2yRL16TPQPXW
+D0yll3a14anTlSOcM3giiXC3obCyxmlgVUwuL6hssCe+jPwrmgaNHUp3v6zZ+HeJ
+kGkNNsECgYEA/7jupFka5L8VgM3B8+3lOaYz25Pv44RrgmGaIvdM4JpzahVf6vX7
+PiXHK2mUiTD6NRT2N7wlgIIB+D/51iHpuZ7VsrWVPETyn1+3CX4NASmmDlHcVDck
+3MTt5km+JrC3fI6msvwG9vJLzdy3SmXpKcFFqIsp1x5MdniuCqUsctsCgYEA5bCc
+Ttx6r43X8TDBzrsxQDSKXGjaVBJmByFMkZNQae7iLJak/TKkcokX5cNbCa6S+373
+0+lsJ/B+wXX23yfJfJHtWYqc6ZaEJTHaBgSxZ3F9Jsb75NPe9pokci0EnFrs8W0H
+O56Dgg300+FFzkIaB7VJWMV5n8uDAiRXHKbsQ2ECgYEArJ5aQQiBFe5DBqpeBVoO
+BQdDNDK9mRhXNjDKSlYjR+4agH6jO8kF6uK3en+Pq7gq/dADkIXpzsBzse8Fp91G
+l203laXrcj6chKaouLik8Kb7l+j8UMDUmk44xN38hMN/aI4myuVDkkjmkLUv6QG4
+Dd6QNgCSosqqFMLLwRXUVkcCgYEAziGMdZ2aoPg8BqGKHPyTu5orXblfzrlgRR/W
+NoMtVJRk+D0Nvol3Wa68+p8ykWLRV9DfmpdOUB2dtAMo1aZARYI0rvodzegdmb++
+eU42463O8kD7iKW34Dn/YVQTYjqbkCMXraKZRNs/j/MIkY1zDN3eAEPg3c5nOUHh
+x73qJKECgYBgq1gM6iO8eZb9HTbx/hkUIPHQIuiTu0S9G6KAcs+PRYrbF3r7Q7Xq
+w0lbJsd9ssEhPthjeiOnb26G4zk9Y05f3kAsTZZSfzeivev83E+ZVnjFQ+9JmlQZ
+3AIsFC05TH+jhQSg5dzOMqrwwqRtBZopKFKzH0ckgnLQJQjdS2/4bw==
+-----END RSA PRIVATE KEY-----`)
+
+    output := NewRafikiKey(sshPrivKey)
+
+    if output.Type != 3 {
+        t.Error("RSA Key detection failed")
+    }
+
+
+}
+
+
+func TestNewRafikiKey2(t *testing.T) {
+
+    csrFile := []byte(`-----BEGIN CERTIFICATE REQUEST-----
+MIICrTCCAZUCAQAwaDELMAkGA1UEBhMCQUkxETAPBgNVBAgMCHVubGlzdGVkMREw
+DwYDVQQHDAh1bmxpc3RlZDERMA8GA1UECgwIdW5saXN0ZWQxCzAJBgNVBAsMAml0
+MRMwEQYDVQQDDApnb29nbGUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+CgKCAQEApy1G8fFLQBBnjCmKVIUMNb6StTXhFyxVbPHAHAeXdJLQe3/iVLlo76Dp
+poyAv4v8SSnNeOy50Nx8l7wWhy82sCoiv++K2ivKit41pQxZxcsyH9DXUhOJ9kwK
+lYFwTJtSmgmqFfI+Z6/9c6/ej13UL1oeBJw29mv1L4tYHE2Z1WfvyFXk6hv0hUUd
+VCNDJb4lAeAqio/jPUwNtX2nxftfxahZ1k4Qy+GS0z1S77Ov3qinEaPfYFVDAtmP
+2toExWVGa6eNdfyDzbM+arLYkxW+JVjjVTO6w2XG+HkLYMrhES/LizFLZOuxc4U/
+8zCRjJZy9PoUGTAhkKkjfQn8mXblvQIDAQABoAAwDQYJKoZIhvcNAQEFBQADggEB
+ACbNMcLaLMxl+rVqIvFo6X8LN1VARpUZZ1YucqAkPyp4Z0aaazqI3hyVAvgoq0cy
+6OUeFJUmW0xFzZ5WCswwhOqvknubjx7Kc49UTHr49S9ujJfV+vANkLbQbEbH/hm8
+vE1yxtElyLf1l6wvQX3nL2hGC34Z4m0ZVe3xR12vR7rmCjB3UwgobY814KPPlVxO
+ZVaSGQ3r6r49zhFzJtYXWwsAArcp2BA68ym+yCYvKr0MMy4xnfyi5cYOZD0Ey5Dc
+6bUUuufNc/DKeZlAEmlUCiOzdZKMKKfPWeTtY2raZpXlZD073gppWis3XdwrcGuG
+mgKoKxqcXKxji2jCEvBJuBM=
+-----END CERTIFICATE REQUEST-----`)
+
+    output := NewRafikiKey(csrFile)
+
+    if output.Type != 1 {
+        t.Error("CSR File detection failed")
+    }
 
 }
