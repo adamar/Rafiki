@@ -1,33 +1,32 @@
 Rafiki
 =========
 
-Rafiki is a simple SSL cert storage system written in Golang.
-
 ![rafiki](https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki.gif)
 
 
-Rafiki is a CLI tool for securely storing SSL cert files in a local SQLite3 Database. Imported files are first encrypted using GPG and then stored
-in the database along with an identifying key (ie. CommonName from CSRs). 
+Rafiki is a CLI tool for securely storing SSL and RSA files in a local SQLite3 Database. Imported files are first encrypted using GPG and then stored
+in the database along with an identifying key (ie. CommonName for CSRs, etc..) 
 
 The database will be created when Rafiki is run for the first time and can be re-located and referenced by Rafiki using the --db flag. 
 
+Note: The term 'key' is used throughout to refer to any/all types of files for simplicity's sake.
 
 Usage
 --------------
 
-Import a CSR file
+Import a key
 ```sh
-./Rafiki csr import --file=/loc/of/file.csr
+./Rafiki import --file=/loc/of/file.csr
 ```
 
-List CSRs
+List keys
 ```sh
-./Rafiki csr list
+./Rafiki list
 ```
 
-Export CSR to a file
+Export a key (using the original filename)
 ```sh
-./Rafiki csr export
+./Rafiki key export
 ```
 
 
@@ -73,7 +72,7 @@ openssl rsa -noout -modulus -in your-private.key | openssl md5
 
 ToDo
 -----------
-- Write Tests
+- Write more tests
 - Add more error checking
 - Better text layout
 - Print out file details on import & export
