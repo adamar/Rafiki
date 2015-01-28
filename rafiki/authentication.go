@@ -46,7 +46,6 @@ func CheckStoredPassword(db *sql.DB) bool {
 		return true
 	}
 
-	return false
 
 }
 
