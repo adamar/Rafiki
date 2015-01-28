@@ -20,7 +20,8 @@ func InitPassword(db *sql.DB) (string, error) {
 	if passIsSet == false {
 		password, _ := setPassword(db)
 		return password, nil
-	} else {
+	} 
+    if passIsSet == true {
 		password, err := checkPassword(db)
 		if err != nil {
 			PrintOrange("Sorry, your password appears to be incorrect!")

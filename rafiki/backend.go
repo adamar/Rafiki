@@ -122,7 +122,7 @@ func ListKeys(db *sql.DB, fileType string) error {
 	if len(new) > 0 {
 		fmt.Println(tabulate.Render("grid"))
 	} else {
-		fmt.Println("No Keys to Print\n")
+		fmt.Println("No Keys to Print")
 	}
 
 	return nil
@@ -139,7 +139,6 @@ func checkDB(fname string) (password string, err error) {
 		//password, err := checkPassword()
 		return password, err
 	}
-	return password, nil
 
 }
 
