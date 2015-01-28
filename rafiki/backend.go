@@ -1,16 +1,16 @@
 package rafiki
 
 import (
+	"crypto/md5"
 	"crypto/sha256"
-    "crypto/md5"
 	"database/sql"
 	"encoding/hex"
 	"fmt"
-    "log"
-    "os"
 	"github.com/bndr/gotabulate"
 	"github.com/codegangsta/cli"
 	_ "github.com/mattn/go-sqlite3"
+	"log"
+	"os"
 )
 
 func InitDB(c *cli.Context) *sql.DB {
@@ -93,15 +93,14 @@ func ListKeys(db *sql.DB, fileType string) error {
 
 	new := [][]string{}
 
+	var query string
+	if fileType != "" {
+		query = fmt.Sprintf("select id, identity, filename, type from files WHERE type = %s", fileType)
+	} else {
+		query = fmt.Sprintf("select id, identity, filename, type from files order by type")
+	}
 
-    var query string
-    if fileType != "" {
-        query = fmt.Sprintf("select id, identity, filename, type from files WHERE type = %s", fileType)
-    } else {
-        query = fmt.Sprintf("select id, identity, filename, type from files order by type")
-    }
-
-    rows, err := db.Query(query)
+	rows, err := db.Query(query)
 
 	if err != nil {
 		return err
@@ -110,8 +109,8 @@ func ListKeys(db *sql.DB, fileType string) error {
 	for rows.Next() {
 		var id string
 		var identity string
-        var filename string
-        var ftype string
+		var filename string
+		var ftype string
 		rows.Scan(&id, &identity, &filename, &ftype)
 		new = append(new, []string{id, identity, filename, ftype})
 	}
@@ -128,9 +127,6 @@ func ListKeys(db *sql.DB, fileType string) error {
 
 	return nil
 }
-
-
-
 
 func checkDB(fname string) (password string, err error) {
 
@@ -178,7 +174,7 @@ func SelectKey(db *sql.DB, id string) (string, string) {
 	defer rows.Close()
 
 	var fid string
-    var filename string
+	var filename string
 	for rows.Next() {
 		rows.Scan(&fid, &filename)
 	}
@@ -249,34 +245,30 @@ func hashStringToSHA256(input string) string {
 
 func md5String(input string) string {
 
-    hash := md5.New()
-    hash.Write([]byte(input))
-    return hex.EncodeToString(hash.Sum(nil))
+	hash := md5.New()
+	hash.Write([]byte(input))
+	return hex.EncodeToString(hash.Sum(nil))
 
 }
-
 
 func formatMd5(input string) string {
 
-    i := 0
-    final := ""
+	i := 0
+	final := ""
 
-    for _, c := range input {
-           
-        final = final + string(c)
-        i ++
+	for _, c := range input {
 
-        if i == len(input) {
-            break
-        }
+		final = final + string(c)
+		i++
 
-        if i%2 == 0 {
-            final = final + ":"
-        }
-    }
+		if i == len(input) {
+			break
+		}
 
-    return final
+		if i%2 == 0 {
+			final = final + ":"
+		}
+	}
+
+	return final
 }
-
-
-

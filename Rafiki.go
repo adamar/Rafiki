@@ -8,16 +8,15 @@ import (
 
 func main() {
 
-    // CLI parsing is done here
-    //
-    app := cli.NewApp()
-    app.Name = "Rafiki"
-    app.Version = "0.0.2"
-    app.Usage = "Store SSL Certs and CSRs securely"
-    app.Commands = rafiki.GenericCLI
+	// CLI parsing is done here
+	//
+	app := cli.NewApp()
+	app.Name = "Rafiki"
+	app.Version = "0.0.2"
+	app.Usage = "Store SSL Certs and CSRs securely"
+	app.Commands = rafiki.GenericCLI
 
-    // Start Application
-    //
-    app.Run(os.Args)
+	// Start Application
+	//
+	app.Run(os.Args)
 }
-

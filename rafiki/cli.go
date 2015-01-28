@@ -19,61 +19,59 @@ var DBLoc = cli.StringFlag{
 	Usage: "Location of the DB file",
 }
 
-
 var GenericCLI = []cli.Command{
-  {
-    Name:      "list",
-    ShortName: "l",
-    Usage:     "List all Keys stored in Rafiki",
-    Flags: []cli.Flag{
-                    FileLoc,
-                    DBLoc,
-                },
-    Action: func(c *cli.Context) {
-        raf := NewRafikiInit(c)
-        raf.List()
-     },
-  },
-  {
-    Name:      "delete",
-    ShortName: "d",
-    Usage:     "List all Keys stored in Rafiki",
-    Flags: []cli.Flag{
-                    FileLoc,
-                    DBLoc,
-                },
-    Action: func(c *cli.Context) {
-        raf := NewRafikiInit(c)
-        raf.Delete()
-     },
-  },
-  {
-    Name:      "import",
-    ShortName: "i",
-    Usage:     "Import a Key into Rafiki",
-    Flags: []cli.Flag{
-                    FileLoc,
-                    DBLoc,
-                },
-    Action: func(c *cli.Context) {
-        raf := NewRafikiInit(c)
-        raf.Import()
-     },
-  },
-  {
-    Name:      "export",
-    ShortName: "e",
-    Usage:     "Export a Key out of Rafiki",
-    Flags: []cli.Flag{
-                    FileLoc,
-                    DBLoc,
-                },
-    Action: func(c *cli.Context) {
+	{
+		Name:      "list",
+		ShortName: "l",
+		Usage:     "List all Keys stored in Rafiki",
+		Flags: []cli.Flag{
+			FileLoc,
+			DBLoc,
+		},
+		Action: func(c *cli.Context) {
+			raf := NewRafikiInit(c)
+			raf.List()
+		},
+	},
+	{
+		Name:      "delete",
+		ShortName: "d",
+		Usage:     "List all Keys stored in Rafiki",
+		Flags: []cli.Flag{
+			FileLoc,
+			DBLoc,
+		},
+		Action: func(c *cli.Context) {
+			raf := NewRafikiInit(c)
+			raf.Delete()
+		},
+	},
+	{
+		Name:      "import",
+		ShortName: "i",
+		Usage:     "Import a Key into Rafiki",
+		Flags: []cli.Flag{
+			FileLoc,
+			DBLoc,
+		},
+		Action: func(c *cli.Context) {
+			raf := NewRafikiInit(c)
+			raf.Import()
+		},
+	},
+	{
+		Name:      "export",
+		ShortName: "e",
+		Usage:     "Export a Key out of Rafiki",
+		Flags: []cli.Flag{
+			FileLoc,
+			DBLoc,
+		},
+		Action: func(c *cli.Context) {
 
-                    raf := NewRafikiInit(c)
-                    raf.Export()
-                    
-     },
-  },
+			raf := NewRafikiInit(c)
+			raf.Export()
+
+		},
+	},
 }
-

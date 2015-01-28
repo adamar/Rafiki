@@ -2,9 +2,9 @@ package rafiki
 
 import (
 	"bytes"
-    "io/ioutil"
 	"code.google.com/p/go.crypto/openpgp"
 	"code.google.com/p/go.crypto/openpgp/armor"
+	"io/ioutil"
 )
 
 const blockType = "PGP SIGNATURE"

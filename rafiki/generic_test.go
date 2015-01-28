@@ -1,14 +1,12 @@
-
 package rafiki
 
-
-import  (
-        "testing"
-        )
+import (
+	"testing"
+)
 
 func TestNewRafikiKey(t *testing.T) {
 
-    sshPrivKey := []byte(`-----BEGIN RSA PRIVATE KEY-----
+	sshPrivKey := []byte(`-----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEA5XDYwIy0qA/Nyb77pB/w2TljjFXAIe7o/YH88QPLSW3x0eQr
 DnHx7Ad6rBhcN7IdH+qvbKjCrU9yCXKBrDt1psvM1BbqbziQBHxV34/uGyCMiKqS
 FA9wjN8uuyCRoHnf4XAzdKsb1l9NQpqZGYnu6Yy55KYIar37QbSQLyTu8vz1q8HP
@@ -36,19 +34,17 @@ w0lbJsd9ssEhPthjeiOnb26G4zk9Y05f3kAsTZZSfzeivev83E+ZVnjFQ+9JmlQZ
 3AIsFC05TH+jhQSg5dzOMqrwwqRtBZopKFKzH0ckgnLQJQjdS2/4bw==
 -----END RSA PRIVATE KEY-----`)
 
-    output := NewRafikiKey(sshPrivKey)
+	output := NewRafikiKey(sshPrivKey)
 
-    if output.Type != 3 {
-        t.Error("RSA Key detection failed")
-    }
-
+	if output.Type != 3 {
+		t.Error("RSA Key detection failed")
+	}
 
 }
 
-
 func TestNewRafikiKey2(t *testing.T) {
 
-    csrFile := []byte(`-----BEGIN CERTIFICATE REQUEST-----
+	csrFile := []byte(`-----BEGIN CERTIFICATE REQUEST-----
 MIICrTCCAZUCAQAwaDELMAkGA1UEBhMCQUkxETAPBgNVBAgMCHVubGlzdGVkMREw
 DwYDVQQHDAh1bmxpc3RlZDERMA8GA1UECgwIdW5saXN0ZWQxCzAJBgNVBAsMAml0
 MRMwEQYDVQQDDApnb29nbGUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
@@ -66,10 +62,10 @@ ZVaSGQ3r6r49zhFzJtYXWwsAArcp2BA68ym+yCYvKr0MMy4xnfyi5cYOZD0Ey5Dc
 mgKoKxqcXKxji2jCEvBJuBM=
 -----END CERTIFICATE REQUEST-----`)
 
-    output := NewRafikiKey(csrFile)
+	output := NewRafikiKey(csrFile)
 
-    if output.Type != 1 {
-        t.Error("CSR File detection failed")
-    }
+	if output.Type != 1 {
+		t.Error("CSR File detection failed")
+	}
 
 }
