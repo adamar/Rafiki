@@ -6,6 +6,10 @@ import (
 	"os"
 )
 
+
+// ReadFile takes a files locationm reads the contents
+// and returns a byte array of the file
+//
 func ReadFile(fileLoc string) ([]byte, error) {
 
 	// Check File Flag set
@@ -31,6 +35,8 @@ func ReadFile(fileLoc string) ([]byte, error) {
 
 }
 
+// CheckFileFlag checks if the file flag is set
+//
 func CheckFileFlag(fileLoc string) error {
 
 	// Check File Flag set

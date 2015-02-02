@@ -19,6 +19,9 @@ var DBLoc = cli.StringFlag{
 	Usage: "Location of the DB file",
 }
 
+
+// GenericCLI lays out the available commands
+//
 var GenericCLI = []cli.Command{
 	{
 		Name:      "list",
