@@ -5,10 +5,13 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+    // Require SQlite lib
 	_ "github.com/mattn/go-sqlite3"
 	"os"
 )
 
+// InitPassword function handles
+// request password from user
 func InitPassword(db *sql.DB) (string, error) {
 
 	ClearScreen()
@@ -34,7 +37,7 @@ func InitPassword(db *sql.DB) (string, error) {
 
 }
 
-// Check if a password is tored in the DB
+// CheckStoredPassword checks if a password is stored in the DB
 //
 func CheckStoredPassword(db *sql.DB) bool {
 
@@ -43,9 +46,10 @@ func CheckStoredPassword(db *sql.DB) bool {
 	// Should attempt change to int before checking
 	if res == "0" {
 		return false
-	} else {
-		return true
-	}
+	} 
+	
+    return true
+	
 
 
 }
@@ -73,29 +77,29 @@ func checkPassword(db *sql.DB) (pass string, err error) {
 //
 func setPassword(db *sql.DB) (passwd string, err error) {
 
-	pass_attempt_one, err := gopass.GetPass("Please Enter the Password For your New Database:")
+	passAttemptOne, err := gopass.GetPass("Please Enter the Password For your New Database:")
 	if err != nil {
 		return "", err
 	}
 
-	pass_attempt_two, err := gopass.GetPass("Please re-enter your new Password:")
+	passAttemptTwo, err := gopass.GetPass("Please re-enter your new Password:")
 	if err != nil {
 		return "", err
 	}
 
-	if pass_attempt_one != pass_attempt_two {
+	if passAttemptOne != passAttemptTwo {
 
 		passwd := ""
 		err = fmt.Errorf("Sorry, the Passwords you entered dont match")
 		return passwd, err
 
-	} else {
+    }
 
-		hashedPassword := hashStringToSHA256(pass_attempt_one)
-		err = InsertPassword(db, hashedPassword)
-		if err != nil {
-			panic(err)
-		}
-		return pass_attempt_one, err
+    hashedPassword := hashStringToSHA256(passAttemptOne)
+	err = InsertPassword(db, hashedPassword)
+	if err != nil {
+		panic(err)
 	}
+	return passAttemptOne, err
+
 }
