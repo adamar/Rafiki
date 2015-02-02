@@ -6,7 +6,6 @@ import (
 	"os"
 )
 
-
 // ReadFile takes a files locationm reads the contents
 // and returns a byte array of the file
 //

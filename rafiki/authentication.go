@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-    // Require SQlite lib
+	// Require SQlite lib
 	_ "github.com/mattn/go-sqlite3"
 	"os"
 )
@@ -23,8 +23,8 @@ func InitPassword(db *sql.DB) (string, error) {
 	if passIsSet == false {
 		password, _ := setPassword(db)
 		return password, nil
-	} 
-    if passIsSet == true {
+	}
+	if passIsSet == true {
 		password, err := checkPassword(db)
 		if err != nil {
 			PrintOrange("Sorry, your password appears to be incorrect!")
@@ -46,11 +46,9 @@ func CheckStoredPassword(db *sql.DB) bool {
 	// Should attempt change to int before checking
 	if res == "0" {
 		return false
-	} 
-	
-    return true
-	
+	}
 
+	return true
 
 }
 
@@ -93,9 +91,9 @@ func setPassword(db *sql.DB) (passwd string, err error) {
 		err = fmt.Errorf("Sorry, the Passwords you entered dont match")
 		return passwd, err
 
-    }
+	}
 
-    hashedPassword := hashStringToSHA256(passAttemptOne)
+	hashedPassword := hashStringToSHA256(passAttemptOne)
 	err = InsertPassword(db, hashedPassword)
 	if err != nil {
 		panic(err)
