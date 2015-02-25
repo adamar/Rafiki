@@ -18,7 +18,7 @@ func InitDB(c *cli.Context) *sql.DB {
 	fname := c.String("db")
 
 	if _, err := os.Stat(fname); os.IsNotExist(err) {
-		log.Print("db doesnt exit")
+		ClearScreen()
 		PromptToCreateDB()
 	}
 
