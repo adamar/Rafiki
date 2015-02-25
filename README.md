@@ -26,8 +26,11 @@ List keys
 
 Export a key (using the original filename)
 ```sh
-./Rafiki key export
+./Rafiki export
 ```
+
+![rafiki-export](https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki-export.gif)
+
 
 
 Dependencies
