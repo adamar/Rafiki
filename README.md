@@ -15,7 +15,7 @@ Note: The term 'key' is used throughout to refer to any/all types of files for s
 Installation
 --------------
 
-Ensure that your go bin is setup correctly [GOBIN]
+Ensure that your go bin is setup correctly [GO-BIN]
 
 then run 
 
@@ -29,21 +29,21 @@ Usage
 
 #### Import a key
 ```sh
-./Rafiki import --file=/loc/of/file.csr
+./rafiki import --file=/loc/of/file
 ```
 
 ![rafiki-import](https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki-import.gif)
 
 #### List keys
 ```sh
-./Rafiki list
+./rafiki list
 ```
 
 ![rafiki-list](https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki-list.gif)
 
 #### Export a key (using the original filename)
 ```sh
-./Rafiki export
+./rafiki export
 ```
 
 ![rafiki-export](https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki-export.gif)
@@ -61,7 +61,7 @@ Dependencies
 Development Misc
 -------------
 
-Useful Testing Tools
+#### Useful Testing Tools
 
 Print Public Key Fingerprint
 ```sh
@@ -92,7 +92,7 @@ openssl rsa -noout -modulus -in your-private.key | openssl md5
 
 To Do
 -----------
-- ReWrite of internals, the progrma flow is a mess at the moment
+- ReWrite of internals, the program flow is a mess at the moment
 - Write more tests
 - Add more error checking
 - Better text layout
@@ -109,5 +109,5 @@ Useful Resources
 
 
 [CSR FAQ]:http://redkestrel.co.uk/articles/CSR-FAQ/
-[GOBIN]:https://github.com/golang/go/wiki/GOPATH#directory-layout
+[GO-BIN]:https://github.com/golang/go/wiki/GOPATH#directory-layout
 
