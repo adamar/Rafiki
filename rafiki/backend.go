@@ -16,6 +16,13 @@ import (
 func InitDB(c *cli.Context) *sql.DB {
 
 	fname := c.String("db")
+	log.Print(fname)
+
+	if fname == "rafiki.db" {
+		if os.Getenv("HOME") != "" {
+			fname = os.Getenv("HOME") + "/.rafiki.db"
+		}
+	}
 
 	if _, err := os.Stat(fname); os.IsNotExist(err) {
 		ClearScreen()
@@ -55,9 +62,16 @@ func GetKeyName() string {
 
 func CreateDB() error {
 
+	// Set the DB Path to a hidden file
+	//
+	dbPath := "./rafiki.db"
+	if os.Getenv("HOME") != "" {
+		dbPath = os.Getenv("HOME") + "/.rafiki.db"
+	}
+
 	// Create Database File
 	//
-	db, err := sql.Open("sqlite3", "./rafiki.db")
+	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		return err
 	}
