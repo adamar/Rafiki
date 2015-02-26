@@ -14,19 +14,21 @@ Note: The term 'key' is used throughout to refer to any/all types of files for s
 Usage
 --------------
 
-Import a key
+#### Import a key
 ```sh
 ./Rafiki import --file=/loc/of/file.csr
 ```
 
 ![rafiki-import](https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki-import.gif)
 
-List keys
+#### List keys
 ```sh
 ./Rafiki list
 ```
 
-Export a key (using the original filename)
+![rafiki-list](https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki-list.gif)
+
+#### Export a key (using the original filename)
 ```sh
 ./Rafiki export
 ```
