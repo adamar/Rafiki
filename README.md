@@ -11,6 +11,19 @@ The database will be created when Rafiki is run for the first time and can be re
 
 Note: The term 'key' is used throughout to refer to any/all types of files for simplicity's sake.
 
+
+Installation
+--------------
+
+Ensure that your go bin is setup correctly [GOBIN]
+
+then run 
+
+```sh
+go install github.com/adamar/rafiki
+```
+
+
 Usage
 --------------
 
@@ -77,8 +90,9 @@ openssl rsa -noout -modulus -in your-private.key | openssl md5
 
 
 
-ToDo
+To Do
 -----------
+- ReWrite of internals, the progrma flow is a mess at the moment
 - Write more tests
 - Add more error checking
 - Better text layout
@@ -90,12 +104,10 @@ ToDo
 Useful Resources
 ------------
 
-http://redkestrel.co.uk/articles/CSR-FAQ/
-
 * [CSR FAQ] - Certificate Signing Request FAQ
 
 
 
 [CSR FAQ]:http://redkestrel.co.uk/articles/CSR-FAQ/
-
+[GOBIN]:https://github.com/golang/go/wiki/GOPATH#directory-layout
 
