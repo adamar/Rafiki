@@ -19,6 +19,8 @@ Import a key
 ./Rafiki import --file=/loc/of/file.csr
 ```
 
+![rafiki-import](https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki-import.gif)
+
 List keys
 ```sh
 ./Rafiki list
