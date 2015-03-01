@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./rafiki"
+	"github.com/adamar/rafiki/rafiki"
 	"github.com/codegangsta/cli"
 	"os"
 )
