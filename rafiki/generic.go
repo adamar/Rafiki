@@ -191,7 +191,7 @@ func (raf *Rafiki) Export() {
 
 }
 
-func (raf *rafiki) Profile() {
+func (raf *Rafiki) Profile() {
 
 	log.Print("Not implemented yet")
 
