@@ -191,6 +191,10 @@ func (raf *Rafiki) Export() {
 
 }
 
+func (raf *rafiki) Profile() {
+
+}
+
 func calcThumbprint(input []byte) string {
 
 	prefix := "Modulus="
