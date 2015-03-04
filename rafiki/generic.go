@@ -193,6 +193,8 @@ func (raf *Rafiki) Export() {
 
 func (raf *rafiki) Profile() {
 
+	log.Print("Not implemented yet")
+
 }
 
 func calcThumbprint(input []byte) string {
