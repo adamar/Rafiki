@@ -76,4 +76,19 @@ var GenericCLI = []cli.Command{
 
 		},
 	},
+	{
+		Name:      "profile",
+		ShortName: "p",
+		Usage:     "Profile a Key",
+		Flags: []cli.Flag{
+			FileLoc,
+			DBLoc,
+		},
+		Action: func(c *cli.Context) {
+
+			raf := NewRafikiInit(c)
+			raf.Profile()
+
+		},
+	},
 }
