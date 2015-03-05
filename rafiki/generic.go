@@ -77,10 +77,11 @@ func NewRafikiKey(buf []byte) *Key {
 
 func NewRafikiInit(c *cli.Context, checkAuth bool) (raf *Rafiki) {
 
-	// Check if File string populated and set file
-	//if c.String("f") != "" {
-	//	log.Print("f set")
-	//}
+	var filePath string
+
+	if c.String("f") != "" {
+		filePath = c.String("f")
+	}
 
 	dbPath := ".rafiki.db"
 
@@ -89,16 +90,16 @@ func NewRafikiInit(c *cli.Context, checkAuth bool) (raf *Rafiki) {
 	}
 
 	if c.String("db") != "" {
-		dbPath := c.String("db")
+		dbPath = c.String("db")
 	}
 
-	db := InitDB(c)
+	db := InitDB(dbPath)
 
 	password, _ := InitPassword(db)
 
 	raf = &Rafiki{
 		RequireAuth: checkAuth,
-		FileLoc:     c.String("f"),
+		FileLoc:     filePath,
 		Password:    password,
 		DB:          db,
 	}

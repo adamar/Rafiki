@@ -7,29 +7,19 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/bndr/gotabulate"
-	"github.com/codegangsta/cli"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"os"
 )
 
-func InitDB(c *cli.Context) *sql.DB {
+func InitDB(dbPath string) *sql.DB {
 
-	fname := c.String("db")
-	log.Print(fname)
-
-	if fname == "rafiki.db" {
-		if os.Getenv("HOME") != "" {
-			fname = os.Getenv("HOME") + "/.rafiki.db"
-		}
-	}
-
-	if _, err := os.Stat(fname); os.IsNotExist(err) {
+	if _, err := os.Stat(dbPath); os.IsNotExist(err) {
 		ClearScreen()
 		PromptToCreateDB()
 	}
 
-	db := createDBConn(fname)
+	db := createDBConn(dbPath)
 
 	return db
 
