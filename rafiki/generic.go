@@ -87,9 +87,12 @@ func NewRafikiInit(c *cli.Context, checkAuth bool) (raf *Rafiki) {
 
 	if os.Getenv("HOME") != "" {
 		dbPath = os.Getenv("HOME") + "/" + dbPath
+		//log.Print(dbPath)
 	}
 
-	if c.String("db") != "" {
+	log.Print(c.String("db"))
+
+	if c.IsSet("db") == true {
 		dbPath = c.String("db")
 	}
 

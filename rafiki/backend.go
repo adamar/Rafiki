@@ -14,9 +14,10 @@ import (
 
 func InitDB(dbPath string) (*sql.DB, error) {
 
+	log.Print(dbPath)
 	if _, err := os.Stat(dbPath); os.IsNotExist(err) {
 		ClearScreen()
-		PromptToCreateDB()
+		PromptToCreateDB(dbPath)
 	}
 
 	db, err := sql.Open("sqlite3", dbPath)
@@ -28,14 +29,14 @@ func InitDB(dbPath string) (*sql.DB, error) {
 
 }
 
-func PromptToCreateDB() {
+func PromptToCreateDB(dbPath string) {
 
 	msg := "No DB Specified, Y/N to create a new one"
 	var i string
 	fmt.Println(msg)
 	fmt.Scan(&i)
 	if i == "y" {
-		CreateDB()
+		CreateDB(dbPath)
 	} else {
 		os.Exit(1)
 	}
@@ -53,14 +54,7 @@ func GetKeyName() string {
 
 }
 
-func CreateDB() error {
-
-	// Set the DB Path to a hidden file
-	//
-	dbPath := "./rafiki.db"
-	if os.Getenv("HOME") != "" {
-		dbPath = os.Getenv("HOME") + "/.rafiki.db"
-	}
+func CreateDB(dbPath string) error {
 
 	// Create Database File
 	//
