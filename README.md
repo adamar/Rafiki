@@ -100,6 +100,8 @@ To Do
 - Add (unautheticated) option to profile a key
 - Add sub command to "List" option to filter on key type
 - Add API Key file type definition
+- Flatten file structure
+- Move File checking from import to its own function
 
 
 
