@@ -12,16 +12,19 @@ import (
 	"os"
 )
 
-func InitDB(dbPath string) *sql.DB {
+func InitDB(dbPath string) (*sql.DB, error) {
 
 	if _, err := os.Stat(dbPath); os.IsNotExist(err) {
 		ClearScreen()
 		PromptToCreateDB()
 	}
 
-	db := createDBConn(dbPath)
+	db, err := sql.Open("sqlite3", dbPath)
+	if err != nil {
+		return nil, err
+	}
 
-	return db
+	return db, nil
 
 }
 
@@ -132,19 +135,19 @@ func ListKeys(db *sql.DB, fileType string) error {
 	return nil
 }
 
-func checkDB(fname string) (password string, err error) {
-
-	if _, err := os.Stat(fname); os.IsNotExist(err) {
-		log.Print("db doesnt exit")
-		PromptToCreateDB()
-		//password, err := setPassword()
-		return password, err
-	} else {
-		//password, err := checkPassword()
-		return password, err
-	}
-
-}
+//func checkDB(fname string) (password string, err error) {
+//
+//	if _, err := os.Stat(fname); os.IsNotExist(err) {
+//		log.Print("db doesnt exit")
+//		PromptToCreateDB()
+//		//password, err := setPassword()
+//		return password, err
+//	} else {
+//		//password, err := checkPassword()
+//		return password, err
+//	}
+//
+//}
 
 func InsertKey(db *sql.DB, identity string, fileType string, fileContents string, fileName string) error {
 
@@ -227,15 +230,15 @@ func CheckIsPasswordSet(db *sql.DB) (string, error) {
 
 }
 
-func createDBConn(fname string) *sql.DB {
-
-	db, err := sql.Open("sqlite3", fname)
-	if err != nil {
-		log.Print(err)
-	}
-
-	return db
-}
+//func createDBConn(fname string) *sql.DB {
+//
+//	db, err := sql.Open("sqlite3", fname)
+//	if err != nil {
+//		log.Print(err)
+//	}
+//
+//	return db
+//}
 
 func hashStringToSHA256(input string) string {
 

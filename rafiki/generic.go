@@ -93,7 +93,7 @@ func NewRafikiInit(c *cli.Context, checkAuth bool) (raf *Rafiki) {
 		dbPath = c.String("db")
 	}
 
-	db := InitDB(dbPath)
+	db, _ := InitDB(dbPath)
 
 	password, _ := InitPassword(db)
 
