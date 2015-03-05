@@ -1,10 +1,7 @@
 package rafiki
 
 import (
-	"crypto/md5"
-	"crypto/sha256"
 	"database/sql"
-	"encoding/hex"
 	"fmt"
 	"github.com/bndr/gotabulate"
 	_ "github.com/mattn/go-sqlite3"
@@ -134,20 +131,6 @@ func ListKeys(db *sql.DB, fileType string) error {
 	return nil
 }
 
-//func checkDB(fname string) (password string, err error) {
-//
-//	if _, err := os.Stat(fname); os.IsNotExist(err) {
-//		log.Print("db doesnt exit")
-//		PromptToCreateDB()
-//		//password, err := setPassword()
-//		return password, err
-//	} else {
-//		//password, err := checkPassword()
-//		return password, err
-//	}
-//
-//}
-
 func InsertKey(db *sql.DB, identity string, fileType string, fileContents string, fileName string) error {
 
 	_, err := db.Exec("INSERT INTO files (identity, type, filename, file) VALUES (?, ?, ?, ?)", identity, fileType, fileName, fileContents)
@@ -227,53 +210,4 @@ func CheckIsPasswordSet(db *sql.DB) (string, error) {
 
 	return count, nil
 
-}
-
-//func createDBConn(fname string) *sql.DB {
-//
-//	db, err := sql.Open("sqlite3", fname)
-//	if err != nil {
-//		log.Print(err)
-//	}
-//
-//	return db
-//}
-
-func hashStringToSHA256(input string) string {
-
-	hash := sha256.New()
-	hash.Write([]byte(input))
-	chkSum := hash.Sum(nil)
-	return hex.EncodeToString(chkSum)
-
-}
-
-func md5String(input string) string {
-
-	hash := md5.New()
-	hash.Write([]byte(input))
-	return hex.EncodeToString(hash.Sum(nil))
-
-}
-
-func formatMd5(input string) string {
-
-	i := 0
-	final := ""
-
-	for _, c := range input {
-
-		final = final + string(c)
-		i++
-
-		if i == len(input) {
-			break
-		}
-
-		if i%2 == 0 {
-			final = final + ":"
-		}
-	}
-
-	return final
 }
