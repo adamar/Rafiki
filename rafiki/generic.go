@@ -74,15 +74,25 @@ func NewRafikiKey(buf []byte) *Key {
 
 }
 
-func NewRafikiInit(c *cli.Context) (raf *Rafiki) {
+func NewRafikiInit(c *cli.Context, checkAuth bool) (raf *Rafiki) {
 
+    var externalFile bool
+
+	// Check if File string populated and set file
+	// if c.String("f") != ""
+
+	// Check if DB string is populated and set file
+	// if c.Strin("db") != ""
+
+	// Do whole DB and Password section here
 	db := InitDB(c)
 	password, _ := InitPassword(db)
 
 	raf = &Rafiki{
-		FileLoc:  c.String("f"),
-		Password: password,
-		DB:       db,
+		RequireAuth  checkAuth,
+		FileLoc:     c.String("f"),
+		Password:    password,
+		DB:          db,
 	}
 
 	return raf
