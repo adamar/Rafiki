@@ -17,7 +17,12 @@ func InitDB(dbPath string) (*sql.DB, error) {
 	log.Print(dbPath)
 	if _, err := os.Stat(dbPath); os.IsNotExist(err) {
 		ClearScreen()
-		PromptToCreateDB(dbPath)
+		result := PromptToCreateDB()
+		if result == true {
+			CreateDB(dbPath)
+		} else {
+			os.Exit(1)
+		}
 	}
 
 	db, err := sql.Open("sqlite3", dbPath)
@@ -29,17 +34,17 @@ func InitDB(dbPath string) (*sql.DB, error) {
 
 }
 
-func PromptToCreateDB(dbPath string) {
+func PromptToCreateDB() bool {
 
 	msg := "No DB Specified, Y/N to create a new one"
 	var i string
 	fmt.Println(msg)
 	fmt.Scan(&i)
 	if i == "y" {
-		CreateDB(dbPath)
-	} else {
-		os.Exit(1)
+		return true
 	}
+
+	return false
 
 }
 
