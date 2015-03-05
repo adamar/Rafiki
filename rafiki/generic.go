@@ -82,13 +82,18 @@ func NewRafikiInit(c *cli.Context, checkAuth bool) (raf *Rafiki) {
 	//	log.Print("f set")
 	//}
 
-	// Check if DB string is populated and set file
-	//if c.String("db") != "" {
-	//	dbLoc := c.String("db")
-	//}
+	dbPath := ".rafiki.db"
 
-	// Do whole DB and Password section here
+	if os.Getenv("HOME") != "" {
+		dbPath = os.Getenv("HOME") + "/" + dbPath
+	}
+
+	if c.String("db") != "" {
+		dbPath := c.String("db")
+	}
+
 	db := InitDB(c)
+
 	password, _ := InitPassword(db)
 
 	raf = &Rafiki{
