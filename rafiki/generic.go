@@ -25,9 +25,10 @@ const (
 )
 
 type Rafiki struct {
-	FileLoc  string
-	Password string
-	DB       *sql.DB
+	RequireAuth bool
+	FileLoc     string
+	Password    string
+	DB          *sql.DB
 }
 
 type Key struct {
@@ -76,20 +77,22 @@ func NewRafikiKey(buf []byte) *Key {
 
 func NewRafikiInit(c *cli.Context, checkAuth bool) (raf *Rafiki) {
 
-    var externalFile bool
-
 	// Check if File string populated and set file
-	// if c.String("f") != ""
+	//if c.String("f") != "" {
+	//	log.Print("f set")
+	//}
 
 	// Check if DB string is populated and set file
-	// if c.Strin("db") != ""
+	//if c.String("db") != "" {
+	//	dbLoc := c.String("db")
+	//}
 
 	// Do whole DB and Password section here
 	db := InitDB(c)
 	password, _ := InitPassword(db)
 
 	raf = &Rafiki{
-		RequireAuth  checkAuth,
+		RequireAuth: checkAuth,
 		FileLoc:     c.String("f"),
 		Password:    password,
 		DB:          db,

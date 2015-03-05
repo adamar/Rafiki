@@ -31,7 +31,7 @@ var GenericCLI = []cli.Command{
 			DBLoc,
 		},
 		Action: func(c *cli.Context) {
-			raf := NewRafikiInit(c)
+			raf := NewRafikiInit(c, true)
 			raf.List()
 		},
 	},
@@ -44,7 +44,7 @@ var GenericCLI = []cli.Command{
 			DBLoc,
 		},
 		Action: func(c *cli.Context) {
-			raf := NewRafikiInit(c)
+			raf := NewRafikiInit(c, true)
 			raf.Delete()
 		},
 	},
@@ -57,7 +57,7 @@ var GenericCLI = []cli.Command{
 			DBLoc,
 		},
 		Action: func(c *cli.Context) {
-			raf := NewRafikiInit(c)
+			raf := NewRafikiInit(c, true)
 			raf.Import()
 		},
 	},
@@ -71,7 +71,7 @@ var GenericCLI = []cli.Command{
 		},
 		Action: func(c *cli.Context) {
 
-			raf := NewRafikiInit(c)
+			raf := NewRafikiInit(c, true)
 			raf.Export()
 
 		},
@@ -86,7 +86,7 @@ var GenericCLI = []cli.Command{
 		},
 		Action: func(c *cli.Context) {
 
-			raf := NewRafikiInit(c)
+			raf := NewRafikiInit(c, false)
 			raf.Profile()
 
 		},
