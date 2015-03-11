@@ -24,6 +24,7 @@ type Rafiki struct {
 }
 
 type Key struct {
+	Identifier   string
 	Type         string
 	FileContents []byte
 	ParsedKey    interface{}
@@ -40,22 +41,36 @@ func NewRafikiKey(buf []byte) *Key {
 
 	case validCert(block.Bytes):
 		sslcert, _ := x509.ParseCertificate(block.Bytes)
-		return &Key{Type: "sslcert", FileContents: block.Bytes, ParsedKey: sslcert}
+		return &Key{
+			Identifier:   string(sslcert.Subject.CommonName),
+			Type:         "sslcert",
+			FileContents: block.Bytes,
+			ParsedKey:    sslcert,
+		}
 
 	case validSSLKey(block.Bytes):
 		sslkey, _ := x509.ParsePKCS8PrivateKey(block.Bytes)
-		return &Key{Type: "sslkey", FileContents: block.Bytes, ParsedKey: sslkey}
+		return &Key{
+			Type:         "sslkey",
+			FileContents: block.Bytes,
+			ParsedKey:    sslkey,
+		}
 
 	case validSSHKey(block.Bytes):
 		sshkey, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
-		return &Key{Type: "sshkey", FileContents: block.Bytes, ParsedKey: sshkey}
+		return &Key{
+			Type:         "sshkey",
+			FileContents: block.Bytes,
+			ParsedKey:    sshkey,
+		}
 
 	case validECKey(block.Bytes):
 		ecpkey, _ := x509.ParseECPrivateKey(block.Bytes)
-		return &Key{Type: "ecpkey", FileContents: block.Bytes, ParsedKey: ecpkey}
-
-	default:
-		log.Print("fail")
+		return &Key{
+			Type:         "ecpkey",
+			FileContents: block.Bytes,
+			ParsedKey:    ecpkey,
+		}
 	}
 
 	return &Key{}
