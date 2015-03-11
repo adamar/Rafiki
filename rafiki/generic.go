@@ -37,7 +37,12 @@ func NewRafikiKey(buf []byte) *Key {
 	switch {
 	case validCSR(block.Bytes):
 		sslcsr, _ := x509.ParseCertificateRequest(block.Bytes)
-		return &Key{Type: "sslcsr", FileContents: block.Bytes, ParsedKey: sslcsr}
+		return &Key{
+			Identifier:   string(sslcsr.Subject.CommonName),
+			Type:         "sslcsr",
+			FileContents: block.Bytes,
+			ParsedKey:    sslcsr,
+		}
 
 	case validCert(block.Bytes):
 		sslcert, _ := x509.ParseCertificate(block.Bytes)
@@ -51,6 +56,7 @@ func NewRafikiKey(buf []byte) *Key {
 	case validSSLKey(block.Bytes):
 		sslkey, _ := x509.ParsePKCS8PrivateKey(block.Bytes)
 		return &Key{
+			Identifier:   calcThumbprint(sslkey.(*rsa.PrivateKey).N.Bytes()),
 			Type:         "sslkey",
 			FileContents: block.Bytes,
 			ParsedKey:    sslkey,
@@ -59,6 +65,7 @@ func NewRafikiKey(buf []byte) *Key {
 	case validSSHKey(block.Bytes):
 		sshkey, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
 		return &Key{
+			Identifier:   calcThumbprint(sshkey.N.Bytes()),
 			Type:         "sshkey",
 			FileContents: block.Bytes,
 			ParsedKey:    sshkey,
@@ -67,6 +74,7 @@ func NewRafikiKey(buf []byte) *Key {
 	case validECKey(block.Bytes):
 		ecpkey, _ := x509.ParseECPrivateKey(block.Bytes)
 		return &Key{
+			Identifier:   "ec", // Require proper identifier here
 			Type:         "ecpkey",
 			FileContents: block.Bytes,
 			ParsedKey:    ecpkey,
@@ -183,40 +191,13 @@ func (raf *Rafiki) Import() {
 		log.Print(err)
 	}
 
-	var commonName string
+	//var commonName string
 
 	myKey := NewRafikiKey(buf)
 
-	switch myKey.Type {
-	case "sslcert":
-
-		sslcert := myKey.ParsedKey.(*x509.Certificate)
-		commonName = string(sslcert.Subject.CommonName)
-
-	case "sslkey":
-
-		rsakey := myKey.ParsedKey.(*rsa.PrivateKey)
-		commonName = calcThumbprint(rsakey.N.Bytes())
-
-	case "sslcsr":
-
-		sslcsr := myKey.ParsedKey.(*x509.CertificateRequest)
-		commonName = string(sslcsr.Subject.CommonName)
-
-	case "sshkey":
-
-		sshkey := myKey.ParsedKey.(*rsa.PrivateKey)
-		commonName = calcThumbprint(sshkey.N.Bytes())
-
-	case "ecpkey":
-
-		commonName = "ec"
-
-	}
-
 	ciphertext, err := EncryptString([]byte(raf.Password), string(buf))
 
-	InsertKey(raf.DB, commonName, myKey.Type, ciphertext, fileName)
+	InsertKey(raf.DB, myKey.Identifier, myKey.Type, ciphertext, fileName)
 
 	PrintOrange("Imported " + fileName)
 
