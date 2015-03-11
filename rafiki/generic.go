@@ -55,23 +55,15 @@ func NewRafikiKey(buf []byte) *Key {
 		return &Key{Type: SSLKEY, FileContents: block.Bytes, ParsedKey: sslkey}
 
 	case validSSHKey(block.Bytes):
+		sshkey, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
+		return &Key{Type: SSHKEY, FileContents: block.Bytes, ParsedKey: sshkey}
 
 	case validECKey(block.Bytes):
+		ecpkey, err := x509.ParseECPrivateKey(block.Bytes)
+		return &Key{Type: ECPKEY, FileContents: block.Bytes, ParsedKey: ecpkey}
 
 	default:
 		log.Print("fail")
-	}
-
-	// RSA Private Key
-	sshkey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
-	if err == nil {
-		return &Key{Type: SSHKEY, FileContents: block.Bytes, ParsedKey: sshkey}
-	}
-
-	// EC Private Key
-	ecpkey, err := x509.ParseECPrivateKey(block.Bytes)
-	if err == nil {
-		return &Key{Type: ECPKEY, FileContents: block.Bytes, ParsedKey: ecpkey}
 	}
 
 	return &Key{}
