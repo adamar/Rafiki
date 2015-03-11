@@ -16,14 +16,6 @@ import (
 	"strings"
 )
 
-const (
-	SSLCERT = iota
-	SSLCSR  = iota
-	SSLKEY  = iota
-	SSHKEY  = iota
-	ECPKEY  = iota
-)
-
 type Rafiki struct {
 	RequireAuth bool
 	FileLoc     string
@@ -32,7 +24,7 @@ type Rafiki struct {
 }
 
 type Key struct {
-	Type         int
+	Type         string
 	FileContents []byte
 	ParsedKey    interface{}
 }
@@ -44,23 +36,23 @@ func NewRafikiKey(buf []byte) *Key {
 	switch {
 	case validCSR(block.Bytes):
 		sslcsr, _ := x509.ParseCertificateRequest(block.Bytes)
-		return &Key{Type: SSLCSR, FileContents: block.Bytes, ParsedKey: sslcsr}
+		return &Key{Type: "sslcsr", FileContents: block.Bytes, ParsedKey: sslcsr}
 
 	case validCert(block.Bytes):
 		sslcert, _ := x509.ParseCertificate(block.Bytes)
-		return &Key{Type: SSLCERT, FileContents: block.Bytes, ParsedKey: sslcert}
+		return &Key{Type: "sslcert", FileContents: block.Bytes, ParsedKey: sslcert}
 
 	case validSSLKey(block.Bytes):
 		sslkey, _ := x509.ParsePKCS8PrivateKey(block.Bytes)
-		return &Key{Type: SSLKEY, FileContents: block.Bytes, ParsedKey: sslkey}
+		return &Key{Type: "sslkey", FileContents: block.Bytes, ParsedKey: sslkey}
 
 	case validSSHKey(block.Bytes):
 		sshkey, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
-		return &Key{Type: SSHKEY, FileContents: block.Bytes, ParsedKey: sshkey}
+		return &Key{Type: "sshkey", FileContents: block.Bytes, ParsedKey: sshkey}
 
 	case validECKey(block.Bytes):
-		ecpkey, err := x509.ParseECPrivateKey(block.Bytes)
-		return &Key{Type: ECPKEY, FileContents: block.Bytes, ParsedKey: ecpkey}
+		ecpkey, _ := x509.ParseECPrivateKey(block.Bytes)
+		return &Key{Type: "ecpkey", FileContents: block.Bytes, ParsedKey: ecpkey}
 
 	default:
 		log.Print("fail")
@@ -176,45 +168,40 @@ func (raf *Rafiki) Import() {
 		log.Print(err)
 	}
 
-	var commonName, keyType string
+	var commonName string
 
 	myKey := NewRafikiKey(buf)
 
 	switch myKey.Type {
-	case SSLCERT:
+	case "sslcert":
 
 		sslcert := myKey.ParsedKey.(*x509.Certificate)
 		commonName = string(sslcert.Subject.CommonName)
-		keyType = "sslcert"
 
-	case SSLKEY:
+	case "sslkey":
 
 		rsakey := myKey.ParsedKey.(*rsa.PrivateKey)
 		commonName = calcThumbprint(rsakey.N.Bytes())
-		keyType = "sslkey"
 
-	case SSLCSR:
+	case "sslcsr":
 
 		sslcsr := myKey.ParsedKey.(*x509.CertificateRequest)
 		commonName = string(sslcsr.Subject.CommonName)
-		keyType = "sslcsr"
 
-	case SSHKEY:
+	case "sshkey":
 
 		sshkey := myKey.ParsedKey.(*rsa.PrivateKey)
 		commonName = calcThumbprint(sshkey.N.Bytes())
-		keyType = "sshkey"
 
-	case ECPKEY:
+	case "ecpkey":
 
 		commonName = "ec"
-		keyType = "ecpkey"
 
 	}
 
 	ciphertext, err := EncryptString([]byte(raf.Password), string(buf))
 
-	InsertKey(raf.DB, commonName, keyType, ciphertext, fileName)
+	InsertKey(raf.DB, commonName, myKey.Type, ciphertext, fileName)
 
 	PrintOrange("Imported " + fileName)
 
