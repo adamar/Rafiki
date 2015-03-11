@@ -95,6 +95,16 @@ func validCert(input []byte) bool {
 
 }
 
+func validSSLKey(input []byte) bool {
+
+	_, err := x509.ParsePKCS8PrivateKey(input)
+	if err != nil {
+		return false
+	}
+	return true
+
+}
+
 func NewRafikiInit(c *cli.Context, checkAuth bool) (raf *Rafiki) {
 
 	var filePath string
