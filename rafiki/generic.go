@@ -105,6 +105,16 @@ func validSSLKey(input []byte) bool {
 
 }
 
+func validSSHKey(input []byte) bool {
+
+	_, err := x509.ParsePKCS1PrivateKey(input)
+	if err != nil {
+		return false
+	}
+	return true
+
+}
+
 func NewRafikiInit(c *cli.Context, checkAuth bool) (raf *Rafiki) {
 
 	var filePath string
