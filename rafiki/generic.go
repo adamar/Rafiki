@@ -85,6 +85,16 @@ func validCSR(input []byte) bool {
 
 }
 
+func validCert(input []byte) bool {
+
+	_, err := x509.ParseCertificate(input)
+	if err != nil {
+		return false
+	}
+	return true
+
+}
+
 func NewRafikiInit(c *cli.Context, checkAuth bool) (raf *Rafiki) {
 
 	var filePath string
