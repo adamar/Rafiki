@@ -41,22 +41,25 @@ func NewRafikiKey(buf []byte) *Key {
 
 	block, _ := pem.Decode(buf)
 
-	// SSL Certificate
-	sslcert, err := x509.ParseCertificate(block.Bytes)
-	if err == nil {
-		return &Key{Type: SSLCERT, FileContents: block.Bytes, ParsedKey: sslcert}
-	}
-
-	// SSL Certificate Signing Request
-	sslcsr, err := x509.ParseCertificateRequest(block.Bytes)
-	if err == nil {
+	switch {
+	case validCSR(block.Bytes):
+		sslcsr, _ := x509.ParseCertificateRequest(block.Bytes)
 		return &Key{Type: SSLCSR, FileContents: block.Bytes, ParsedKey: sslcsr}
-	}
 
-	// SSL Private Key
-	sslkey, err := x509.ParsePKCS8PrivateKey(block.Bytes)
-	if err == nil {
+	case validCert(block.Bytes):
+		sslcert, _ := x509.ParseCertificate(block.Bytes)
+		return &Key{Type: SSLCERT, FileContents: block.Bytes, ParsedKey: sslcert}
+
+	case validSSLKey(block.Bytes):
+		sslkey, _ := x509.ParsePKCS8PrivateKey(block.Bytes)
 		return &Key{Type: SSLKEY, FileContents: block.Bytes, ParsedKey: sslkey}
+
+	case validSSHKey(block.Bytes):
+
+	case validECKey(block.Bytes):
+
+	default:
+		log.Print("fail")
 	}
 
 	// RSA Private Key
