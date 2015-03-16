@@ -246,7 +246,24 @@ func (raf *Rafiki) Export() {
 
 func (raf *Rafiki) Profile() {
 
-	log.Print("Not implemented yet")
+    err := CheckFileFlag(raf.FileLoc)
+    if err != nil {
+        log.Print("No --file flag set")
+        os.Exit(1)
+    }
+
+    //_, fileName := path.Split(raf.FileLoc)
+
+    buf, err := ReadFile(raf.FileLoc)
+    if err != nil {
+        log.Print(err)
+    }
+
+    //var commonName string
+
+    myKey := NewRafikiKey(buf)
+
+    log.Print(myKey.Identifier)
 
 }
 
