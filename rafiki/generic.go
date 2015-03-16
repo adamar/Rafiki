@@ -191,8 +191,6 @@ func (raf *Rafiki) Import() {
 		log.Print(err)
 	}
 
-	//var commonName string
-
 	myKey := NewRafikiKey(buf)
 
 	ciphertext, err := EncryptString([]byte(raf.Password), string(buf))
@@ -252,18 +250,14 @@ func (raf *Rafiki) Profile() {
         os.Exit(1)
     }
 
-    //_, fileName := path.Split(raf.FileLoc)
-
     buf, err := ReadFile(raf.FileLoc)
     if err != nil {
         log.Print(err)
     }
 
-    //var commonName string
-
     myKey := NewRafikiKey(buf)
 
-    log.Print(myKey.Identifier)
+    PrintOrange(myKey.Identifier)
 
 }
 
