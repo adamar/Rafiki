@@ -241,20 +241,22 @@ func (raf *Rafiki) Export() {
 
 func (raf *Rafiki) Profile() {
 
-    err := CheckFileFlag(raf.FileLoc)
-    if err != nil {
-        log.Print("No --file flag set")
-        os.Exit(1)
-    }
+	err := CheckFileFlag(raf.FileLoc)
+	if err != nil {
+		log.Print("No --file flag set")
+		os.Exit(1)
+	}
 
-    buf, err := ReadFile(raf.FileLoc)
-    if err != nil {
-        log.Print(err)
-    }
+	buf, err := ReadFile(raf.FileLoc)
+	if err != nil {
+		log.Print(err)
+	}
 
-    myKey := NewRafikiKey(buf)
+	myKey := NewRafikiKey(buf)
 
-    PrintOrange(myKey.Identifier)
+	PrintOrange(raf.FileLoc)
+	PrintOrange(myKey.Type)
+	PrintOrange(myKey.Identifier)
 
 }
 
