@@ -58,6 +58,26 @@ Dependencies
 
 
 
+Key Types Supported
+-------------
+
+Key Type | Identifier | Supported
+-------- | ------ | :---------:
+SSL Certificate | Common Name | Yes
+SSL Certificate Signing Request | Common Name | Yes
+SSL RSA Private Key | MD5 Fingerprint | Yes
+SSL ECDSA Private Key | MD5 Fingerprint | Yes
+SSH RSA Private Key | - | No
+SSH RSA Public Key | - | No
+SSH DSA Private Key | - | No
+SSH DSA Public Key | - | No
+SSH ECDSA Private Key | - | No
+SSH ECDSA Public Key | - | No
+GPG Private Key | - | No
+GPG Public Key | - | No
+
+
+
 Development Misc
 -------------
 
