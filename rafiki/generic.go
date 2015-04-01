@@ -9,6 +9,7 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"encoding/pem"
+	"fmt"
 	"github.com/codegangsta/cli"
 	_ "github.com/mattn/go-sqlite3"
 	"io/ioutil"
@@ -34,61 +35,61 @@ type Key struct {
 
 func NewRafikiKey(buf []byte) *Key {
 
-	block, _ := pem.Decode(buf)
+	block := checkPemDecode(buf)
 
 	switch {
-	case validCSR(block.Bytes):
-		sslcsr, _ := x509.ParseCertificateRequest(block.Bytes)
+	case validCSR(block):
+		sslcsr, _ := x509.ParseCertificateRequest(block)
 		return &Key{
 			Identifier:   string(sslcsr.Subject.CommonName),
 			Type:         "sslcsr",
-			FileContents: block.Bytes,
+			FileContents: block,
 			ParsedKey:    sslcsr,
 		}
 
-	case validCert(block.Bytes):
-		sslcert, _ := x509.ParseCertificate(block.Bytes)
+	case validCert(block):
+		sslcert, _ := x509.ParseCertificate(block)
 		return &Key{
 			Identifier:   string(sslcert.Subject.CommonName),
 			Type:         "sslcert",
-			FileContents: block.Bytes,
+			FileContents: block,
 			ParsedKey:    sslcert,
 		}
 
-	case validSSLKey(block.Bytes):
-		sslkey, _ := x509.ParsePKCS8PrivateKey(block.Bytes)
+	case validSSLKey(block):
+		sslkey, _ := x509.ParsePKCS8PrivateKey(block)
 		return &Key{
 			Identifier:   calcThumbprint(sslkey.(*rsa.PrivateKey).N.Bytes()),
 			Type:         "sslkey",
-			FileContents: block.Bytes,
+			FileContents: block,
 			ParsedKey:    sslkey,
 		}
 
-	case validRSAKey(block.Bytes):
-		sshkey, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
+	case validRSAKey(block):
+		sshkey, _ := x509.ParsePKCS1PrivateKey(block)
 		return &Key{
 			Identifier:   calcThumbprint(sshkey.N.Bytes()),
 			Type:         "sshkey",
-			FileContents: block.Bytes,
+			FileContents: block,
 			ParsedKey:    sshkey,
 		}
 
-	case validECKey(block.Bytes):
-		ecpkey, _ := x509.ParseECPrivateKey(block.Bytes)
+	case validECKey(block):
+		ecpkey, _ := x509.ParseECPrivateKey(block)
 		return &Key{
 			Identifier:   "ec", // Require proper identifier here
 			Type:         "ecpkey",
-			FileContents: block.Bytes,
+			FileContents: block,
 			ParsedKey:    ecpkey,
 		}
 
-	case validPGPKey(block.Bytes):
-		keyReader := bytes.NewReader(block.Bytes)
+	case validPGPKey(block):
+		keyReader := bytes.NewReader(block)
 		keyRing, _ := openpgp.ReadArmoredKeyRing(keyReader)
 		return &Key{
-			Identifier:   "pgpkey", // Require proper identifier here
+			Identifier:   fmt.Sprintf("0x0%x", keyRing[0].PrimaryKey.KeyId),
 			Type:         "pgpkey",
-			FileContents: block.Bytes,
+			FileContents: block,
 			ParsedKey:    keyRing,
 		}
 	}
@@ -104,6 +105,16 @@ func validCSR(input []byte) bool {
 		return false
 	}
 	return true
+
+}
+
+func checkPemDecode(buf []byte) []byte {
+
+	decoded, contents := pem.Decode(buf)
+	if decoded == nil {
+		return contents
+	}
+	return decoded.Bytes
 
 }
 
