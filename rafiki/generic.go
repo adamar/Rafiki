@@ -62,7 +62,7 @@ func NewRafikiKey(buf []byte) *Key {
 			ParsedKey:    sslkey,
 		}
 
-	case validSSHKey(block.Bytes):
+	case validRSAKey(block.Bytes):
 		sshkey, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
 		return &Key{
 			Identifier:   calcThumbprint(sshkey.N.Bytes()),
@@ -115,7 +115,7 @@ func validSSLKey(input []byte) bool {
 
 }
 
-func validSSHKey(input []byte) bool {
+func validRSAKey(input []byte) bool {
 
 	_, err := x509.ParsePKCS1PrivateKey(input)
 	if err != nil {
