@@ -73,8 +73,8 @@ SSH DSA Private Key | - | No
 SSH DSA Public Key | - | No
 SSH ECDSA Private Key | - | No
 SSH ECDSA Public Key | - | No
-GPG Private Key | - | No
-GPG Public Key | - | No
+PGP Private Key | - | No
+PGP Public Key | - | No
 
 
 
