@@ -74,7 +74,7 @@ SSH DSA Public Key | - | No
 SSH ECDSA Private Key | - | No
 SSH ECDSA Public Key | - | No
 PGP Private Key | - | No
-PGP Public Key | - | No
+PGP Public Key | Public Fingerprint | Yes
 
 
 
