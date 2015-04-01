@@ -81,6 +81,16 @@ func NewRafikiKey(buf []byte) *Key {
 			FileContents: block.Bytes,
 			ParsedKey:    ecpkey,
 		}
+
+	case validPGPKey(block.Bytes):
+		keyReader := bytes.NewReader(block.Bytes)
+		keyRing, _ := openpgp.ReadArmoredKeyRing(keyReader)
+		return &Key{
+			Identifier:   "pgpkey", // Require proper identifier here
+			Type:         "pgpkey",
+			FileContents: block.Bytes,
+			ParsedKey:    keyRing,
+		}
 	}
 
 	return &Key{}
