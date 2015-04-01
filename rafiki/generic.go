@@ -2,6 +2,8 @@ package rafiki
 
 import (
 	"bufio"
+	"bytes"
+	"code.google.com/p/go.crypto/openpgp"
 	"crypto/rsa"
 	"crypto/x509"
 	"database/sql"
@@ -128,6 +130,17 @@ func validRSAKey(input []byte) bool {
 func validECKey(input []byte) bool {
 
 	_, err := x509.ParseECPrivateKey(input)
+	if err != nil {
+		return false
+	}
+	return true
+
+}
+
+func validPGPKey(input []byte) bool {
+
+	keyReader := bytes.NewReader(input)
+	_, err := openpgp.ReadArmoredKeyRing(keyReader)
 	if err != nil {
 		return false
 	}
