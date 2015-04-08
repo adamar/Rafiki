@@ -84,6 +84,15 @@ func NewRafikiKey(buf []byte) *Key {
 			ParsedKey:    ecpkey,
 		}
 
+	case validPublicKey(block):
+		publickey, _ := ssh.ParsePublicKey(block)
+		return &Key{
+			Identifier:   "public", // Require proper identifier here
+			Type:         "publickey",
+			FileContents: block,
+			ParsedKey:    publickey,
+		}
+
 	case validPGPKey(block):
 		keyReader := bytes.NewReader(block)
 		keyRing, _ := openpgp.ReadArmoredKeyRing(keyReader)
