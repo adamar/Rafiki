@@ -68,11 +68,11 @@ SSL Certificate Signing Request | Common Name | Yes
 SSL RSA Private Key | MD5 Fingerprint | Yes
 SSL ECDSA Private Key | MD5 Fingerprint | Yes
 SSH RSA Private Key | - | No
-SSH RSA Public Key | - | No
+SSH RSA Public Key | MD5 Fingerprint | Yes
 SSH DSA Private Key | - | No
-SSH DSA Public Key | - | No
+SSH DSA Public Key | MD5 Fingerprint | Yes
 SSH ECDSA Private Key | - | No
-SSH ECDSA Public Key | - | No
+SSH ECDSA Public Key | MD5 Fingerprint | Yes
 PGP Private Key | - | No
 PGP Public Key | Public Fingerprint | Yes
 
