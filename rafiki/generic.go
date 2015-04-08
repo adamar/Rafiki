@@ -87,7 +87,7 @@ func NewRafikiKey(buf []byte) *Key {
 	case validPublicKey(block):
 		publickey, _ := ssh.ParsePublicKey(block)
 		return &Key{
-			Identifier:   "public", // Require proper identifier here
+			Identifier:   calcThumbprint(publickey.Marshal()),
 			Type:         "publickey",
 			FileContents: block,
 			ParsedKey:    publickey,
