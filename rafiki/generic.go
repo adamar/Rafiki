@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"code.google.com/p/go.crypto/openpgp"
+	"code.google.com/p/go.crypto/ssh"
 	"crypto/rsa"
 	"crypto/x509"
 	"database/sql"
@@ -162,6 +163,16 @@ func validPGPKey(input []byte) bool {
 
 	keyReader := bytes.NewReader(input)
 	_, err := openpgp.ReadArmoredKeyRing(keyReader)
+	if err != nil {
+		return false
+	}
+	return true
+
+}
+
+func validPublicKey(input []byte) bool {
+
+	_, err := ssh.ParsePublicKey(input)
 	if err != nil {
 		return false
 	}
