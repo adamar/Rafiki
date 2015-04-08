@@ -112,16 +112,13 @@ openssl rsa -noout -modulus -in your-private.key | openssl md5
 
 To Do
 -----------
-- ReWrite of internals, the program flow is a mess at the moment
 - Write more tests
 - Add more error checking
 - Better text layout
 - Print out file details on import & export
-- Add (unautheticated) option to profile a key
 - Add sub command to "List" option to filter on key type
 - Add API Key file type definition
 - Flatten file structure
-- Move File checking from import to its own function
 
 
 
