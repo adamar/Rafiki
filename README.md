@@ -67,7 +67,7 @@ SSL Certificate | Common Name | Yes
 SSL Certificate Signing Request | Common Name | Yes
 SSL RSA Private Key | MD5 Fingerprint | Yes
 SSL ECDSA Private Key | MD5 Fingerprint | Yes
-SSH RSA Private Key | - | No
+SSH RSA Private Key | MD5 Fingerprint | Yes
 SSH RSA Public Key | MD5 Fingerprint | Yes
 SSH DSA Private Key | - | No
 SSH DSA Public Key | MD5 Fingerprint | Yes
