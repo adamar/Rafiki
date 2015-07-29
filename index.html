@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Rafiki by adamar</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Rafiki</h1>
+        <h2>SSL + RSA + GPG Secure Key Store</h2>
+        <a href="https://github.com/adamar/Rafiki" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="rafiki" class="anchor" href="#rafiki" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rafiki</h1>
+
+<p><img src="https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki.gif" alt="rafiki"></p>
+
+<p>Rafiki is a CLI tool for securely storing SSL and RSA files in a local SQLite3 Database. Imported files are first encrypted using GPG and then stored
+in the database along with an identifying key (ie. CommonName for CSRs, etc..) </p>
+
+<p>The database will be created when Rafiki is run for the first time and can be re-located and referenced by Rafiki using the --db flag. </p>
+
+<p>Note: The term 'key' is used throughout to refer to any/all types of files for simplicity's sake.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Ensure that your go bin is setup correctly <a href="https://github.com/golang/go/wiki/GOPATH#directory-layout">GO-BIN</a></p>
+
+<p>then run </p>
+
+<div class="highlight highlight-sh"><pre>go install github.com/adamar/rafiki</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h4>
+<a id="import-a-key" class="anchor" href="#import-a-key" aria-hidden="true"><span class="octicon octicon-link"></span></a>Import a key</h4>
+
+<div class="highlight highlight-sh"><pre>./rafiki import --file=/loc/of/file</pre></div>
+
+<p><img src="https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki-import.gif" alt="rafiki-import"></p>
+
+<h4>
+<a id="list-keys" class="anchor" href="#list-keys" aria-hidden="true"><span class="octicon octicon-link"></span></a>List keys</h4>
+
+<div class="highlight highlight-sh"><pre>./rafiki list</pre></div>
+
+<p><img src="https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki-list.gif" alt="rafiki-list"></p>
+
+<h4>
+<a id="export-a-key-using-the-original-filename" class="anchor" href="#export-a-key-using-the-original-filename" aria-hidden="true"><span class="octicon octicon-link"></span></a>Export a key (using the original filename)</h4>
+
+<div class="highlight highlight-sh"><pre>./rafiki <span class="pl-k">export</span></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki-export.gif" alt="rafiki-export"></p>
+
+<h2>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<ul>
+<li>SQLite v3+</li>
+<li>Go 1.3+</li>
+</ul>
+
+<h2>
+<a id="key-types-supported" class="anchor" href="#key-types-supported" aria-hidden="true"><span class="octicon octicon-link"></span></a>Key Types Supported</h2>
+
+<table>
+<thead>
+<tr>
+<th>Key Type</th>
+<th>Identifier</th>
+<th align="center">Supported</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SSL Certificate</td>
+<td>Common Name</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td>SSL Certificate Signing Request</td>
+<td>Common Name</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td>SSL RSA Private Key</td>
+<td>MD5 Fingerprint</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td>SSL ECDSA Private Key</td>
+<td>MD5 Fingerprint</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td>SSH RSA Private Key</td>
+<td>MD5 Fingerprint</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td>SSH RSA Public Key</td>
+<td>MD5 Fingerprint</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td>SSH DSA Private Key</td>
+<td>-</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td>SSH DSA Public Key</td>
+<td>MD5 Fingerprint</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td>SSH ECDSA Private Key</td>
+<td>-</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td>SSH ECDSA Public Key</td>
+<td>MD5 Fingerprint</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td>PGP Private Key</td>
+<td>-</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td>PGP Public Key</td>
+<td>Public Fingerprint</td>
+<td align="center">Yes</td>
+</tr>
+</tbody>
+</table>
+
+<h2>
+<a id="development-misc" class="anchor" href="#development-misc" aria-hidden="true"><span class="octicon octicon-link"></span></a>Development Misc</h2>
+
+<h4>
+<a id="useful-testing-tools" class="anchor" href="#useful-testing-tools" aria-hidden="true"><span class="octicon octicon-link"></span></a>Useful Testing Tools</h4>
+
+<p>Print Public Key Fingerprint</p>
+
+<div class="highlight highlight-sh"><pre>ssh-keygen -lf /path/to/key.pub</pre></div>
+
+<p>Print CSR Info</p>
+
+<div class="highlight highlight-sh"><pre>openssl req -<span class="pl-k">in</span> domain.com.csr -text -noout</pre></div>
+
+<p>Show CSR Public Key</p>
+
+<div class="highlight highlight-sh"><pre>openssl req -<span class="pl-k">in</span> domain.com.csr -noout -pubkey</pre></div>
+
+<p>Show an RSA Key's SHA1 thumbprint</p>
+
+<div class="highlight highlight-sh"><pre>openssl rsa -noout -modulus -<span class="pl-k">in</span> your-private.key <span class="pl-k">|</span> openssl sha1</pre></div>
+
+<p>Show an RSA Key's MD5 thumbprint</p>
+
+<div class="highlight highlight-sh"><pre>openssl rsa -noout -modulus -<span class="pl-k">in</span> your-private.key <span class="pl-k">|</span> openssl md5</pre></div>
+
+<h2>
+<a id="to-do" class="anchor" href="#to-do" aria-hidden="true"><span class="octicon octicon-link"></span></a>To Do</h2>
+
+<ul>
+<li>Write more tests</li>
+<li>Add more error checking</li>
+<li>Better text layout</li>
+<li>Print out file details on import &amp; export</li>
+<li>Add sub command to "List" option to filter on key type</li>
+<li>Add API Key file type definition</li>
+<li>Flatten file structure</li>
+</ul>
+
+<h2>
+<a id="useful-resources" class="anchor" href="#useful-resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Useful Resources</h2>
+
+<ul>
+<li>
+<a href="http://redkestrel.co.uk/articles/CSR-FAQ/">CSR FAQ</a> - Certificate Signing Request FAQ</li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/adamar/Rafiki/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/adamar/Rafiki/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/adamar/Rafiki"></a> is maintained by <a href="https://github.com/adamar">adamar</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
