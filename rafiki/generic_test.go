@@ -36,7 +36,7 @@ w0lbJsd9ssEhPthjeiOnb26G4zk9Y05f3kAsTZZSfzeivev83E+ZVnjFQ+9JmlQZ
 
 	output := NewRafikiKey(sshPrivKey)
 
-	if output.Type != 3 {
+	if output.Type != "sshkey" {
 		t.Error("RSA Key detection failed")
 	}
 
@@ -64,7 +64,7 @@ mgKoKxqcXKxji2jCEvBJuBM=
 
 	output := NewRafikiKey(csrFile)
 
-	if output.Type != 1 {
+	if output.Type != "sslcsr" {
 		t.Error("CSR File detection failed")
 	}
 
