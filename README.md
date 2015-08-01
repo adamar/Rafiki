@@ -4,8 +4,8 @@ Rafiki
 ![rafiki](https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki.gif)
 
 
-Rafiki is a CLI tool for securely storing SSL and RSA files in a local SQLite3 Database. Imported files are first encrypted using GPG and then stored
-in the database along with an identifying key (ie. CommonName for CSRs, etc..) 
+Rafiki is a CLI tool for securely storing SSL and RSA files in a local SQLite3 Database. Imported files are first encrypted using openPGP and then stored
+in the database along with an identifying key (ie. CommonName for CSRs, MD5 for RSA, etc..) 
 
 The database will be created when Rafiki is run for the first time and can be re-located and referenced by Rafiki using the --db flag. 
 
@@ -68,13 +68,9 @@ SSL Certificate Signing Request | Common Name | Yes
 SSL RSA Private Key | MD5 Fingerprint | Yes
 SSL ECDSA Private Key | MD5 Fingerprint | Yes
 SSH RSA Private Key | MD5 Fingerprint | Yes
-SSH RSA Public Key | MD5 Fingerprint | Yes
 SSH DSA Private Key | - | No
-SSH DSA Public Key | MD5 Fingerprint | Yes
 SSH ECDSA Private Key | - | No
-SSH ECDSA Public Key | MD5 Fingerprint | Yes
-PGP Private Key | - | No
-PGP Public Key | Public Fingerprint | Yes
+GPG ASCII Armored Private Key | Public Fingerprint | Yes
 
 
 
