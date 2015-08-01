@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"github.com/codegangsta/cli"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/vaughan0/go-ini"
 	"io/ioutil"
 	"log"
 	"os"
@@ -102,6 +103,18 @@ func NewRafikiKey(buf []byte) *Key {
 			FileContents: block,
 			ParsedKey:    keyRing,
 		}
+
+	case validBotoKey(block):
+		input := bytes.NewReader(block)
+		botofile, _ := ini.Load(input)
+		keyId, _ := botofile.Get("Credentials", "aws_access_key_id")
+		return &Key{
+			Identifier:   fmt.Sprintf(keyId),
+			Type:         "botofile",
+			FileContents: block,
+			//ParsedKey:    keyRing,
+		}
+
 	}
 
 	return &Key{}
@@ -191,8 +204,13 @@ func validPublicKey(input []byte) bool {
 
 func validBotoKey(input []byte) bool {
 
-	_, err := ini.Load(input)
+	boto := bytes.NewReader(input)
+	file, err := ini.Load(boto)
 	if err != nil {
+		return false
+	}
+	_, ok := file.Get("Credentials", "aws_access_key_id")
+	if ok == false {
 		return false
 	}
 	return true
