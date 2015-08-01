@@ -21,18 +21,59 @@
     <!-- Begin page content -->
     <div class="container">
       <div class="page-header">
-        <img src="https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki.gif">
+
+        <div class="pull-right">
+          <iframe src="https://ghbtns.com/github-btn.html?user=adamar&repo=rafiki&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+        </div> 
+ 
+
+
+        <div class="row text-center">
+          <img src="https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki.gif">
+        </div>
+
+ 
         <h1>Rafiki</h1>
+        
         <h3>SSL + RSA + GPG Secure Key Store</h3>
-        <br />
-        <a href="http://github.com/adamar/rafiki"><button type="button" class="btn btn-lg btn-primary">View on Github</button></a>
-        <iframe src="https://ghbtns.com/github-btn.html?user=adamar&repo=rafiki&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+
+
+
+        <div class="row text-center">
+          <a href="http://github.com/adamar/rafiki"><button type="button" class="btn btn-lg btn-primary">View on Github</button></a>
+        </div>
+
+
       </div>
       <p class="lead">Rafiki is a CLI tool for securely storing SSL and RSA files in a local SQLite3 Database. Imported files are first encrypted using GPG and then stored in the database along with an identifying key (ie. CommonName for CSRs, etc..)</p>
 
       <p class="lead">
       The database will be created when Rafiki is run for the first time and can be re-located and referenced by Rafiki using the --db flag.</p>
+
+      <h3>Installation</h3>
+
+
+
+      <h3>Usage</h3>
+
       <img src="https://raw.githubusercontent.com/adamar/rafiki/master/doc/rafiki-import.gif">
+
+
+
+      <h3> FAQ </h3>
+
+        <dl>
+          <dt>How do I reset my password?</dt>
+          <dd>Sorry, this isn't possible.</dd>
+
+          <dt>Can I change my password?</dt>
+          <dd>No, currently this is not supported. The only way this could be achieved is by exporting all keys deleting the database and starting again</dd>
+
+          <dt>Can keys be recovered without using Rafiki?</dt>
+          <dd>Yes, keys stored in Rafiki are simply openPGP encrypted files stored in a SQLite Database</dd>
+ 
+        </dl>
+
     </div>
 
     <footer class="footer">
