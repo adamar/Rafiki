@@ -189,6 +189,16 @@ func validPublicKey(input []byte) bool {
 
 }
 
+func validBotoKey(input []byte) bool {
+
+	_, err := ini.Load(input)
+	if err != nil {
+		return false
+	}
+	return true
+
+}
+
 func NewRafikiInit(c *cli.Context, checkAuth bool) (raf *Rafiki) {
 
 	var filePath string
