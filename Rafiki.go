@@ -12,7 +12,7 @@ func main() {
 	//
 	app := cli.NewApp()
 	app.Name = "Rafiki"
-	app.Version = "0.0.2"
+	app.Version = "0.0.3"
 	app.Usage = "Store SSL Certs and CSRs securely"
 	app.Commands = rafiki.GenericCLI
 
